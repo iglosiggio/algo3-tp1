@@ -1,4 +1,5 @@
 *.o
 *.aux
 *.log
+.vscode
 mochila.pdf
