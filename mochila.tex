@@ -89,13 +89,83 @@
 \maketitle
 \section{Presentación del problema Knapsack} 
 
-\subsubsection{Dado un espacio de tamaño W, y un conjunto de items con tamaños $(x1,x2..xn)$ y precios $(y1,y2..yn)$ se quiere hallar
-un subconjunto de indices de los items tal que}
+\subsubsection{Dado un espacio de tamaño W, y un conjunto de tuplas $(x_i,y_i)$ con pesos $(x_1,x_2..x_n)$ y precios $(y_1,y_2..y_n)$ ambos enteros no negativos,
+hallar un subconjunto de indices que maximiza un valor $z_{out} \in\mathbb{E} \geq 0$, de la siguiente forma:}
 
 \begin{itemize}
-	\item Se maximize $\sum \{ y_i : i \in indices \} $ 
-	\item $\sum \{ x_i : i \in indices \} \le W $ 
+	\item $z_{out} $ = max $\sum \{ y_i : i \in indices \} $ (subconjunto cuya sumatoria maximiza el precio)
+	\item $\sum \{ x_i : i \in indices \} \le W $ (subconjunto cuyos pesos no exceda el tamaño de W)
 \end{itemize}
+
+\subsubsection{Se plantean los siguientes ejemplos del problema:}
+
+A) - 
+\begin{tabular}{l l}
+	tamaño (size) & precio \\ \toprule
+    20 & 50 \\
+    10 & 5  \\
+    10 & 30 \\
+    8 & 35  \\
+\end{tabular}
+y un espacio W de tamaño 20. \\
+
+Res: $z_{out}$ es 65 y el subconjunto que maximiza el valor son las tuplas [(10,30) y (8,35)] \\
+
+B) - 
+\begin{tabular}{l l}
+	tamaño (size) & precio \\ \toprule
+    25 & 10 \\
+    20 & 5 \\
+    2  & 1 \\
+    1  & 1 \\
+    1  & 1 \\
+    1  & 1 \\
+\end{tabular}
+y un espacio W de tamaño 25. \\
+
+Res: $z_{out}$ es 10 y el subconjunto que maximiza el valor es la tupla [(25,10)] \\
+
+C) - 
+\begin{tabular}{l l}
+	tamaño (size) & precio \\ \toprule
+    30 & 100 \\
+    25 & 25  \\
+    22 & 15  \\
+    22 & 40  \\
+    26 & 50  \\
+    24 & 50  \\
+
+\end{tabular}
+y un espacio W de tamaño 50. \\
+
+Res: $z_{out}$ es 100 y existen 2 subconjuntos que maximizan el valor, el subconjunto [(30,100)] y [(26,50), (24,50)]
+
+\subsubsection{Presentados diferentes casos del problema se plantean diferentes preguntas: } 
+
+.\\
+¿Cómo sería la resolución de un algoritmo que cumpla con dicho problema?  \\
+¿Existen algoritmos que tarden menos que otros?  \\
+¿Cómo afectan la variable W y la cantidad de N-tuplas a la complejidad? \\ 
+¿Cuál es la complejidad teórica en el peor caso, y en el promedio?  \\
+
+\maketitle
+\section{algoritmos de resolución de Knapsack} 
+
+A continuación se presentaran las siguientes resoluciones del problema. Y posteriormente analizaremos su complejidad, 
+
+\subsubsection{Algoritmo de fuerza bruta}
+
+Próximamente en latex sabita:
+
+
+
+
+
+
+
+
+
+
 
 
 \end{document}
