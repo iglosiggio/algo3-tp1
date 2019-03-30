@@ -1,4 +1,5 @@
 *.o
+*.algo
 *.aux
 *.log
 .vscode
