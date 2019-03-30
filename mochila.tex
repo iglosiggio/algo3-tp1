@@ -71,6 +71,7 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{mathdots}
+\usepackage{enumerate}
 
 \overfullrule=2em
 
@@ -89,8 +90,8 @@
 \maketitle
 \section{Presentación del problema Knapsack} 
 
-\subsubsection{Dado un espacio de tamaño W, y un conjunto de tuplas $(x_i,y_i)$ con pesos $(x_1,x_2..x_n)$ y precios $(y_1,y_2..y_n)$ ambos enteros no negativos,
-hallar un subconjunto de indices que maximiza un valor $z_{out} \in\mathbb{E} \geq 0$, de la siguiente forma:}
+\subsubsection{Dado un espacio de tamaño W, y un conjunto de tuplas $(x_i, y_i)$ con pesos $(x_1, x_2 \dots x_n)$ y precios $(y_1, y_2 \dots y_n)$ ambos enteros no negativos,
+hallar un subconjunto de indices que maximize el valor $z_{out} \in\mathbb{E} \geq 0$, de la siguiente forma:}
 
 \begin{itemize}
 	\item $z_{out} $ = max $\sum \{ y_i : i \in indices \} $ (subconjunto cuya sumatoria maximiza el precio)
@@ -99,7 +100,9 @@ hallar un subconjunto de indices que maximiza un valor $z_{out} \in\mathbb{E} \g
 
 \subsubsection{Se plantean los siguientes ejemplos del problema:}
 
-A) - 
+\begin{enumerate}[A.]
+
+\item
 \begin{tabular}{l l}
 	tamaño (size) & precio \\ \toprule
     20 & 50 \\
@@ -111,7 +114,7 @@ y un espacio W de tamaño 20. \\
 
 Res: $z_{out}$ es 65 y el subconjunto que maximiza el valor son las tuplas [(10,30) y (8,35)] \\
 
-B) - 
+\item
 \begin{tabular}{l l}
 	tamaño (size) & precio \\ \toprule
     25 & 10 \\
@@ -125,7 +128,7 @@ y un espacio W de tamaño 25. \\
 
 Res: $z_{out}$ es 10 y el subconjunto que maximiza el valor es la tupla [(25,10)] \\
 
-C) - 
+\item
 \begin{tabular}{l l}
 	tamaño (size) & precio \\ \toprule
     30 & 100 \\
@@ -138,11 +141,12 @@ C) -
 \end{tabular}
 y un espacio W de tamaño 50. \\
 
-Res: $z_{out}$ es 100 y existen 2 subconjuntos que maximizan el valor, el subconjunto [(30,100)] y [(26,50), (24,50)]
+Res: $z_{out}$ es 100 y existen 2 subconjuntos que maximizan el valor, el subconjunto [(30, 100)] y [(26, 50), (24, 50)]
 
-\subsubsection{Presentados diferentes casos del problema se plantean diferentes preguntas: } 
+\end{enumerate}
 
-.\\
+\subsubsection{Presentados diferentes casos del problema se plantean diferentes preguntas:}
+
 ¿Cómo sería la resolución de un algoritmo que cumpla con dicho problema?  \\
 ¿Existen algoritmos que tarden menos que otros?  \\
 ¿Cómo afectan la variable W y la cantidad de N-tuplas a la complejidad? \\ 
