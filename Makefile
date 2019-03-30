@@ -2,7 +2,7 @@ algos=fuerza_bruta mitm backtracking_opt backtracking_fact dinamica
 exes=$(algos:=.algo)
 tmp=*.log *.aux
 
-all: mochila.pdf $(exes)
+all: mochila.pdf $(exes) main.o
 
 %.pdf: %.tex
 	pdflatex $(LATEXFLAGS) $<
@@ -15,4 +15,4 @@ clean:
 
 %.test: $(exes) casos/%.in casos/%.out
 	@cat casos/$*.out
-	@for exe in $(exes); do ./$$exe < casos/$*.out; done
+	@for exe in $(exes); do ./$$exe < casos/$*.in; done

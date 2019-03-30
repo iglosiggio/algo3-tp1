@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
 	pesos = new uint32_t[n];
         valores = new uint32_t[n];
 
-	for(int i = 0; i < n; i++)
+	for (int i = 0; i < n; i++)
 		cin >> pesos[i] >> valores[i];
 
 	auto start = chrono::steady_clock::now();
