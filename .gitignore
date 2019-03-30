@@ -1,0 +1,4 @@
+*.o
+*.aux
+*.log
+mochila.pdf
