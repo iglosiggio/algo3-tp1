@@ -14,8 +14,9 @@ not() {
 	fi
 }
 
-if [ $# != 2 ] || not isnumber "$1"; then
+if [ $# -le 2 ] || not isnumber "$1"; then
 	echo "Uso: scripts/generar_casos.sh <cantidad> <prefijo> [sufijo]"
+	exit 1
 fi
 
 for i in $(seq 1 "$1"); do
