@@ -14,12 +14,12 @@ not() {
 	fi
 }
 
-if [ $# -le 2 ] || not isnumber "$1"; then
+if [ $# -lt 2 ] || not isnumber "$1"; then
 	echo "Uso: scripts/generar_casos.sh <cantidad> <prefijo> [sufijo]"
 	exit 1
 fi
 
 for i in $(seq 1 "$1"); do
 	awk -v seed="$i$3$2" -f "$generar_casos" > "$2$i$3.in"
-	echo "INCOMPLETO" > "$2$i$3.out"
+	echo "?" > "$2$i$3.out"
 done
