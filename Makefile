@@ -10,7 +10,7 @@ all: mochila.pdf $(exes) main.o
 	pdflatex $(LATEXFLAGS) $<
 
 %.algo: algos/%.cpp main.o
-	$(CXX) $^ -o $@
+	$(CXX) $(CXXFLAGS) $^ -o $@
 
 clean:
 	rm -f mochila.pdf $(exes) $(tmp)
