@@ -3,5 +3,6 @@
 *.aux
 *.log
 .vscode
+.gdb_history
 mochila.pdf
 mochila.synctex.gz
