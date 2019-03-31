@@ -35,8 +35,8 @@ uint64_t mochila(uint32_t n, uint32_t w, uint32_t* pesos, uint32_t* valores) {
 			if (valor > mejor)
 				mejor = valor;
 		}
-		conjunto = (conjunto + 1) % mod;
-	} while (conjunto != 0);
+		conjunto++;
+	} while (conjunto < mod);
 
 	return mejor;
 }
