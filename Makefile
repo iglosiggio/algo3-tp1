@@ -18,7 +18,8 @@ clean:
 %.test: casos/%.test
 
 casos/%.test: $(exes) casos/%.in casos/%.out
-	@echo [ $* $$(cat casos/$*.out) ]
-	@for exe in $(exes); do ./$$exe < casos/$*.in; done
+	@for exe in $(exes); do \
+		echo $* $$(cat casos/$*.out) $$(./$$exe < casos/$*.in); \
+	done;
 
 test: $(tests)

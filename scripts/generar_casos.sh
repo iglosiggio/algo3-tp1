@@ -15,7 +15,7 @@ not() {
 }
 
 if [ $# -lt 2 ] || not isnumber "$1"; then
-	echo "Uso: scripts/generar_casos.sh <cantidad> <prefijo> [sufijo]"
+	echo "Uso: $0 <cantidad> <prefijo> [sufijo]"
 	exit 1
 fi
 
