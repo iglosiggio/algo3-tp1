@@ -2,8 +2,6 @@
 #include <utility>
 #include <algorithm>
 
-#include <iostream>
-
 const char* algo = __FILE__;
 
 struct problema {
@@ -25,7 +23,7 @@ uint64_t backtracking(struct problema p, struct solucion s) {
 	uint64_t nuevo_valor = s.valor_actual + p.valores[s.i];
 
 	if (s.peso_actual + s.peso_restante <= p.w) {
-		for(int i=s.i; i < p.n ; i++)
+		for(int i = s.i; i < p.n; i++)
 			s.valor_actual += p.valores[i];
 		return s.valor_actual;
 	}
@@ -35,18 +33,22 @@ uint64_t backtracking(struct problema p, struct solucion s) {
 		return s.valor_actual;
 
 	if (nuevo_peso == p.w) {
-		s.i++;
 		s.peso_restante -= p.pesos[s.i];
+		s.i++;
 		return std::max(nuevo_valor, backtracking(p, s));
 	}
 
+	/* Considero el caso de agregar o no el iésimo elemento */
 	if (s.i < p.n - 1) {
-		s.i++;
-		s.peso_actual = nuevo_peso;
 		s.peso_restante -= p.pesos[s.i];
+		s.i++;
+
+		struct solucion sin_i = s;
+
+		s.peso_actual = nuevo_peso;
 		s.valor_actual = nuevo_valor;
 
-		return backtracking(p, s);
+		return std::max(backtracking(p, s), backtracking(p, sin_i));
 	}
 
 	return nuevo_valor;
