@@ -1,22 +1,20 @@
 #!/usr/bin/awk -f
 
-BEGIN {
-	if (!field)
-		field = 0
-}
-
 {
-	suma += $(field)
-	suma_cuadrada += $(field) * $(field)
-	i++
+	sumas[$1][$3] += $5
+	sumas_cuadradas[$1][$3] += $5 ^ 2
+	cantidades[$1][$3]++
 }
 
 END {
-	if (i == 0)
-		exit
-
-	esperanza = suma/i
-	esperanza_cuadrada = suma_cuadrada/i
-	varianza = esperanza_cuadrada - esperanza * esperanza
-	printf("%f %f %f\n", suma, esperanza, sqrt(varianza))
+	for (caso in sumas)
+		for (algo in sumas[caso]) {
+			cant = cantidades[caso][algo]
+			suma = sumas[caso][algo]
+			suma_cuadrada = sumas_cuadradas[caso][algo]
+			esperanza = suma / cant
+			esperanza_cuadrada = suma_cuadrada / cant
+			varianza = esperanza_cuadrada - (esperanza ^ 2)
+			print caso, algo, cant, suma, esperanza, sqrt(varianza)
+		}
 }
