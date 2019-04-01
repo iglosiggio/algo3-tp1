@@ -16,6 +16,7 @@ clean:
 	rm -f mochila.pdf $(exes) $(tmp)
 
 %.test: casos/%.test
+	@
 
 casos/%.test: $(exes) casos/%.in casos/%.out
 	@for exe in $(exes); do \
