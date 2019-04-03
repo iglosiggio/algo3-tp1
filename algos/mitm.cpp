@@ -11,7 +11,8 @@ using soluciones = std::vector<combinacion>;
 
 #define BIT(n) (1LL << n)
 
-inline combinacion calcular(uint64_t conjunto, uint32_t* pesos, uint32_t* valores) {
+inline combinacion calcular(uint64_t conjunto, uint32_t* pesos,
+                            uint32_t* valores) {
 	combinacion resultado;
 
 	for (int i = 0; i < 64; i++)
@@ -24,7 +25,8 @@ inline combinacion calcular(uint64_t conjunto, uint32_t* pesos, uint32_t* valore
 }
 
 
-soluciones solucionesSubN(uint32_t* pesos, uint32_t* valores, uint32_t n, uint32_t w){
+soluciones solucionesSubN(uint32_t* pesos, uint32_t* valores, uint32_t n,
+                          uint32_t w) {
 	uint64_t conjunto = 1;
 	uint64_t mejor = 0;
 	uint64_t mod = BIT(n);
@@ -53,9 +55,10 @@ uint64_t mochila(uint32_t n, uint32_t w, uint32_t* pesos, uint32_t* valores) {
 				std::swap(valores[i], valores[j]);
 			}
 
-	/* armo mis 2 sub conjuntos */
+	/* Armo mis 2 subconjuntos */
 	soluciones menores = solucionesSubN(pesos, valores, n/2, w);
-	soluciones mayores = solucionesSubN(pesos + n/2, valores + n/2, n - n/2, w);
+	soluciones mayores = solucionesSubN(pesos + n/2, valores + n/2,
+	                                    n - n/2, w);
 	std::sort(menores.begin(), menores.end());
 	std::sort(mayores.begin(), mayores.end());
 
@@ -71,11 +74,12 @@ uint64_t mochila(uint32_t n, uint32_t w, uint32_t* pesos, uint32_t* valores) {
 	uint64_t resultado = 0;
 
 	for (combinacion c : menores) {
-		uint64_t peso_deseado = w - c.first;
-		uint64_t valor_deseado = 0xFFFFFFFFFFFFFFFFLL;
-		auto mejor = std::upper_bound(mayores.begin(), mayores.end(), combinacion(peso_deseado, valor_deseado));
+		auto inicio = mayores.begin();
+		auto fin = mayores.end();
+		combinacion deseada = {w - c.first, 0xFFFFFFFFFFFFFFFFLL};
+		auto mejor = std::upper_bound(inicio, fin, deseada);
 
-		if (mejor != mayores.begin())
+		if (mejor != inicio)
 			mejor--;
 
 		uint64_t valor = c.second + mejor->second;
