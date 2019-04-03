@@ -59,7 +59,6 @@ uint64_t mochila(uint32_t n, uint32_t w, uint32_t* pesos, uint32_t* valores) {
 	soluciones menores = solucionesSubN(pesos, valores, n/2, w);
 	soluciones mayores = solucionesSubN(pesos + n/2, valores + n/2,
 	                                    n - n/2, w);
-	std::sort(menores.begin(), menores.end());
 	std::sort(mayores.begin(), mayores.end());
 
 	uint64_t mejor_valor = 0;
