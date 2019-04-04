@@ -32,6 +32,7 @@ soluciones solucionesSubN(uint32_t* pesos, uint32_t* valores, uint32_t n,
 	uint64_t mod = BIT(n);
 	soluciones resultado;
 
+	resultado.reserve(mod);
 	resultado.push_back(combinacion(0, 0));
 
 	while (conjunto < mod) {
