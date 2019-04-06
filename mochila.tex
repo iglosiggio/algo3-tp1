@@ -88,69 +88,75 @@
 \begin{document}
 
 \maketitle
-\section{Presentación del problema Knapsack} 
+\section{Presentación de Knapsack Problem} 
 
-\subsubsection{Dado un espacio de tamaño W, y un conjunto de tuplas $(x_i, y_i)$ con pesos $(x_1, x_2 \dots x_n)$ y precios $(y_1, y_2 \dots y_n)$ ambos enteros no negativos,
-hallar un subconjunto de indices que maximize el valor $z_{out} \in\mathbb{E} \geq 0$, de la siguiente forma:}
+\subsubsection{
+\textit{"El problema de la mochila (KP), consiste en asignar un conjunto de items con un peso y valor asociado a una mochila limitada por el peso que puede tolerar, buscando maximizar el valor de la misma."} }
+
+
+\textbf{Formulacion del problema:}
+
+Dado un espacio de tamaño W (la mochila), y un conjunto de tuplas $(x_i, y_i)$ con pesos $(x_1, x_2 \dots x_n)$ \\
+y precios $(y_1, y_2 \dots y_n)$ ambos enteros no negativos, hallar un subconjunto de indices que \\
+maximize el valor $z_{out} \in\mathbb{E} \geq 0$, de la siguiente forma:
 
 \begin{itemize}
-	\item $z_{out} $ = max $\sum \{ y_i : i \in indices \} $ (subconjunto cuya sumatoria maximiza el precio)
-	\item $\sum \{ x_i : i \in indices \} \le W $ (subconjunto cuyos pesos no exceda el tamaño de W)
+	\item $z_{out} $ = max $\sum \{ y_i : i \in indices \} $ \\ (subconjunto cuya sumatoria maximiza el precio)
+	\item $\sum \{ x_i : i \in indices \} \le W $ \\ (subconjunto cuyos pesos no exceda el tamaño de W)
 \end{itemize}
 
-\subsubsection{Se plantean los siguientes ejemplos del problema:}
+\subsubsection{Se plantea el siguiente ejemplo del problema:}
 
 \begin{enumerate}[A.]
 
 \item
 \begin{tabular}{l l}
-	tamaño (size) & precio \\ \toprule
+	peso (size) & precio \\ \toprule
     20 & 50 \\
     10 & 5  \\
-    10 & 30 \\
-    8 & 35  \\
+    30 & 35  \\
 \end{tabular}
-y un espacio W de tamaño 20. \\
+con W = 30. \\
 
-Res: $z_{out}$ es 65 y el subconjunto que maximiza el valor son las tuplas [(10,30) y (8,35)] \\
+Res: $z_{out}$ es 55 y el subconjunto que maximiza el valor son las tuplas [(20,50) y (10,5)] \\
+
+Se destaca en este caso que solo existen cuatro formas posibles de armar la mochila,
+las otras forma serían usar tuplas singulares, (20,50), (10,5), (30,35), nada inhibe armar una mochila que no utilize todo su peso. Notar que el valor que maximiza puede encontrarse en cualquier subconjunto del conjunto de tuplas. 
+
+
 
 \item
 \begin{tabular}{l l}
-	tamaño (size) & precio \\ \toprule
-    25 & 10 \\
-    20 & 5 \\
-    2  & 1 \\
-    1  & 1 \\
-    1  & 1 \\
-    1  & 1 \\
-\end{tabular}
-y un espacio W de tamaño 25. \\
-
-Res: $z_{out}$ es 10 y el subconjunto que maximiza el valor es la tupla [(25,10)] \\
-
-\item
-\begin{tabular}{l l}
-	tamaño (size) & precio \\ \toprule
-    30 & 100 \\
-    25 & 25  \\
-    22 & 15  \\
-    22 & 40  \\
-    26 & 50  \\
-    24 & 50  \\
+	peso (size) & precio \\ \toprule
+    45 & 150 \\
+    20 & 50 \\
+    20  & 40 \\
+    20 & 60
+    
 
 \end{tabular}
-y un espacio W de tamaño 50. \\
+con W = 60. \\
 
-Res: $z_{out}$ es 100 y existen 2 subconjuntos que maximizan el valor, el subconjunto [(30, 100)] y [(26, 50), (24, 50)]
+Res: $z_{out}$ es 150 y los subconjunto que maximizan el valor son la tupla [(45,150)] y el subconjunto
+[(20, 50)] y [(20, 40), (20, 60)] \\
+
+Se observa, que puede suceder que más de un solo subconjunto sea máximo.
 
 \end{enumerate}
 
-\subsubsection{Presentados diferentes casos del problema se plantean diferentes preguntas:}
+\subsubsection{Pautas de diseño utilizadas en este exámen:}
 
-¿Cómo sería la resolución de un algoritmo que cumpla con dicho problema?  \\
-¿Existen algoritmos que tarden menos que otros?  \\
+La idea en este estudio, será demostrar diferentes algoritmos que cumplen con las condiciones propuestas por KP, así como comparar la eficiencia de los mismos, Para esto se definiran diferentes entornos de prueba, en los cuales se someterá a los algoritmos a superar experimentos generados, \\
+
+Para cada prueba de un experimento se forzara al algoritmo a resolverlo por lo menos 50 veces, y se determinará su velocidad para resolver el problema, con el promedio de las ejecuciones, de esa manera nos aseguraremos que si el algoritmo tiene un buen desempeño en resolver dicha prueba, sea altamente probable que se asemeje a la velocidad real.  \\
+
+Para cada algoritmo planteado entonces se buscará resolver las siguientes preguntas:\\
+
+¿Cómo es la resolución del algoritmo?  \\
 ¿Cómo afectan la variable W y la cantidad de N-tuplas a la complejidad? \\ 
+¿Existen cotas de complejidad, o podas realizables?  \\
 ¿Cuál es la complejidad teórica en el peor caso, y en el promedio?  \\
+¿Cuál es su impacto en la memoria?  \\
 
 \maketitle
 \section{algoritmos de resolución de Knapsack} 
