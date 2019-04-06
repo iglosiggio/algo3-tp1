@@ -7,9 +7,9 @@
 
 const char* algo = __FILE__;
 
+using Matriz = std::vector<std::vector<uint32_t> >;
 
-uint64_t dynamic_value_maximizer(uint32_t n, uint32_t w, uint32_t* p, uint32_t* v, uint32_t** memoria){
-
+uint64_t dynamic_value_maximizer(uint32_t n, uint32_t w, uint32_t* p, uint32_t* v, std::vector<std::vector<uint32_t> > memoria){
 
 	if(memoria[n][w] != -1) 
 		return memoria[n][w];
@@ -36,23 +36,15 @@ uint64_t dynamic_value_maximizer(uint32_t n, uint32_t w, uint32_t* p, uint32_t* 
 
 
 uint64_t mochila(uint32_t n, uint32_t w, uint32_t* pesos, uint32_t* valores) {
-	/* defino una matriz de memorizacion, 
-	(ver si hay una forma de generar una matriz dinamicamente sin usar el heap) */
+	/* defino una matriz de memorizacion  */
 
-	uint32_t** memoria = new uint32_t*[n];
-	for(int i = 0; i < n; i++){
-		memoria[i] = new uint32_t[w];
+	Matriz memoria;
+	std::vector<uint32_t> lista;
 
-		for(int j = 0; j < w; j++){
-			memoria[i][j] = -1;
-		}
-	}
+	lista.resize(w, -1);
+	memoria.resize(n, lista);
 
 	uint64_t result =  dynamic_value_maximizer(n,w,pesos,valores, memoria);
-
-	for(int i = 0; i < n; i++)
-		delete[] memoria[i];
-	delete[] memoria;
 	
 
 	return result;
