@@ -84,13 +84,13 @@
 \title{Algoritmos y Estructuras de Datos 3: Gloppi Ya}
 \author{Ignacio E. Losiggio, Federico A. Sabatini}
 % Activate to display a given date or no date (if empty), otherwise the current
-% date is printed 
+% date is printed
 %\date{}
 
 \begin{document}
 
 \maketitle
-\section{Presentación de Knapsack Problem} 
+\section{Presentación de Knapsack Problem}
 
 \subsubsection{
 \textit{"El problema de la mochila (KP), consiste en asignar un conjunto de items con un peso y valor asociado a una mochila limitada por el peso que puede tolerar, buscando maximizar el valor de la misma."} }
@@ -123,7 +123,7 @@ con W = 30. \\
 Res: $z_{out}$ es 55 y el subconjunto que maximiza el valor son las tuplas [(20,50) y (10,5)] \\
 
 Se destaca en este caso que solo existen cuatro formas posibles de armar la mochila,
-las otras forma serían usar tuplas singulares, (20,50), (10,5), (30,35), nada inhibe armar una mochila que no utilize todo su peso. Notar que el valor que maximiza puede encontrarse en cualquier subconjunto del conjunto de tuplas. 
+las otras forma serían usar tuplas singulares, (20,50), (10,5), (30,35), nada inhibe armar una mochila que no utilize todo su peso. Notar que el valor que maximiza puede encontrarse en cualquier subconjunto del conjunto de tuplas.
 
 
 
@@ -134,7 +134,7 @@ las otras forma serían usar tuplas singulares, (20,50), (10,5), (30,35), nada i
     20 & 50 \\
     20  & 40 \\
     20 & 60
-    
+
 
 \end{tabular}
 con W = 60. \\
@@ -155,7 +155,7 @@ Para cada prueba de un experimento se forzara al algoritmo a resolverlo por lo m
 Para cada algoritmo planteado entonces se buscará resolver las siguientes preguntas:\\
 
 ¿Cómo es la resolución del algoritmo?  \\
-¿Cómo afectan la variable W y la cantidad de N-tuplas a la complejidad? \\ 
+¿Cómo afectan la variable W y la cantidad de N-tuplas a la complejidad? \\
 ¿Existen cotas de complejidad, o podas realizables?  \\
 ¿Cuál es la complejidad teórica en el peor caso, y en el promedio?  \\
 ¿Cuál es su impacto en la memoria?  \\
@@ -163,15 +163,15 @@ Para cada algoritmo planteado entonces se buscará resolver las siguientes pregu
 \clearpage
 
 \maketitle
-\section{algoritmos de resolución de Knapsack} 
+\section{algoritmos de resolución de Knapsack}
 
 \subsubsection{\textbf{KP, Algoritmo de fuerza bruta}}
 
-Como primera aproximación podemos establecer que es un problema combinatorio, dado un conjunto de tuplas (items), 
-el máximo valor que cumple la condición de no exceder el peso máximo de W, existe entre uno (o varios) de los 
+Como primera aproximación podemos establecer que es un problema combinatorio, dado un conjunto de tuplas (items),
+el máximo valor que cumple la condición de no exceder el peso máximo de W, existe entre uno (o varios) de los
 subconjuntos posibles que conforman el conjunto original. \\
 
-Debido a que es combinatorio, el número total de subconjuntos posibles, es totalmente dependiente de la 
+Debido a que es combinatorio, el número total de subconjuntos posibles, es totalmente dependiente de la
 cantidad de n-tuplas que posea el problema, y la cantidad de combinaciones corresponde por definición algebraica a $2^n$  \\
 
 Entonces podemos realizar un algoritmo iterativo que recorra sobre todos los subconjuntos posibles, comparando cada $\sum \{ y_i : i \in  \quad (y_1, y_2 \dots y_n)\}$ de cada subconjunto y quedandose con el mejor.
@@ -191,14 +191,14 @@ El algoritmo es iterativo y debe ser invocado con el peso máx W  y una lista \\
 
 \begin{enumerate}
 	\item \textbf{Mientras} $(c < mod)$
-	
+
 	\item   \begin{enumerate}
 	             \item \textbf{if} \quad \textit{$s_{weight}$} $\le  W \land$ \textit{$s_{value}$}  > \textit{temp}  \quad \textbf{then; } \textit{temp} $ = s_{value} $
 	             \item $c = c + 1$
 	        \end{enumerate}
-	        
+
     \item \textbf{return} \textit{temp}
-\end{enumerate} 
+\end{enumerate}
 
 
 
@@ -206,32 +206,36 @@ Por cada iteración de \textit{c}, el algoritmo produce las sumas de \textit{$s_
 
 Dicha complejidad de calcular una suma se la toma como $O(n)$, ya que hay que revisar n elementos si se encuentra o no en el conjunto y sumarlos, dado que el iterador $c \in (0,2^n]$ esta suma se calcula un total de O($2^n$) veces.
 
-\small O($n * 2^n$) \textbf{ tiempo de computo}  \\ 
+\small O($n * 2^n$) \textbf{ tiempo de computo}  \\
 \small O ($n_{tuples}$) \textbf{ storage requerido} \\
 
 \subsubsection{\textbf{KP, Algoritmo de Backtracking}}
 
+\clearpage
+
 \subsubsection{\textbf{KP, Algoritmo de Meet in Middle}}
+
+Otra forma en la podemos
 
 \clearpage
 
 
 \subsubsection{\textbf{KP, Algoritmo de Programación dinámica}}
 
-El algoritmo de programación dinámica hace uso de técnicas exploratorias, al igual que en backtracking la idea es 
-partir de un elemento, en este caso empezaremos del último, y realizar sucesivos llamados recursivos considerando 
-en cada elemento, las 2 opciones, agregarlo y no agregarlo, pero con una salvedad, ya que los valores de las ramas, 
+El algoritmo de programación dinámica hace uso de técnicas exploratorias, al igual que en backtracking la idea es
+partir de un elemento, en este caso empezaremos del último, y realizar sucesivos llamados recursivos considerando
+en cada elemento, las 2 opciones, agregarlo y no agregarlo, pero con una salvedad, ya que los valores de las ramas,
 serán almacenados en memoria, para ser considerados más adelante. \\
 
-Veamoslos por partes, la esencia del algoritmo será top-down (arrancamos con la premisa de la solución, y seccionamos 
-en subconjuntos del problema más chicos), y consta de 2 pasos, primero diseñaremos la implementación de una solución 
+Veamoslos por partes, la esencia del algoritmo será top-down (arrancamos con la premisa de la solución, y seccionamos
+en subconjuntos del problema más chicos), y consta de 2 pasos, primero diseñaremos la implementación de una solución
 recursiva, y luego como segundo paso incorporaremos la memorización de resultados intermedios.  \\
 
 Para el primer paso necesitamos un algoritmo recursivo, no nos interesa buscar cotas ni intentar tener podas eficientes,
 es suficiente con un algoritmo recursivo sencillo,  \\
 
-Tomaremos el último elemento la enésima tupla y armaremos 2 ramas, considerarla y no considerarla. en cada rama restamos 
-en uno un indice k, para que la siguiente decisión se tome sobre la (n-k)tupla, consideramos nuevamente ambas ramas y 
+Tomaremos el último elemento la enésima tupla y armaremos 2 ramas, considerarla y no considerarla. en cada rama restamos
+en uno un indice k, para que la siguiente decisión se tome sobre la (n-k)tupla, consideramos nuevamente ambas ramas y
 así sucesivamente hasta la tupla cero.\\
 
 Consideramos.\\
@@ -241,10 +245,10 @@ Consideramos.\\
     \textit{$V_t$} & = Valor total de la rama, el cual siempre será positivo o cero  \\
     \textit{$n-tuple_{weight}$} & = peso de la e-nesima tupla  \\
     \textit{$n-tuple_{value}$} & = valor de la e-nesima tupla  \\
-    
+
 \end{tabular}
 
-las restricciones vienen dadas por el problema, ningun conjunto puede exceder el peso restante, ya que será considerado 
+las restricciones vienen dadas por el problema, ningun conjunto puede exceder el peso restante, ya que será considerado
 invalido, el algoritmo empieza por la enesima tupla, con los valores por defecto $Q = W$ y $V_t = 0$. \\
 
 \begin{forest}
@@ -260,17 +264,17 @@ invalido, el algoritmo empieza por la enesima tupla, con los valores por defecto
   ]
 \end{forest}
 
-Este método explorara todos los casos y llegará sin duda al conjunto que maximiza \textit{$V_t$}, sin embargo su complejidad 
-no será mejor que $O(n * 2^n)$ ya que recorremos todos los conjuntos, como vimos en ejemplos anteriores, se reitera, 
+Este método explorara todos los casos y llegará sin duda al conjunto que maximiza \textit{$V_t$}, sin embargo su complejidad
+no será mejor que $O(n * 2^n)$ ya que recorremos todos los conjuntos, como vimos en ejemplos anteriores, se reitera,
 no tiene podas, considera todos las ramas posibles.\\
 
-Aqui es donde entra el paso 2, el uso de memoria, a partir de ahora vamos a definir una tabla de valores (matriz), 
+Aqui es donde entra el paso 2, el uso de memoria, a partir de ahora vamos a definir una tabla de valores (matriz),
 con N filas y W columnas.
 
-La razón es que definiremos como paso intermedio a la suma parcial de cada rama, dado que la matriz esta definida en 
+La razón es que definiremos como paso intermedio a la suma parcial de cada rama, dado que la matriz esta definida en
 función de W, notar que los conjuntos que exceden W no pueden ser almacenados, (de ahí deriva el uso de $Q \leq 0$). \\
 
-Revisemoslo desde un ejemplo de algebra primero, que se puede notar de forma más intuitiva. asumamos que tenemos 
+Revisemoslo desde un ejemplo de algebra primero, que se puede notar de forma más intuitiva. asumamos que tenemos
 5 enteros, $(x1,x2,x3,x4,x5)$ y queremos calcular los conjuntos:
 
 \begin{itemize}
@@ -279,38 +283,47 @@ Revisemoslo desde un ejemplo de algebra primero, que se puede notar de forma má
 \end{itemize}
 podemos notar que el subconjunto tomar (x1,x2) se encuentra repetido en los 2 conjuntos
 
-La idea, es que entonces una ves calculado (x1,x2) lo guardamos en memoria para no tener que calcularlo de nuevo, 
+La idea, es que entonces una ves calculado (x1,x2) lo guardamos en memoria para no tener que calcularlo de nuevo,
 luego dicho subconjunto lo usamos para calcular ambos.
 
 En general por combinatoria existen $2^3$ conjuntos que utilizan el subconjunto (x1,x2).
 
-En Knapsack podemos realizar un abuso similar, sin embargo dado que nos interesan chequear todas las ramas estamos 
+En Knapsack podemos realizar un abuso similar, sin embargo dado que nos interesan chequear todas las ramas estamos
 obligados a que cada ves que consideremos o no un valor, alamcenar su resultado parcial.
 
-Entonces tener una tabla de valores o matriz, no es más que solo un criterio que estamos optando de como almacenar 
-la información parcial, con un par de diferencias, se separa por $n$ filas y $w$ columnas y lo que almacena 
+Entonces tener una tabla de valores o matriz, no es más que solo un criterio que estamos optando de como almacenar
+la información parcial, con un par de diferencias, se separa por $n$ filas y $w$ columnas y lo que almacena
 son valores parciales de la rama \textit{$V_t$}
 
-y lo que haremos será que en cada llamado recursivo, la posición de la tabla quede fijada por los valores $k$ 
+y lo que haremos será que en cada llamado recursivo, la posición de la tabla quede fijada por los valores $k$
 (iterador de n) y el peso restante Q que vive entre 0 y W-1, (las dimensiones de la matriz)
 
-Entonces aqui hay una salvedad, puede pasar que fijada una iteración k, llegue por 2 ramas diferentes al mismo Q, 
+Entonces aqui hay una salvedad, puede pasar que fijada una iteración k, llegue por 2 ramas diferentes al mismo Q,
 en dichos casos deberá almacenarse un solo \textit{$V_t$}, el mejor. El algoritmo es el siguiente: \\
 
 Inicialización: \quad \textit{$mem$} \quad = lista[N][W] (valores por defecto \textbf{null}) \\
 
-\textit{function \quad dinamica}(k, Q, ntuples) 
+\textit{function \quad dinamica}(k, Q, ntuples)
 
 
 \begin{tabular}{l l}
-    $[$caso Base:$]$ & \textbf{if}  $i  <  0$ o  $Q  <  0$ \textbf{then;} return 0   \\
-    $[$reviso si esta en mem$]$ & \textbf{if}  $mem[k][Q] \neq null$  \textbf{then;} return 0 $mem[k][Q]$ \\
+    $[caso\ Base]$ & \textbf{if}  $i  <  0$ o  $Q  <  0$ \textbf{then;} return 0   \\
+    $[$reviso si esta en mem$]$ & \textbf{if}  $mem[k][Q] \neq null$  \textbf{then;} return $mem[k][Q]$ \\
     $[$backtracking$]$ & \textit{$V_t$} = $ max \in  [ $  dinamica(k-1, Q, ntuples)  \\
     & \hspace{30pt} \textit{$V_t$} $ + $ dinamica(k-1, Q - $tuple_{weight}$, ntuples) $ ] $ \\
     $[$Agrego valor a mem$]$ &   $mem[k][Q] = $ \textit{$V_t$} \\
     & return \textit{$V_t$}
-    
+
 \end{tabular}
+
+Analizar la complejidad teórica de este algoritmo requiere interpretar cuantos llamados recursivos realiza, y cuántas ramas el algoritmo abre. Analizemos la revisión de si un elemento esta en memoria ( $mem[k][Q] \neq null$ ), en un principio mem esta vacio,  así que nunca se ejecuta, sin embargo cada llamado que se resuelve setea su valor parcial \textit{$V_t$} en mem.
+
+Eso quiere decir los consecutivos llamados que quieran resolver dicho subproblema siempre encontraran el valor $mem[k][Q]$ en la revisión de memoria y lo devolveran, (sin hacer ningun llamado recursivo más). El peor caso es entonces, no tener ningún W repetido para un K, es decir que se tengan que agregar todos los valores posibles en $mem$.
+
+Eso significa que el \textbf{if} $mem[k][Q] \neq null$ \textbf{then;} return $mem[K][Q]$ no se ejecutara en por lo menos (N * W) ocaciones, (las dimensiones de la matriz) dado que siempre al final de un llamado se agregara a la memoria, eso quiere decir que la complejidad de la función recursiva definida al principio $O(n*2^n)$ (el paso de backtracking) esta completamente acotada por la condición superior. \\
+
+\small $O(N * W)$ \textbf{ tiempo de computo} \\
+\small $O(N * W)$ \textbf{ Storage requerido} (debido a que tenemos que generar la matriz) \\
 
 
 
