@@ -158,14 +158,57 @@ Para cada algoritmo planteado entonces se buscará resolver las siguientes pregu
 ¿Cuál es la complejidad teórica en el peor caso, y en el promedio?  \\
 ¿Cuál es su impacto en la memoria?  \\
 
+\clearpage
+
 \maketitle
 \section{algoritmos de resolución de Knapsack} 
 
 A continuación se presentaran las siguientes resoluciones del problema. Y posteriormente analizaremos su complejidad, 
 
-\subsubsection{Algoritmo de fuerza bruta}
+\subsubsection{\textbf{KP, Algoritmo de fuerza bruta}}
 
-Próximamente en latex sabita:
+Como primera aproximación podemos establecer que es un problema combinatorio, dado un conjunto de tuplas (items), 
+el máximo valor que cumple la condición de no exceder el peso máximo de W, existe entre uno (o varios) de los 
+subconjuntos posibles que conforman el conjunto original. \\
+
+Debido a que es combinatorio, el número total de subconjuntos posibles, es totalmente dependiente de la 
+cantidad de n-tuplas que posea el problema, y la cantidad de combinaciones corresponde por definición algebraica a $2^n$  \\
+
+Entonces podemos realizar un algoritmo iterativo que recorra sobre todos los subconjuntos posibles, comparando cada $\sum \{ y_i : i \in  \quad (y_1, y_2 \dots y_n)\}$ de cada subconjunto y quedandose con el mejor.
+
+\textbf{Dado:}
+
+\begin{tabular}{l l}
+    \textit{c} & = index del conjunto a ser procesado \\
+    \textit{mod} & = El último conjunto comprendido como $2^n$ \\
+    \textit{$s_{value}$} & = la suma de los N-values del conjunto \\
+    \textit{$s_{weight}$} & = la suma de los N-pesos del conjunto \\
+    \textit{temp} & = El mejor encontrado hasta el momento (inicializa en 0) \\
+\end{tabular}
+
+
+El algoritmo es iterativo y debe ser invocado con el peso máx W  y una lista \\ de N-tuplas (peso, valor)
+
+\begin{enumerate}
+	\item \textbf{Mientras} $(c < mod)$
+	
+	\item   \begin{enumerate}
+	             \item \textbf{if} \quad \textit{$s_{weight}$} $\le  W \land$ \textit{$s_{value}$}  > \textit{temp}  \quad \textbf{then; } \textit{temp} $ = s_{value} $
+	             \item $c = c + 1$
+	        \end{enumerate}
+	        
+    \item \textbf{return} \textit{temp}
+\end{enumerate} 
+
+
+
+Por cada iteración de \textit{c}, el algoritmo produce las sumas de \textit{$s_{value}$} y \textit{$s_{weight}$} del conjunto. Esto se realiza usando la representación binaria del indice c, dado que cada elemento tiene 2 posibilidades en un conjunto, estar o no estar. \\
+
+Dicha complejidad de calcular una suma se la toma como $O(n)$, ya que hay que revisar n elementos si se encuentra o no en el conjunto y sumarlos, dado que el iterador $c \in (0,2^n]$ esta suma se calcula un total de O($2^n$) veces.
+
+\small O($n * 2^n$) \textbf{ tiempo de computo}  \\ 
+\small O ($n_{tuples}$) \textbf{ storage requerido} \\
+
 
 
 
