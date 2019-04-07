@@ -1,8 +1,11 @@
 *.o
 *.algo
+*.algografico
 *.aux
 *.log
 .vscode
 .gdb_history
+fotos/*.fact.png
+fotos/*.opt.png
 mochila.pdf
 mochila.synctex.gz

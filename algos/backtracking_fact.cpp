@@ -1,6 +1,11 @@
 #include <cstdint>
 #include <algorithm>
 
+#ifdef REPORTAR
+#include <iostream>
+#include <vector>
+#endif
+
 const char* algo = __FILE__;
 
 struct problema {
@@ -20,6 +25,30 @@ struct solucion {
 uint64_t backtracking(struct problema p, struct solucion s) {
 	uint64_t nuevo_peso = s.peso_actual + p.pesos[s.i];
 	uint64_t nuevo_valor = s.valor_actual + p.valores[s.i];
+
+#ifdef REPORTAR
+	static std::vector<std::string> padres(p.n);
+	std::string node;
+	node += std::to_string(s.i);
+	node += "\\npa=";
+	node += std::to_string(s.peso_actual);
+	node += "\\npr=";
+	node += std::to_string(s.peso_restante);
+	node += "\\nva=";
+	node += std::to_string(s.valor_actual);
+
+	if (s.i < p.n)
+		padres[s.i] = '"' + node + '"';
+
+	if (s.i == 0)
+		std::cout << padres[s.i] << std::endl;
+
+	if (s.peso_actual + s.peso_restante <= p.w
+	    || nuevo_peso > p.w
+	    || s.i != 0)
+		std::cout << padres[s.i - 1] << " -> " << padres[s.i]
+		          << std::endl;
+#endif
 
 	if (s.peso_actual + s.peso_restante <= p.w) {
 		for(int i = s.i; i < p.n; i++)

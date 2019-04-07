@@ -1,6 +1,11 @@
 #include <cstdint>
 #include <algorithm>
 
+#ifdef REPORTAR
+#include <iostream>
+#include <vector>
+#endif
+
 const char* algo = __FILE__;
 
 struct problema {
@@ -19,9 +24,33 @@ struct solucion {
 };
 
 uint64_t backtracking(struct problema p, struct solucion s) {
+#ifdef REPORTAR
+	static std::vector<std::string> padres(p.n);
+	std::string node;
+	node += std::to_string(s.i);
+	node += "\\nva=";
+	node += std::to_string(s.valor_actual);
+	node += "\\nvr=";
+	node += std::to_string(s.valor_restante);
+	node += "\\nmv=";
+	node += std::to_string(s.mejor_valor);
+	node += "\\npa=";
+	node += std::to_string(s.peso_actual);
+
+	if (s.i != UINT32_MAX)
+		padres[s.i] = '"' + node + '"';
+
+	if (s.i + 1 == p.n)
+		std::cout << padres[s.i] << std::endl;
+
+	if (s.i != UINT32_MAX && s.i + 1 != p.n)
+		std::cout << padres[s.i + 1] << " -> " << padres[s.i]
+		          << std::endl;
+#endif
 	/* Si llegué al final entonces retorno */
 	if (s.i == UINT32_MAX)
 		return s.mejor_valor;
+
 
 	uint64_t nuevo_peso = s.peso_actual + p.pesos[s.i];
 	uint64_t nuevo_valor = s.valor_actual + p.valores[s.i];
