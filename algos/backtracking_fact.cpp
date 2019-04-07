@@ -1,5 +1,4 @@
 #include <cstdint>
-#include <utility>
 #include <algorithm>
 
 const char* algo = __FILE__;
@@ -32,6 +31,7 @@ uint64_t backtracking(struct problema p, struct solucion s) {
 	if (nuevo_peso > p.w)
 		return s.valor_actual;
 
+	/* FIXME: Esto no funciona si hay cosas con peso cero */
 	if (nuevo_peso == p.w) {
 		s.peso_restante -= p.pesos[s.i];
 		s.i++;
