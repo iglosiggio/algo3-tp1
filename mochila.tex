@@ -73,6 +73,8 @@
 \usepackage{mathdots}
 \usepackage{enumerate}
 
+\usepackage[linguistics]{forest}
+
 \overfullrule=2em
 
 %%% END Article customizations
@@ -207,14 +209,45 @@ Dicha complejidad de calcular una suma se la toma como $O(n)$, ya que hay que re
 \small O($n * 2^n$) \textbf{ tiempo de computo}  \\ 
 \small O ($n_{tuples}$) \textbf{ storage requerido} \\
 
+\subsubsection{\textbf{KP, Algoritmo de Backtracking}}
+
+\subsubsection{\textbf{KP, Algoritmo de Meet in Middle}}
+
+\clearpage
 
 
+\subsubsection{\textbf{KP, Algoritmo de Programación dinámica}}
 
+El algoritmo de programación dinámica hace uso de técnicas exploratorias, al igual que en backtracking la idea es partir de un elemento, en este caso empezaremos del último, y realizar sucesivos llamados recursivos considerando en cada elemento, las 2 opciones, agregarlo y no agregarlo, pero con una salvedad, ya que los valores de las ramas, serán almacenados en memoria, para ser considerados más adelante. \\
 
+Veamoslos por partes, la esencia del algoritmo será top-down (arrancamos con la premisa de la solución, y seccionamos en subconjuntos del problema más chicos), consideremos las siguientes variables que se usaran en el llamado recursivo:
 
+\begin{tabular}{l l}
+    \textit{Q} & = Peso restante, de la rama, vive $ \in 0 \leq \textit{Q} \leq W $  \\
+    \textit{$V_t$} & = Valor total de la rama, el cual siempre será positivo o cero  \\
+    \textit{$n-tuple_{weight}$} & = peso de la e-nesima tupla  \\
+    \textit{$n-tuple_{value}$} & = valor de la e-nesima tupla  \\
+    
+\end{tabular}
 
+las restricciones vienen dadas por el problema, ningun conjunto puede exceder el peso restante, ya que será considerado invalido, el algoritmo empieza por la enesima tupla, con los valores por defecto $Q = W$ y $V_t = 0$, tenemos para cada tupla que iteremos 2 opciones:
 
+\begin{forest}
+  [\textbf{Start} \\ $Q \leftarrow W $ \\  $V_t \leftarrow 0 $
+    [Agrego  $(n)-tuple$ \\ $ Q \leftarrow (Q - $ \textit{$tuple_{weight}$})  \\  \textit{$V_t$} $\leftarrow$ (\textit{$V_t$} + \textit{$tuple_{value}$)}
+     [Agrego $(n-1)-tuple$]
+     [No agrego \\$(n-1)-tuple$]
+    ]
+    [No agrego $(n)-tuple$ \\  Q y \textit{$V_t$} \\ mantienen el valor
+     [Agrego $(n-1)-tuple$]
+     [No agrego \\$(n-1)-tuple$]
+    ]
+  ]
+\end{forest}
 
+Este método explorara todos los casos y llegará sin duda al conjunto que maximiza \textit{$V_t$}, sin embargo su complejidad no será mejor que $O(n * 2^n)$ ya que recorremos todos los conjuntos, como vimos en ejemplos anteriores.
+
+Aquí es donde entra el uso de memoria,
 
 
 
