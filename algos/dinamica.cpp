@@ -1,7 +1,5 @@
 #include <cstdint>
 #include <vector>
-#include <utility>
-#include <algorithm>
 
 const char* algo = __FILE__;
 
