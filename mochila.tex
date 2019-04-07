@@ -325,6 +325,37 @@ Eso significa que el \textbf{if} $mem[k][Q] \neq null$ \textbf{then;} return $me
 \small $O(N * W)$ \textbf{ tiempo de computo} \\
 \small $O(N * W)$ \textbf{ Storage requerido} (debido a que tenemos que generar la matriz) \\
 
+\subsection{Experimentación}
+
+Cada test se repite 50 veces. Se usa el promedio y se calcula la desviación
+estándar.
+
+\begin{enumerate}[A.]
+\item $(n \in [15; 24];
+	W=\frac{\sum p_i}{2};
+	0 \leq p_i, v_i \leq 100)$
+
+\begin{itemize}
+\item Corremos todos los algoritmos.
+\item Queremos las cotas de complejidad.
+\end{itemize}
+
+\item $(n \in [25; 70; \text{ de a } 5];
+	W \in [2; \sum p_i; \text{ de a } 100];
+	0 \leq p_1, v_i \leq 100)$
+
+\begin{itemize}
+\item No corremos fuerza bruta.
+\item Queremos anlizar los casos favorables y desfavorables de backtracking.
+\item No corremos \emph{meet-in-the-middle} para $n \geq 55$
+\end{itemize}
+
+\item $(n = W \in [100; 1000];
+        0 < p_i < \frac{W}{2};
+        1 \leq v_i \leq 5000)$
+
+Corremos dinámica para analizar la cota de complejida y comparar.
+\end{enumerate}
 
 
 \end{document}
