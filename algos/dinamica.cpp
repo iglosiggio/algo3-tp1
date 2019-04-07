@@ -2,49 +2,40 @@
 #include <vector>
 #include <utility>
 #include <algorithm>
-#include <iostream>
-
 
 const char* algo = __FILE__;
 
-using Matriz = std::vector<std::vector<int32_t> >;
+using Fila = std::vector<uint64_t>;
+using Matriz = std::vector<Fila>;
 
-Matriz memoria;
-std::vector<int32_t> lista;
+#define VACIO UINT64_MAX
 
-uint32_t dynamic_value_maximizer(uint32_t i, uint32_t peso_restante, uint32_t* p, uint32_t* v){
+uint64_t dinamica(uint32_t i, uint32_t restante, uint32_t* pesos,
+                  uint32_t* valores, Matriz& dp) {
 
-	if( i == 0 || peso_restante <= 0){
+	if (i == UINT32_MAX)
 		return 0;
-	}
 
-	if(memoria[i-1][peso_restante] != -1) {
-		return memoria[i-1][peso_restante];
-	}
+	uint64_t& celda = dp[i][restante];
 
-	uint32_t result = 0;
+	if (celda != VACIO)
+		return celda;
 
+	celda = dinamica(i - 1, restante, pesos, valores, dp);
 
-	if (p[i-1] > peso_restante) {
-		result = dynamic_value_maximizer(i-1, peso_restante, p, v);
-	} else {
-		result = std::max(dynamic_value_maximizer(i-1, peso_restante, p, v), 
-					v[i-1] + dynamic_value_maximizer(i-1, peso_restante - p[i-1], p, v));
-	}
-	memoria[i-1][peso_restante] = result;
+	if (pesos[i] <= restante)
+		celda = std::max(
+			celda,
+			dinamica(i - 1, restante - pesos[i], pesos, valores, dp)
+			+ valores[i]
+		);
 
-	return result;
+	return celda;
 }
 
 
 uint64_t mochila(uint32_t n, uint32_t w, uint32_t* pesos, uint32_t* valores) {
-	/* defino una matriz de memorizacion  */
+	Matriz dp(n, Fila(w, VACIO));
 
-	lista.resize(w, -1);
-	memoria.resize(n, lista);
-
-	uint32_t result =  dynamic_value_maximizer(n,w-1,pesos,valores);
-
-	return result;
-
+	return dinamica(n - 1, w - 1, pesos, valores, dp);
 }
