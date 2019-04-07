@@ -58,7 +58,7 @@ uint64_t mochila(uint32_t n, uint32_t w, uint32_t* pesos, uint32_t* valores) {
 	/* Ordenamos en n^2 */
 	for (int i = 0; i < n; i++)
 		for (int j = i; j < n; j++)
-			if(valores[i] < valores[j]) {
+			if(valores[i] > valores[j]) {
 				std::swap(pesos[i], pesos[j]);
 				std::swap(valores[i], valores[j]);
 			}
