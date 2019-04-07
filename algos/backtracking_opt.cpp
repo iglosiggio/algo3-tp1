@@ -77,10 +77,9 @@ uint64_t backtracking(struct problema p, struct solucion s) {
 	};
 
 	if (nuevo_peso <= p.w)
-		sin_i.mejor_valor = std::max(s.mejor_valor,
-		                             backtracking(p, con_i));
+		sin_i.mejor_valor = backtracking(p, con_i);
 
-	return std::max(sin_i.mejor_valor, backtracking(p, sin_i));
+	return backtracking(p, sin_i);
 }
 
 uint64_t mochila(uint32_t n, uint32_t w, uint32_t* pesos, uint32_t* valores) {
