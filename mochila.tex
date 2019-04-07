@@ -92,8 +92,7 @@
 \maketitle
 \section{Presentación de Knapsack Problem}
 
-\subsubsection{
-\textit{"El problema de la mochila (KP), consiste en asignar un conjunto de items con un peso y valor asociado a una mochila limitada por el peso que puede tolerar, buscando maximizar el valor de la misma."} }
+\subsubsection{\textit{``El problema de la mochila (KP), consiste en asignar un conjunto de items con un peso y valor asociado a una mochila limitada por el peso que puede tolerar, buscando maximizar el valor de la misma.''}}
 
 
 \textbf{Formulacion del problema:}
@@ -204,10 +203,10 @@ El algoritmo es iterativo y debe ser invocado con el peso máx W  y una lista \\
 
 Por cada iteración de \textit{c}, el algoritmo produce las sumas de \textit{$s_{value}$} y \textit{$s_{weight}$} del conjunto. Esto se realiza usando la representación binaria del indice c, dado que cada elemento tiene 2 posibilidades en un conjunto, estar o no estar. \\
 
-Dicha complejidad de calcular una suma se la toma como $O(n)$, ya que hay que revisar n elementos si se encuentra o no en el conjunto y sumarlos, dado que el iterador $c \in (0,2^n]$ esta suma se calcula un total de O($2^n$) veces.
+Dicha complejidad de calcular una suma se la toma como $O(n)$, ya que hay que revisar n elementos si se encuentra o no en el conjunto y sumarlos, dado que el iterador $c \in [1,2^n]$ esta suma se calcula un total de O($2^n$) veces.
 
-\small O($n * 2^n$) \textbf{ tiempo de computo}  \\
-\small O ($n_{tuples}$) \textbf{ storage requerido} \\
+\small O($n * 2^n$) \textbf{tiempo de computo}  \\
+\small O ($n_{tuples}$) \textbf{storage requerido} \\
 
 \subsubsection{\textbf{KP, Algoritmo de Backtracking}}
 
@@ -234,7 +233,7 @@ recursiva, y luego como segundo paso incorporaremos la memorización de resultad
 Para el primer paso necesitamos un algoritmo recursivo, no nos interesa buscar cotas ni intentar tener podas eficientes,
 es suficiente con un algoritmo recursivo sencillo,  \\
 
-Tomaremos el último elemento la enésima tupla y armaremos 2 ramas, considerarla y no considerarla. en cada rama restamos
+Tomaremos el último elemento la enésima tupla y armaremos 2 ramas, considerarla y no considerarla: en cada rama restamos
 en uno un indice k, para que la siguiente decisión se tome sobre la (n-k)tupla, consideramos nuevamente ambas ramas y
 así sucesivamente hasta la tupla cero.\\
 
@@ -274,7 +273,7 @@ con N filas y W columnas.
 La razón es que definiremos como paso intermedio a la suma parcial de cada rama, dado que la matriz esta definida en
 función de W, notar que los conjuntos que exceden W no pueden ser almacenados, (de ahí deriva el uso de $Q \leq 0$). \\
 
-Revisemoslo desde un ejemplo de algebra primero, que se puede notar de forma más intuitiva. asumamos que tenemos
+Revisemoslo desde un ejemplo de algebra primero, que se puede notar de forma más intuitiva. Asumamos que tenemos
 5 enteros, $(x1,x2,x3,x4,x5)$ y queremos calcular los conjuntos:
 
 \begin{itemize}
@@ -322,8 +321,8 @@ Eso quiere decir los consecutivos llamados que quieran resolver dicho subproblem
 
 Eso significa que el \textbf{if} $mem[k][Q] \neq null$ \textbf{then;} return $mem[K][Q]$ no se ejecutara en por lo menos (N * W) ocaciones, (las dimensiones de la matriz) dado que siempre al final de un llamado se agregara a la memoria, eso quiere decir que la complejidad de la función recursiva definida al principio $O(n*2^n)$ (el paso de backtracking) esta completamente acotada por la condición superior. \\
 
-\small $O(N * W)$ \textbf{ tiempo de computo} \\
-\small $O(N * W)$ \textbf{ Storage requerido} (debido a que tenemos que generar la matriz) \\
+\small $O(N * W)$ \textbf{tiempo de cómputo} \\
+\small $O(N * W)$ \textbf{Storage requerido} (debido a que tenemos que generar la matriz) \\
 
 \subsection{Experimentación}
 
