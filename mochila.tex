@@ -218,11 +218,25 @@ Dicha complejidad de calcular una suma se la toma como $O(n)$, ya que hay que re
 
 \subsubsection{\textbf{KP, Algoritmo de Programación dinámica}}
 
-El algoritmo de programación dinámica hace uso de técnicas exploratorias, al igual que en backtracking la idea es partir de un elemento, en este caso empezaremos del último, y realizar sucesivos llamados recursivos considerando en cada elemento, las 2 opciones, agregarlo y no agregarlo, pero con una salvedad, ya que los valores de las ramas, serán almacenados en memoria, para ser considerados más adelante. \\
+El algoritmo de programación dinámica hace uso de técnicas exploratorias, al igual que en backtracking la idea es 
+partir de un elemento, en este caso empezaremos del último, y realizar sucesivos llamados recursivos considerando 
+en cada elemento, las 2 opciones, agregarlo y no agregarlo, pero con una salvedad, ya que los valores de las ramas, 
+serán almacenados en memoria, para ser considerados más adelante. \\
 
-Veamoslos por partes, la esencia del algoritmo será top-down (arrancamos con la premisa de la solución, y seccionamos en subconjuntos del problema más chicos), consideremos las siguientes variables que se usaran en el llamado recursivo:
+Veamoslos por partes, la esencia del algoritmo será top-down (arrancamos con la premisa de la solución, y seccionamos 
+en subconjuntos del problema más chicos), y consta de 2 pasos, primero diseñaremos la implementación de una solución 
+recursiva, y luego como segundo paso incorporaremos la memorización de resultados intermedios.  \\
 
+Para el primer paso necesitamos un algoritmo recursivo, no nos interesa buscar cotas ni intentar tener podas eficientes,
+es suficiente con un algoritmo recursivo sencillo,  \\
+
+Tomaremos el último elemento la enésima tupla y armaremos 2 ramas, considerarla y no considerarla. en cada rama restamos 
+en uno un indice k, para que la siguiente decisión se tome sobre la (n-k)tupla, consideramos nuevamente ambas ramas y 
+así sucesivamente hasta la tupla cero.\\
+
+Consideramos.\\
 \begin{tabular}{l l}
+    \textit{$k$} & = indice de la enésima tupla  \\
     \textit{Q} & = Peso restante, de la rama, vive $ \in 0 \leq \textit{Q} \leq W $  \\
     \textit{$V_t$} & = Valor total de la rama, el cual siempre será positivo o cero  \\
     \textit{$n-tuple_{weight}$} & = peso de la e-nesima tupla  \\
@@ -230,7 +244,8 @@ Veamoslos por partes, la esencia del algoritmo será top-down (arrancamos con la
     
 \end{tabular}
 
-las restricciones vienen dadas por el problema, ningun conjunto puede exceder el peso restante, ya que será considerado invalido, el algoritmo empieza por la enesima tupla, con los valores por defecto $Q = W$ y $V_t = 0$, tenemos para cada tupla que iteremos 2 opciones:
+las restricciones vienen dadas por el problema, ningun conjunto puede exceder el peso restante, ya que será considerado 
+invalido, el algoritmo empieza por la enesima tupla, con los valores por defecto $Q = W$ y $V_t = 0$. \\
 
 \begin{forest}
   [\textbf{Start} \\ $Q \leftarrow W $ \\  $V_t \leftarrow 0 $
@@ -245,10 +260,57 @@ las restricciones vienen dadas por el problema, ningun conjunto puede exceder el
   ]
 \end{forest}
 
-Este método explorara todos los casos y llegará sin duda al conjunto que maximiza \textit{$V_t$}, sin embargo su complejidad no será mejor que $O(n * 2^n)$ ya que recorremos todos los conjuntos, como vimos en ejemplos anteriores.
+Este método explorara todos los casos y llegará sin duda al conjunto que maximiza \textit{$V_t$}, sin embargo su complejidad 
+no será mejor que $O(n * 2^n)$ ya que recorremos todos los conjuntos, como vimos en ejemplos anteriores, se reitera, 
+no tiene podas, considera todos las ramas posibles.\\
 
-Aquí es donde entra el uso de memoria,
+Aqui es donde entra el paso 2, el uso de memoria, a partir de ahora vamos a definir una tabla de valores (matriz), 
+con N filas y W columnas.
 
+La razón es que definiremos como paso intermedio a la suma parcial de cada rama, dado que la matriz esta definida en 
+función de W, notar que los conjuntos que exceden W no pueden ser almacenados, (de ahí deriva el uso de $Q \leq 0$). \\
+
+Revisemoslo desde un ejemplo de algebra primero, que se puede notar de forma más intuitiva. asumamos que tenemos 
+5 enteros, $(x1,x2,x3,x4,x5)$ y queremos calcular los conjuntos:
+
+\begin{itemize}
+\item$(x1,x2,x4)$
+\item$ (x1,x2,x3,x4,x5)$
+\end{itemize}
+podemos notar que el subconjunto tomar (x1,x2) se encuentra repetido en los 2 conjuntos
+
+La idea, es que entonces una ves calculado (x1,x2) lo guardamos en memoria para no tener que calcularlo de nuevo, 
+luego dicho subconjunto lo usamos para calcular ambos.
+
+En general por combinatoria existen $2^3$ conjuntos que utilizan el subconjunto (x1,x2).
+
+En Knapsack podemos realizar un abuso similar, sin embargo dado que nos interesan chequear todas las ramas estamos 
+obligados a que cada ves que consideremos o no un valor, alamcenar su resultado parcial.
+
+Entonces tener una tabla de valores o matriz, no es más que solo un criterio que estamos optando de como almacenar 
+la información parcial, con un par de diferencias, se separa por $n$ filas y $w$ columnas y lo que almacena 
+son valores parciales de la rama \textit{$V_t$}
+
+y lo que haremos será que en cada llamado recursivo, la posición de la tabla quede fijada por los valores $k$ 
+(iterador de n) y el peso restante Q que vive entre 0 y W-1, (las dimensiones de la matriz)
+
+Entonces aqui hay una salvedad, puede pasar que fijada una iteración k, llegue por 2 ramas diferentes al mismo Q, 
+en dichos casos deberá almacenarse un solo \textit{$V_t$}, el mejor. El algoritmo es el siguiente: \\
+
+Inicialización: \quad \textit{$mem$} \quad = lista[N][W] (valores por defecto \textbf{null}) \\
+
+\textit{function \quad dinamica}(k, Q, ntuples) 
+
+
+\begin{tabular}{l l}
+    $[$caso Base:$]$ & \textbf{if}  $i  <  0$ o  $Q  <  0$ \textbf{then;} return 0   \\
+    $[$reviso si esta en mem$]$ & \textbf{if}  $mem[k][Q] \neq null$  \textbf{then;} return 0 $mem[k][Q]$ \\
+    $[$backtracking$]$ & \textit{$V_t$} = $ max \in  [ $  dinamica(k-1, Q, ntuples)  \\
+    & \hspace{30pt} \textit{$V_t$} $ + $ dinamica(k-1, Q - $tuple_{weight}$, ntuples) $ ] $ \\
+    $[$Agrego valor a mem$]$ &   $mem[k][Q] = $ \textit{$V_t$} \\
+    & return \textit{$V_t$}
+    
+\end{tabular}
 
 
 
