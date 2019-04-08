@@ -220,6 +220,16 @@ Dicha complejidad de calcular una suma se la toma como $O(n)$, ya que hay que re
 \begin{algorithm}
 \caption{Backtracking con poda por optimalidad}
 \begin{algorithmic}[1]
+\item[\textbf{Inicialización:}]
+\item[] \begin{itemize}
+	\item[] $p_{items}$ ordenados de menor a mayor según su valor
+	\item[] $p_{peso}$ peso máximo de la mochila
+	\item[] $s_i = \#p_{items} - 1$
+	\item[] $s_{valor} = 0$
+	\item[] $s_{mejor} = 0$
+	\item[] $s_{restante} = \sum_{i = 0}^{\#p_{items} - 1} p_{items}[i]_{valor}$
+\end{itemize}
+\Statex
 \Function{Knapsack-Optimalidad}{$p, s$}
 \Comment Retorna la mejor mochila o $s_{mejor}$
 \If{$s_i = -1$}
@@ -228,20 +238,20 @@ Dicha complejidad de calcular una suma se la toma como $O(n)$, ya que hay que re
 \EndIf
 \If{$s_{valor} + s_{restante} \leq s_{mejor}$}
 	\State \Return $s_{mejor}$
-	\Comment Retorno si no puedo mejorar
+	\Comment No puedo mejorar
 \EndIf
 \If{$s_{peso} + p_{items}[s_i]_{peso} \leq p_{peso}$}
-	\State $\textit{s-tomando} \is \Call{Siguiente-Tomando}{p, s}$
+	\State $\textit{s-tomando} \is \Call{Mochila-Tomando}{p, s}$
 	\State $s_{mejor} \is \Call{Knapsack-Optimalidad}{p, \textit{s-tomando}}$
 	\Comment $s_i \in mochila$
 \EndIf
-\State $\textit{s-sin-tomar} \is \Call{Siguiente-Sin-Tomar}{p, s}$
+\State $\textit{s-sin-tomar} \is \Call{Mochila-Sin-Tomar}{p, s}$
 \State \Return $\Call{Knapsack-Optimalidad}{p, \textit{s-sin-tomar}}$
 \Comment $s_i \not\in mochila$
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
-\clearpage
+\newpage
 
 \subsubsection{\textbf{KP, Algoritmo de Meet in Middle}}
 
