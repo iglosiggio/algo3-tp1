@@ -3,6 +3,7 @@
 *.algografico
 *.aux
 *.log
+*.toc
 .vscode
 .gdb_history
 fotos/*.fact.png
