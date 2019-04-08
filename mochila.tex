@@ -215,6 +215,48 @@ Dicha complejidad de calcular una suma se la toma como $O(n)$, ya que hay que re
 \small O ($n_{tuples}$) \textbf{storage requerido} \\
 
 \subsubsection{Backtracking - Poda por factibilidad}
+\textbf{Nota:} Podemos cortar cuando el nuevo peso sería mayor a $p_{peso}$ por
+el orden que le dimos a $p_{items}$
+
+\begin{algorithm}
+\caption{Backtracking con poda por factibilidad}
+\begin{algorithmic}[1]
+\item[\textbf{Inicialización:}]
+\item[] \begin{itemize}
+	\item[] $p_{items}$ ordenados de menor a mayor según su peso
+	\item[] $p_{peso}$ peso máximo de la mochila
+	\item[] $s_i = 0$
+	\item[] $s_{valor} = 0$
+	\item[] $s_{peso} = 0$
+	\item[] $s_{restante} = \sum_{i = 0}^{\#p_{items} - 1} p_{items}[i]_{peso}$
+\end{itemize}
+\Statex
+\Function{Knapsack-Factibilidad}{$p, s$}
+\If{$s_i = \#p_{items}$}
+	\State \Return $s_{valor}$
+	\Comment Caso base
+\EndIf
+\If{$s_{peso} + s_{restante} \leq p_{peso}$}
+	\State \Return $s_{valor} + \sum_{i=s_i}^{\#p_{items} - 1} p_{items}[i]_{valor}$
+	\Comment Agrego todo a la mochila
+\EndIf
+\If{$s_{peso} + p_{items}[i]_{peso} > p_{peso} $}
+	\State \Return $s_{valor}$
+	\Comment No puedo sumar nada
+\EndIf
+
+\State $\textit{s-tomando} \is \Call{Mochila-Tomando}{p, s}$
+\State $\textit{valor-tomando} \is \Call{Knapsack-Optimalidad}{p, \textit{s-tomando}}$
+\Comment $s_i \in mochila$
+\State $\textit{s-sin-tomar} \is \Call{Mochila-Sin-Tomar}{p, s}$
+\State $\textit{valor-sin-tomar} \is \Call{Knapsack-Optimalidad}{p, \textit{s-sin-tomar}}$
+\Comment $s_i \not\in mochila$
+\State \Return $\Call{max}{\textit{valor-tomando}, \textit{valor-sin-tomar}}$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+\newpage
+
 \subsubsection{Backtracking - Poda por optimalidad}
 
 \begin{algorithm}
