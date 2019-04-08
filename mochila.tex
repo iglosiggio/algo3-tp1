@@ -220,40 +220,23 @@ Dicha complejidad de calcular una suma se la toma como $O(n)$, ya que hay que re
 \caption{Backtracking con poda por optimalidad}
 \begin{algorithmic}[1]
 \Function{Knapsack-Optimalidad}{$p, s$}
+\Comment Retorna la mejor mochila o $s_{mejor}$
 \If{$s_i = -1$}
 	\State \Return $s_{mejor}$
 	\Comment Caso base
 \EndIf
 \If{$s_{valor} + s_{restante} \leq s_{mejor}$}
 	\State \Return $s_{mejor}$
+	\Comment Retorno si no puedo mejorar
 \EndIf
 \If{$s_{peso} + p_{items}[s_i]_{peso} \leq p_{peso}$}
 	\State $\textit{s-tomando} \is \Call{Siguiente-Tomando}{p, s}$
 	\State $s_{mejor} \is \Call{Knapsack-Optimalidad}{p, \textit{s-tomando}}$
+	\Comment $s_i \in mochila$
 \EndIf
 \State $\textit{s-sin-tomar} \is \Call{Siguiente-Sin-Tomar}{p, s}$
 \State \Return $\Call{Knapsack-Optimalidad}{p, \textit{s-sin-tomar}}$
-
-\EndFunction
-\end{algorithmic}
-\begin{algorithmic}[1]
-\Function{Siguiente-Tomando}{$p, s$}
-\State $r_i \is s_i - 1$
-\State $r_{valor} \is s_{valor} + p_{items}[s_i]_{valor}$
-\State $r_{restante} \is s_{restante} - p_{valores}[s_i]$
-\State $r_{mejor} \is \Call{max}{s_{mejor}, r_{mejor}}$
-\State $r_{peso} \is s_{peso} + p_{items}[s_i]_{peso}$
-\State \Return $r$
-\EndFunction
-\end{algorithmic}
-\begin{algorithmic}[1]
-\Function{Siguiente-Sin-Tomar}{$p, s$}
-\State $r_i \is s_i - 1$
-\State $r_{valor} \is s_{valor}$
-\State $r_{restante} \is s_{restante} - p_{valores}[s_i]$
-\State $r_{mejor} \is s_{mejor}$
-\State $r_{peso} \is s_{peso}$
-\State \Return $r$
+\Comment $s_i \not\in mochila$
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
