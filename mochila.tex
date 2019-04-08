@@ -71,10 +71,12 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{mathdots}
+\usepackage{mathtools}
 \usepackage{enumerate}
 
 \usepackage{algpseudocode,algorithm,algorithmicx}
 \algrenewcommand\alglinenumber[1]{{\sf\footnotesize\texttt{#1}}}
+\def\is{\coloneqq}
 
 \usepackage[linguistics]{forest}
 
@@ -165,9 +167,9 @@ Para cada algoritmo planteado entonces se buscará resolver las siguientes pregu
 \clearpage
 
 \maketitle
-\section{algoritmos de resolución de Knapsack}
+\section{Algoritmos explorados}
 
-\subsubsection{\textbf{KP, Algoritmo de fuerza bruta}}
+\subsubsection{Fuerza bruta}
 
 Como primera aproximación podemos establecer que es un problema combinatorio, dado un conjunto de tuplas (items),
 el máximo valor que cumple la condición de no exceder el peso máximo de W, existe entre uno (o varios) de los
@@ -211,8 +213,50 @@ Dicha complejidad de calcular una suma se la toma como $O(n)$, ya que hay que re
 \small O($n * 2^n$) \textbf{tiempo de computo}  \\
 \small O ($n_{tuples}$) \textbf{storage requerido} \\
 
-\subsubsection{\textbf{KP, Algoritmo de Backtracking}}
+\subsubsection{Backtracking - Poda por factibilidad}
+\subsubsection{Backtracking - Poda por optimalidad}
 
+\begin{algorithm}
+\caption{Backtracking con poda por optimalidad}
+\begin{algorithmic}[1]
+\Function{Knapsack-Optimalidad}{$p, s$}
+\If{$s_i = -1$}
+	\State \Return $s_{mejor}$
+	\Comment Caso base
+\EndIf
+\If{$s_{valor} + s_{restante} \leq s_{mejor}$}
+	\State \Return $s_{mejor}$
+\EndIf
+\If{$s_{peso} + p_{items}[s_i]_{peso} \leq p_{peso}$}
+	\State $\textit{s-tomando} \is \Call{Siguiente-Tomando}{p, s}$
+	\State $s_{mejor} \is \Call{Knapsack-Optimalidad}{p, \textit{s-tomando}}$
+\EndIf
+\State $\textit{s-sin-tomar} \is \Call{Siguiente-Sin-Tomar}{p, s}$
+\State \Return $\Call{Knapsack-Optimalidad}{p, \textit{s-sin-tomar}}$
+
+\EndFunction
+\end{algorithmic}
+\begin{algorithmic}[1]
+\Function{Siguiente-Tomando}{$p, s$}
+\State $r_i \is s_i - 1$
+\State $r_{valor} \is s_{valor} + p_{items}[s_i]_{valor}$
+\State $r_{restante} \is s_{restante} - p_{valores}[s_i]$
+\State $r_{mejor} \is \Call{max}{s_{mejor}, r_{mejor}}$
+\State $r_{peso} \is s_{peso} + p_{items}[s_i]_{peso}$
+\State \Return $r$
+\EndFunction
+\end{algorithmic}
+\begin{algorithmic}[1]
+\Function{Siguiente-Sin-Tomar}{$p, s$}
+\State $r_i \is s_i - 1$
+\State $r_{valor} \is s_{valor}$
+\State $r_{restante} \is s_{restante} - p_{valores}[s_i]$
+\State $r_{mejor} \is s_{mejor}$
+\State $r_{peso} \is s_{peso}$
+\State \Return $r$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
 \clearpage
 
 \subsubsection{\textbf{KP, Algoritmo de Meet in Middle}}
