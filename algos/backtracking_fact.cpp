@@ -23,9 +23,6 @@ struct solucion {
 };
 
 uint64_t backtracking(struct problema p, struct solucion s) {
-	uint64_t nuevo_peso = s.peso_actual + p.pesos[s.i];
-	uint64_t nuevo_valor = s.valor_actual + p.valores[s.i];
-
 #ifdef REPORTAR
 	static std::vector<std::string> padres(p.n);
 	std::string node;
@@ -47,7 +44,14 @@ uint64_t backtracking(struct problema p, struct solucion s) {
 		std::cout << padres[s.i - 1] << " -> " << padres[s.i]
 		          << std::endl;
 #endif
+	/* Si llegué al final entonces retorno */
+	if (s.i == p.n)
+		return s.valor_actual;
 
+	uint64_t nuevo_peso = s.peso_actual + p.pesos[s.i];
+	uint64_t nuevo_valor = s.valor_actual + p.valores[s.i];
+
+	/* Si entra todo llenamos la mochila */
 	if (s.peso_actual + s.peso_restante <= p.w) {
 		for(int i = s.i; i < p.n; i++)
 			s.valor_actual += p.valores[i];
@@ -58,27 +62,22 @@ uint64_t backtracking(struct problema p, struct solucion s) {
 	if (nuevo_peso > p.w)
 		return s.valor_actual;
 
-	/* FIXME: Esto no funciona si hay cosas con peso cero */
-	if (nuevo_peso == p.w) {
-		s.peso_restante -= p.pesos[s.i];
-		s.i++;
-		return std::max(nuevo_valor, backtracking(p, s));
-	}
-
 	/* Considero el caso de agregar o no el iésimo elemento */
-	if (s.i < p.n - 1) {
-		s.peso_restante -= p.pesos[s.i];
-		s.i++;
+	struct solucion con_i = {
+		s.i + 1,
+		nuevo_peso,
+		s.peso_restante - p.pesos[s.i],
+		nuevo_valor
+	};
 
-		struct solucion sin_i = s;
+	struct solucion sin_i = {
+		s.i + 1,
+		s.peso_actual,
+		s.peso_restante - p.pesos[s.i],
+		s.valor_actual
+	};
 
-		s.peso_actual = nuevo_peso;
-		s.valor_actual = nuevo_valor;
-
-		return std::max(backtracking(p, s), backtracking(p, sin_i));
-	}
-
-	return nuevo_valor;
+	return std::max(backtracking(p, con_i), backtracking(p, sin_i));
 }
 
 uint64_t mochila(uint32_t n, uint32_t w, uint32_t* pesos, uint32_t* valores) {
