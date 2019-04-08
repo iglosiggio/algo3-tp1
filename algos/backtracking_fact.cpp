@@ -43,9 +43,7 @@ uint64_t backtracking(struct problema p, struct solucion s) {
 	if (s.i == 0)
 		std::cout << padres[s.i] << std::endl;
 
-	if (s.peso_actual + s.peso_restante <= p.w
-	    || nuevo_peso > p.w
-	    || s.i != 0)
+	if (s.i != 0)
 		std::cout << padres[s.i - 1] << " -> " << padres[s.i]
 		          << std::endl;
 #endif
