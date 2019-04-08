@@ -375,12 +375,13 @@ $(n-1, W-1, pares)$ para funcionar.
 \begin{algorithmic}[1]
 \item[\textbf{Inicialización:}]
 \item[] \begin{itemize}
-	\item[] $mem[n][W]$ inicializado con el valor \nulo{} en cada celda
 	\item[] $k = \#p - 1$
 	\item[] $Q = W$
+	\item[] $p$ la lista de ítems a considerar
+	\item[] $mem[n][W]$ inicializado con el valor \nulo{} en cada celda
 \end{itemize}
 \Statex
-\Function{Knapsack-Dinamica}{$k, Q, mem$}
+\Function{Knapsack-Dinamica}{$k, Q, p, mem$}
 \If{$k < 0 \vee Q < 0$}
 	\State \Return $0$
 \Comment Casos base
