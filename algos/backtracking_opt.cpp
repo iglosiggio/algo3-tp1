@@ -51,7 +51,6 @@ uint64_t backtracking(struct problema p, struct solucion s) {
 	if (s.i == UINT32_MAX)
 		return s.mejor_valor;
 
-
 	uint64_t nuevo_peso = s.peso_actual + p.pesos[s.i];
 	uint64_t nuevo_valor = s.valor_actual + p.valores[s.i];
 
