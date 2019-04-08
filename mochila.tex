@@ -350,12 +350,12 @@ Inicialización: \quad \textit{$mem$} \quad = lista[N][W] (valores por defecto \
 \begin{algorithmic}[1]
 \Function{Knapsack-Dinamica}{$i, r, p$}
 \If{$i < 0 \vee r < 0$}
-\State \Return $0$
+	\State \Return $0$
 \Comment Casos base
 \EndIf
-\If{$p[i][r] \neq nulo$}
-\State	\Return $p[i][r]$
-\Comment Memoización
+	\If{$p[i][r] \neq nulo$}
+	\State	\Return $p[i][r]$
+	\Comment Memoización
 \EndIf
 \State $\text{sin} := \Call{Knapsack-Dinamica}{i - 1, r, p}$
 \Comment $p[i] \in \text{mochila}$
