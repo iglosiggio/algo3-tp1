@@ -78,6 +78,7 @@
 \usepackage[noend]{algpseudocode}
 \algrenewcommand\alglinenumber[1]{{\sf\footnotesize\texttt{#1}}}
 \def\is{\coloneqq}
+\def\nulo{\textbf{\textit{nulo}}}
 
 \usepackage[linguistics]{forest}
 
@@ -369,28 +370,28 @@ en dichos casos deberá almacenarse un solo \textit{$V_t$}, el mejor. \\
 El algoritmo es recursivo y debe inicializarse con los siguientes parametros en su primera iteración 
 $(n-1, W-1, pares)$ para funcionar. 
 
-Inicialización: \quad \textit{$mem$} \quad = lista[N][W] (valores por defecto \textbf{nulo})
-
 \begin{algorithm}
 \caption{Knapsack con programación dinámica}
 \begin{algorithmic}[1]
-\Function{Knapsack-Dinamica}{$k, Q, p$}
+\item[\textbf{Inicialización:}]
+\item[] \begin{itemize}
+	\item[] $mem[n][W]$ inicializado con el valor \nulo{} en cada celda
+	\item[] $k = \#p - 1$
+	\item[] $Q = W$
+\end{itemize}
+\Statex
+\Function{Knapsack-Dinamica}{$k, Q, mem$}
 \If{$k < 0 \vee Q < 0$}
 	\State \Return $0$
 \Comment Casos base
 \EndIf
-	\If{$mem[k][Q] \neq nulo$}
+	\If{$mem[k][Q] \neq \nulo$}
 	\State	\Return $mem[k][Q]$
 	\Comment Memoización
 \EndIf
-\State $v_{actual} := 0$
-	\If{$p[i]_{peso} \leq Q$}
-	\State	$v_{actual} := p[i]_{peso}$
-	\Comment Considero el valor actual
-\EndIf
 \State $\text{sin} := \Call{Knapsack-Dinamica}{i - 1, r, p}$
 \Comment $p[i] \not \in \text{mochila}$
-\State $\text{con} := v_{actual} + \Call{Knapsack-Dinamica}{i - 1, r - p[i]_{peso}, p}$
+	\State $\text{con} := p[i]_{peso} + \Call{Knapsack-Dinamica}{i - 1, r - p[i]_{peso}, p}$
 \Comment $p[i] \in \text{mochila}$
 \State $mem[k][Q] := \Call{max}{sin, con}$
 \Comment Guardo el mejor de ambos
