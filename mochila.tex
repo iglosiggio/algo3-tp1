@@ -73,6 +73,9 @@
 \usepackage{mathdots}
 \usepackage{enumerate}
 
+\usepackage{algpseudocode,algorithm,algorithmicx}
+\algrenewcommand\alglinenumber[1]{{\sf\footnotesize\texttt{#1}}}
+
 \usepackage[linguistics]{forest}
 
 \overfullrule=2em
@@ -314,6 +317,29 @@ Inicialización: \quad \textit{$mem$} \quad = lista[N][W] (valores por defecto \
     & return \textit{$V_t$}
 
 \end{tabular}
+
+\begin{algorithm}
+\caption{Knapsack con programación dinámica}
+\begin{algorithmic}[1]
+\Function{Knapsack-Dinamica}{$i, r, p$}
+\If{$i < 0 \vee r < 0$}
+\State \Return $0$
+\Comment Casos base
+\EndIf
+\If{$p[i][r] \neq nulo$}
+\State	\Return $p[i][r]$
+\Comment Memoización
+\EndIf
+\State $\text{sin} := \Call{Knapsack-Dinamica}{i - 1, r, p}$
+\Comment $p[i] \in \text{mochila}$
+\State $\text{con} := \Call{Knapsack-Dinamica}{i - 1, r - p[i]_{peso}, p}$
+\Comment $p[i] \not\in \text{mochila}$
+\State $p[i][r] := \Call{max}{sin, con}$
+\Comment Guardo el mejor de ambos
+\State \Return $p[i][r]$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
 
 Analizar la complejidad teórica de este algoritmo requiere interpretar cuantos llamados recursivos realiza, y cuántas ramas el algoritmo abre. Analizemos la revisión de si un elemento esta en memoria ( $mem[k][Q] \neq null$ ), en un principio mem esta vacio,  así que nunca se ejecuta, sin embargo cada llamado que se resuelve setea su valor parcial \textit{$V_t$} en mem.
 
