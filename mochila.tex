@@ -97,12 +97,17 @@
 \begin{document}
 
 \maketitle
+
+\tableofcontents
+
 \section{Presentación de Knapsack Problem}
 
-\subsubsection{\textit{``El problema de la mochila (KP), consiste en asignar un conjunto de items con un peso y valor asociado a una mochila limitada por el peso que puede tolerar, buscando maximizar el valor de la misma.''}}
+El problema de la mochila (KP), consiste en elegir de un conjunto de items con
+peso y valor asociados los necesarios para llenar una mochila limitada por el
+peso máximo que puede tolerar, buscando maximizar el valor de los objetos
+elegidos.
 
-
-\textbf{Formulacion del problema:}
+\subsection{Formulacion del problema}
 
 Dado un espacio de tamaño W (la mochila), y un conjunto de tuplas $(x_i, y_i)$ con pesos $(x_1, x_2 \dots x_n)$ \\
 y precios $(y_1, y_2 \dots y_n)$ ambos enteros no negativos, hallar un subconjunto de indices que \\
@@ -113,7 +118,7 @@ maximize el valor $z_{out} \in\mathbb{E} \geq 0$, de la siguiente forma:
 	\item $\sum \{ x_i : i \in indices \} \le W $ \\ (subconjunto cuyos pesos no exceda el tamaño de W)
 \end{itemize}
 
-\subsubsection{Se plantea el siguiente ejemplo del problema:}
+\subsection{Ejemplos}
 
 \begin{enumerate}[A.]
 
@@ -152,7 +157,7 @@ Se observa, que puede suceder que más de un solo subconjunto sea máximo.
 
 \end{enumerate}
 
-\subsubsection{Pautas de diseño utilizadas en este exámen:}
+\subsection{Pautas de diseño utilizadas en este exámen:}
 
 La idea en este estudio, será demostrar diferentes algoritmos que cumplen con las condiciones propuestas por KP, así como comparar la eficiencia de los mismos, Para esto se definiran diferentes entornos de prueba, en los cuales se someterá a los algoritmos a superar experimentos generados, \\
 
@@ -166,12 +171,9 @@ Para cada algoritmo planteado entonces se buscará resolver las siguientes pregu
 ¿Cuál es la complejidad teórica en el peor caso, y en el promedio?  \\
 ¿Cuál es su impacto en la memoria?  \\
 
-\clearpage
-
-\maketitle
 \section{Algoritmos explorados}
 
-\subsubsection{Fuerza bruta}
+\subsection{Fuerza bruta}
 
 Como primera aproximación podemos establecer que es un problema combinatorio, dado un conjunto de tuplas (items),
 el máximo valor que cumple la condición de no exceder el peso máximo de W, existe entre uno (o varios) de los
@@ -215,7 +217,8 @@ Dicha complejidad de calcular una suma se la toma como $O(n)$, ya que hay que re
 \small O($n * 2^n$) \textbf{tiempo de computo}  \\
 \small O ($n_{tuples}$) \textbf{storage requerido} \\
 
-\subsubsection{Backtracking - Poda por factibilidad}
+\subsection{Backtracking}
+\subsubsection{Poda por factibilidad}
 \textbf{Nota:} Podemos cortar cuando el nuevo peso sería mayor a $p_{peso}$ por
 el orden que le dimos a $p_{items}$
 
@@ -256,10 +259,8 @@ el orden que le dimos a $p_{items}$
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
-\newpage
 
-\subsubsection{Backtracking - Poda por optimalidad}
-
+\subsubsection{Poda por optimalidad}
 \begin{algorithm}
 \caption{Backtracking con poda por optimalidad}
 \begin{algorithmic}[1]
@@ -294,16 +295,15 @@ el orden que le dimos a $p_{items}$
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
-\newpage
 
-\subsubsection{\textbf{KP, Algoritmo de Meet in Middle}}
+\subsubsection{Casos favorables y desfavorables esperados}
+
+\subsection{Meet in Middle}
 
 Otra forma en la podemos
 
-\clearpage
 
-
-\subsubsection{\textbf{KP, Algoritmo de Programación dinámica}}
+\subsection{Programación dinámica}
 
 El algoritmo de programación dinámica hace uso de técnicas exploratorias, al igual que en backtracking la idea es
 partir de un elemento, en este caso empezaremos del último, y realizar sucesivos llamados recursivos considerando
@@ -409,7 +409,7 @@ Eso significa que el \textbf{if} $mem[k][Q] \neq null$ \textbf{then;} return $me
 \small $O(N * W)$ \textbf{tiempo de cómputo} \\
 \small $O(N * W)$ \textbf{Storage requerido} (debido a que tenemos que generar la matriz) \\
 
-\subsection{Experimentación}
+\section{Experimentación}
 
 Cada test se repite 50 veces. Se usa el promedio y se calcula la desviación
 estándar.
