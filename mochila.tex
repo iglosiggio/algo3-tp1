@@ -316,17 +316,17 @@ recursiva, y luego como segundo paso incorporaremos la memorización de resultad
 Para el primer paso necesitamos un algoritmo recursivo, no nos interesa buscar cotas ni intentar tener podas eficientes,
 es suficiente con un algoritmo recursivo sencillo,  \\
 
-Tomaremos el último elemento la enésima tupla y armaremos 2 ramas, considerarla y no considerarla: en cada rama restamos
+Tomaremos el último elemento la enésimo par y armaremos 2 ramas, considerarla y no considerarla: en cada rama restamos
 en uno un indice k, para que la siguiente decisión se tome sobre la (n-k)tupla, consideramos nuevamente ambas ramas y
-así sucesivamente hasta la tupla cero.\\
+así sucesivamente hasta el primer par.\\
 
 Consideramos.\\
 \begin{tabular}{l l}
-    \textit{$k$} & = indice de la enésima tupla  \\
+    \textit{$k$} & = indice del e-nesimo par  \\
     \textit{Q} & = Peso restante, de la rama, vive $ \in 0 \leq \textit{Q} \leq W $  \\
     \textit{$V_t$} & = Valor total de la rama, el cual siempre será positivo o cero  \\
-    \textit{$n-tuple_{weight}$} & = peso de la e-nesima tupla  \\
-    \textit{$n-tuple_{value}$} & = valor de la e-nesima tupla  \\
+    \textit{$p_{peso}$} & = peso de la e-nesimo par  \\
+    \textit{$p_{valor}$} & = valor de la e-nesimo par  \\
 
 \end{tabular}
 
@@ -335,20 +335,19 @@ invalido, el algoritmo empieza por la enesima tupla, con los valores por defecto
 
 \begin{forest}
   [\textbf{Start} \\ $Q \leftarrow W $ \\  $V_t \leftarrow 0 $
-    [Agrego  $(n)-tuple$ \\ $ Q \leftarrow (Q - $ \textit{$tuple_{weight}$})  \\  \textit{$V_t$} $\leftarrow$ (\textit{$V_t$} + \textit{$tuple_{value}$)}
-     [Agrego $(n-1)-tuple$]
-     [No agrego \\$(n-1)-tuple$]
+    [Agrego  $(n)par$ \\ $ Q \leftarrow (Q - $ \textit{$p_{peso}$})  \\  \textit{$V_t$} $\leftarrow$ (\textit{$V_t$} + \textit{$p_{valor}$)}
+     [Agrego $(n-1)par$]
+     [No agrego \\$(n-1)par$]
     ]
-    [No agrego $(n)-tuple$ \\  Q y \textit{$V_t$} \\ mantienen el valor
-     [Agrego $(n-1)-tuple$]
-     [No agrego \\$(n-1)-tuple$]
+    [No agrego $(n)par$ \\  Q y \textit{$V_t$} \\ mantienen el valor
+     [Agrego $(n-1)par$]
+     [No agrego \\$(n-1)par$]
     ]
   ]
 \end{forest}
 
 Este método explorara todos los casos y llegará sin duda al conjunto que maximiza \textit{$V_t$}, sin embargo su complejidad
-no será mejor que $O(n * 2^n)$ ya que recorremos todos los conjuntos, como vimos en ejemplos anteriores, se reitera,
-no tiene podas, considera todos las ramas posibles.\\
+no será mejor que $O(n * 2^n)$ ya que recorremos todos los conjuntos, como vimos en ejemplos anteriores, se reitera, no tiene podas, considera todos las ramas posibles.\\
 
 Aqui es donde entra el paso 2, el uso de memoria, a partir de ahora vamos a definir una tabla de valores (matriz),
 con N filas y W columnas.
@@ -356,67 +355,46 @@ con N filas y W columnas.
 La razón es que definiremos como paso intermedio a la suma parcial de cada rama, dado que la matriz esta definida en
 función de W, notar que los conjuntos que exceden W no pueden ser almacenados, (de ahí deriva el uso de $Q \leq 0$). \\
 
-Revisemoslo desde un ejemplo de algebra primero, que se puede notar de forma más intuitiva. Asumamos que tenemos
-5 enteros, $(x1,x2,x3,x4,x5)$ y queremos calcular los conjuntos:
+Nos interesan chequear todas las ramas así que estamos obligados a que cada ves que consideremos o no un valor, buscaremos almacenar su resultado parcial, quedará definido como subproblema a la mejor forma de armar una mochila de peso $w' \leq W$ dada una iteración K.
 
-\begin{itemize}
-\item$(x1,x2,x4)$
-\item$ (x1,x2,x3,x4,x5)$
-\end{itemize}
-podemos notar que el subconjunto tomar (x1,x2) se encuentra repetido en los 2 conjuntos
+Recordar que tener una tabla de valores o matriz, no es más que solo un criterio que estamos optando de como almacenar la información parcial, la clave esta en almacenar los problemas ya resueltos, este principio destaca desde el algebra, veamoslo con un ejemplo:
 
-La idea, es que entonces una ves calculado (x1,x2) lo guardamos en memoria para no tener que calcularlo de nuevo,
-luego dicho subconjunto lo usamos para calcular ambos.
+si tenemos $(x1,x2,x3,x4,x5)$ elementos, y nos interesa computar solo la suma de conjuntos que posean $(x1.x2)$ una forma conveniente de realizarlo es separarlos del conjunto original y guardar la suma de ese conjunto (memorizarla), luego mi problema se transformo en operar todos los conjuntos posibles de $(x3,x4,x5)$, un total de $2^3$ conjuntos.
 
-En general por combinatoria existen $2^3$ conjuntos que utilizan el subconjunto (x1,x2).
-
-En Knapsack podemos realizar un abuso similar, sin embargo dado que nos interesan chequear todas las ramas estamos
-obligados a que cada ves que consideremos o no un valor, alamcenar su resultado parcial.
-
-Entonces tener una tabla de valores o matriz, no es más que solo un criterio que estamos optando de como almacenar
-la información parcial, con un par de diferencias, se separa por $n$ filas y $w$ columnas y lo que almacena
-son valores parciales de la rama \textit{$V_t$}
-
-y lo que haremos será que en cada llamado recursivo, la posición de la tabla quede fijada por los valores $k$
-(iterador de n) y el peso restante Q que vive entre 0 y W-1, (las dimensiones de la matriz)
+Este principio sin embargo tiene un par de diferencias en nuestro problema original, ya que necesitamos memorizar todos los valores intermedios, y por nuestra elección se separa por $n$ filas y $w$ columnas y lo que almacena son valores parciales de la rama \textit{$V_t$}
 
 Entonces aqui hay una salvedad, puede pasar que fijada una iteración k, llegue por 2 ramas diferentes al mismo Q,
-en dichos casos deberá almacenarse un solo \textit{$V_t$}, el mejor. El algoritmo es el siguiente: \\
+en dichos casos deberá almacenarse un solo \textit{$V_t$}, el mejor. \\
 
-Inicialización: \quad \textit{$mem$} \quad = lista[N][W] (valores por defecto \textbf{null}) \\
+El algoritmo es recursivo y debe inicializarse con los siguientes parametros en su primera iteración 
+$(n-1, W-1, pares)$ para funcionar. 
 
-\textit{function \quad dinamica}(k, Q, ntuples)
-
-
-\begin{tabular}{l l}
-    $[caso\ Base]$ & \textbf{if}  $i  <  0$ o  $Q  <  0$ \textbf{then;} return 0   \\
-    $[$reviso si esta en mem$]$ & \textbf{if}  $mem[k][Q] \neq null$  \textbf{then;} return $mem[k][Q]$ \\
-    $[$backtracking$]$ & \textit{$V_t$} = $ max \in  [ $  dinamica(k-1, Q, ntuples)  \\
-    & \hspace{30pt} \textit{$V_t$} $ + $ dinamica(k-1, Q - $tuple_{weight}$, ntuples) $ ] $ \\
-    $[$Agrego valor a mem$]$ &   $mem[k][Q] = $ \textit{$V_t$} \\
-    & return \textit{$V_t$}
-
-\end{tabular}
+Inicialización: \quad \textit{$mem$} \quad = lista[N][W] (valores por defecto \textbf{nulo})
 
 \begin{algorithm}
 \caption{Knapsack con programación dinámica}
 \begin{algorithmic}[1]
-\Function{Knapsack-Dinamica}{$i, r, p$}
-\If{$i < 0 \vee r < 0$}
+\Function{Knapsack-Dinamica}{$k, Q, p$}
+\If{$k < 0 \vee Q < 0$}
 	\State \Return $0$
 \Comment Casos base
 \EndIf
-	\If{$p[i][r] \neq nulo$}
-	\State	\Return $p[i][r]$
+	\If{$mem[k][Q] \neq nulo$}
+	\State	\Return $mem[k][Q]$
 	\Comment Memoización
 \EndIf
+\State $v_{actual} := 0$
+	\If{$p[i]_{peso} \leq Q$}
+	\State	$v_{actual} := p[i]_{peso}$
+	\Comment Considero el valor actual
+\EndIf
 \State $\text{sin} := \Call{Knapsack-Dinamica}{i - 1, r, p}$
+\Comment $p[i] \not \in \text{mochila}$
+\State $\text{con} := v_{actual} + \Call{Knapsack-Dinamica}{i - 1, r - p[i]_{peso}, p}$
 \Comment $p[i] \in \text{mochila}$
-\State $\text{con} := \Call{Knapsack-Dinamica}{i - 1, r - p[i]_{peso}, p}$
-\Comment $p[i] \not\in \text{mochila}$
-\State $p[i][r] := \Call{max}{sin, con}$
+\State $mem[k][Q] := \Call{max}{sin, con}$
 \Comment Guardo el mejor de ambos
-\State \Return $p[i][r]$
+\State \Return $mem[k][Q]$
 \EndFunction
 \end{algorithmic}
 \end{algorithm}
