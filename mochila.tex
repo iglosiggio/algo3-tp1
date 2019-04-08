@@ -109,13 +109,16 @@ elegidos.
 
 \subsection{Formulacion del problema}
 
-Dado un espacio de tamaño W (la mochila), y un conjunto de tuplas $(x_i, y_i)$ con pesos $(x_1, x_2 \dots x_n)$ \\
-y precios $(y_1, y_2 \dots y_n)$ ambos enteros no negativos, hallar un subconjunto de indices que \\
-maximize el valor $z_{out} \in\mathbb{E} \geq 0$, de la siguiente forma:
+Dado un espacio de tamaño W (la mochila), y un conjunto de tuplas $(x_i, y_i)$
+con pesos $(x_1, x_2 \dots x_n)$ y precios $(y_1, y_2 \dots y_n)$ ambos enteros
+no negativos, hallar un subconjunto de indices que maximize el valor $z_{out}
+\in\mathbb{E} \geq 0$, de la siguiente forma:
 
 \begin{itemize}
-	\item $z_{out} $ = max $\sum \{ y_i : i \in indices \} $ \\ (subconjunto cuya sumatoria maximiza el precio)
-	\item $\sum \{ x_i : i \in indices \} \le W $ \\ (subconjunto cuyos pesos no exceda el tamaño de W)
+	\item $z_{out} $ = max $\sum \{ y_i : i \in indices \}$ \\
+		(subconjunto cuya sumatoria maximiza el precio)
+	\item $\sum \{ x_i : i \in indices \} \le W $ \\
+		(subconjunto cuyos pesos no exceda el tamaño de W)
 \end{itemize}
 
 \subsection{Ejemplos}
@@ -129,29 +132,30 @@ maximize el valor $z_{out} \in\mathbb{E} \geq 0$, de la siguiente forma:
     10 & 5  \\
     30 & 35  \\
 \end{tabular}
-con W = 30. \\
+con W = 30.
 
-Res: $z_{out}$ es 55 y el subconjunto que maximiza el valor son las tuplas [(20,50) y (10,5)] \\
+Res: $z_{out}$ es 55 y el subconjunto que maximiza el valor son las tuplas
+[(20,50) y (10,5)]
 
-Se destaca en este caso que solo existen cuatro formas posibles de armar la mochila,
-las otras forma serían usar tuplas singulares, (20,50), (10,5), (30,35), nada inhibe armar una mochila que no utilize todo su peso. Notar que el valor que maximiza puede encontrarse en cualquier subconjunto del conjunto de tuplas.
-
-
+Se destaca en este caso que solo existen cuatro formas posibles de armar la
+mochila, las otras forma serían usar tuplas singulares, (20,50), (10,5),
+(30,35), nada inhibe armar una mochila que no utilize todo su peso. Notar que
+el valor que maximiza puede encontrarse en cualquier subconjunto del conjunto
+de tuplas.
 
 \item
 \begin{tabular}{l l}
-	peso (size) & precio \\ \toprule
-    45 & 150 \\
-    20 & 50 \\
-    20  & 40 \\
-    20 & 60
-
-
+	peso (size) & precio \\
+	\toprule
+	45 & 150 \\
+	20 & 50 \\
+	20  & 40 \\
+	20 & 60
 \end{tabular}
-con W = 60. \\
+con W = 60.
 
-Res: $z_{out}$ es 150 y los subconjunto que maximizan el valor son la tupla [(45,150)] y el subconjunto
-[(20, 50)] y [(20, 40), (20, 60)] \\
+Res: $z_{out}$ es 150 y los subconjunto que maximizan el valor son la tupla
+$[(45,150)]$ y el subconjunto $[(20, 50)]$ y $[(20, 40), (20, 60)]$
 
 Se observa, que puede suceder que más de un solo subconjunto sea máximo.
 
@@ -159,30 +163,43 @@ Se observa, que puede suceder que más de un solo subconjunto sea máximo.
 
 \subsection{Pautas de diseño utilizadas en este exámen:}
 
-La idea en este estudio, será demostrar diferentes algoritmos que cumplen con las condiciones propuestas por KP, así como comparar la eficiencia de los mismos, Para esto se definiran diferentes entornos de prueba, en los cuales se someterá a los algoritmos a superar experimentos generados, \\
+La idea en este estudio, será demostrar diferentes algoritmos que cumplen con
+las condiciones propuestas por KP, así como comparar la eficiencia de los
+mismos, Para esto se definiran diferentes entornos de prueba, en los cuales se
+someterá a los algoritmos a superar experimentos generados.
 
-Para cada prueba de un experimento se forzara al algoritmo a resolverlo por lo menos 50 veces, y se determinará su velocidad para resolver el problema, con el promedio de las ejecuciones, de esa manera nos aseguraremos que si el algoritmo tiene un buen desempeño en resolver dicha prueba, sea altamente probable que se asemeje a la velocidad real.  \\
+Para cada prueba de un experimento se forzara al algoritmo a resolverlo por lo
+menos 50 veces, y se determinará su velocidad para resolver el problema, con el
+promedio de las ejecuciones, de esa manera nos aseguraremos que si el algoritmo
+tiene un buen desempeño en resolver dicha prueba, sea altamente probable que se
+asemeje a la velocidad real.
 
-Para cada algoritmo planteado entonces se buscará resolver las siguientes preguntas:\\
+Para cada algoritmo planteado buscamps responder las siguientes preguntas:
 
-¿Cómo es la resolución del algoritmo?  \\
-¿Cómo afectan la variable W y la cantidad de N-tuplas a la complejidad? \\
-¿Existen cotas de complejidad, o podas realizables?  \\
-¿Cuál es la complejidad teórica en el peor caso, y en el promedio?  \\
-¿Cuál es su impacto en la memoria?  \\
+\begin{itemize}
+\item[] ¿Cómo es la resolución del algoritmo?
+\item[] ¿Cómo afectan la variable W y la cantidad de N-tuplas a la complejidad?
+\item[] ¿Existen cotas de complejidad, o podas realizables?
+\item[] ¿Cuál es la complejidad teórica en el peor caso, y en el promedio?
+\item[] ¿Cuál es su impacto en la memoria?
+\end{itemize}
 
 \section{Algoritmos explorados}
 
 \subsection{Fuerza bruta}
 
-Como primera aproximación podemos establecer que es un problema combinatorio, dado un conjunto de tuplas (items),
-el máximo valor que cumple la condición de no exceder el peso máximo de W, existe entre uno (o varios) de los
-subconjuntos posibles que conforman el conjunto original. \\
+Como primera aproximación podemos establecer que es un problema combinatorio,
+dado un conjunto de tuplas (items), el máximo valor que cumple la condición de
+no exceder el peso máximo de W, existe entre uno (o varios) de los subconjuntos
+posibles que conforman el conjunto original.
 
-Debido a que es combinatorio, el número total de subconjuntos posibles, es totalmente dependiente de la
-cantidad de n-tuplas que posea el problema, y la cantidad de combinaciones corresponde por definición algebraica a $2^n$  \\
+Debido a que es combinatorio, el número total de subconjuntos posibles, es
+totalmente dependiente de la cantidad de n-tuplas que posea el problema, y la
+cantidad de combinaciones corresponde por definición algebraica a $2^n$
 
-Entonces podemos realizar un algoritmo iterativo que recorra sobre todos los subconjuntos posibles, comparando cada $\sum \{ y_i : i \in  \quad (y_1, y_2 \dots y_n)\}$ de cada subconjunto y quedandose con el mejor.
+Entonces podemos realizar un algoritmo iterativo que recorra sobre todos los
+subconjuntos posibles, comparando cada $\sum \{ y_i : i \in  \quad (y_1, y_2
+\dots y_n)\}$ de cada subconjunto y quedandose con el mejor.
 
 \textbf{Dado:}
 
@@ -195,7 +212,8 @@ Entonces podemos realizar un algoritmo iterativo que recorra sobre todos los sub
 \end{tabular}
 
 
-El algoritmo es iterativo y debe ser invocado con el peso máx W  y una lista \\ de N-tuplas (peso, valor)
+El algoritmo es iterativo y debe ser invocado con el peso máx W  y una lista
+de N-tuplas (peso, valor)
 
 \begin{enumerate}
 	\item \textbf{Mientras} $(c < mod)$
@@ -210,12 +228,17 @@ El algoritmo es iterativo y debe ser invocado con el peso máx W  y una lista \\
 
 
 
-Por cada iteración de \textit{c}, el algoritmo produce las sumas de \textit{$s_{value}$} y \textit{$s_{weight}$} del conjunto. Esto se realiza usando la representación binaria del indice c, dado que cada elemento tiene 2 posibilidades en un conjunto, estar o no estar. \\
+Por cada iteración de \textit{c}, el algoritmo produce las sumas de
+\textit{$s_{value}$} y \textit{$s_{weight}$} del conjunto. Esto se realiza
+usando la representación binaria del indice c, dado que cada elemento tiene 2
+posibilidades en un conjunto, estar o no estar.
 
-Dicha complejidad de calcular una suma se la toma como $O(n)$, ya que hay que revisar n elementos si se encuentra o no en el conjunto y sumarlos, dado que el iterador $c \in [1,2^n]$ esta suma se calcula un total de O($2^n$) veces.
+Dicha complejidad de calcular una suma se la toma como $O(n)$, ya que hay que
+revisar n elementos si se encuentra o no en el conjunto y sumarlos, dado que el
+iterador $c \in [1,2^n]$ esta suma se calcula un total de O($2^n$) veces.
 
-\small O($n * 2^n$) \textbf{tiempo de computo}  \\
-\small O ($n_{tuples}$) \textbf{storage requerido} \\
+\small $O(n * 2^n)$ \textbf{Complejidad algorítmica} \\
+\small $O (n_{tuples})$ \textbf{Memoria requerida}
 
 \subsection{Backtracking}
 \subsubsection{Poda por factibilidad}
@@ -305,21 +328,27 @@ Otra forma en la podemos
 
 \subsection{Programación dinámica}
 
-El algoritmo de programación dinámica hace uso de técnicas exploratorias, al igual que en backtracking la idea es
-partir de un elemento, en este caso empezaremos del último, y realizar sucesivos llamados recursivos considerando
-en cada elemento, las 2 opciones, agregarlo y no agregarlo, pero con una salvedad, ya que los valores de las ramas,
-serán almacenados en memoria, para ser considerados más adelante. \\
+El algoritmo de programación dinámica hace uso de técnicas exploratorias, al
+igual que en backtracking la idea es partir de un elemento, en este caso
+empezaremos del último, y realizar sucesivos llamados recursivos considerando
+en cada elemento, las 2 opciones, agregarlo y no agregarlo, pero con una
+salvedad, ya que los valores de las ramas, serán almacenados en memoria, para
+ser considerados más adelante.
 
-Veamoslos por partes, la esencia del algoritmo será top-down (arrancamos con la premisa de la solución, y seccionamos
-en subconjuntos del problema más chicos), y consta de 2 pasos, primero diseñaremos la implementación de una solución
-recursiva, y luego como segundo paso incorporaremos la memorización de resultados intermedios.  \\
+Veamoslos por partes, la esencia del algoritmo será top-down (arrancamos con la
+premisa de la solución, y seccionamos en subconjuntos del problema más chicos),
+y consta de 2 pasos, primero diseñaremos la implementación de una solución
+recursiva, y luego como segundo paso incorporaremos la memorización de
+resultados intermedios.
 
-Para el primer paso necesitamos un algoritmo recursivo, no nos interesa buscar cotas ni intentar tener podas eficientes,
-es suficiente con un algoritmo recursivo sencillo,  \\
+Para el primer paso necesitamos un algoritmo recursivo, no nos interesa buscar
+cotas ni intentar tener podas eficientes, es suficiente con un algoritmo
+recursivo sencillo.
 
-Tomaremos el último elemento la enésimo par y armaremos 2 ramas, considerarla y no considerarla: en cada rama restamos
-en uno un indice k, para que la siguiente decisión se tome sobre la (n-k)tupla, consideramos nuevamente ambas ramas y
-así sucesivamente hasta el primer par.\\
+Tomaremos el último elemento la enésimo par y armaremos 2 ramas, considerarla y
+no considerarla: en cada rama restamos en uno un indice k, para que la
+siguiente decisión se tome sobre el $(n - k)$ par, consideramos nuevamente
+ambas ramas y así sucesivamente hasta el primer par.
 
 Consideramos.\\
 \begin{tabular}{l l}
@@ -331,8 +360,9 @@ Consideramos.\\
 
 \end{tabular}
 
-las restricciones vienen dadas por el problema, ningun conjunto puede exceder el peso restante, ya que será considerado
-invalido, el algoritmo empieza por la enesima tupla, con los valores por defecto $Q = W$ y $V_t = 0$. \\
+las restricciones vienen dadas por el problema, ningun conjunto puede exceder
+el peso restante, ya que será considerado invalido, el algoritmo empieza por la
+enesima tupla, con los valores por defecto $Q = W$ y $V_t = 0$.
 
 \begin{forest}
   [\textbf{Start} \\ $Q \leftarrow W $ \\  $V_t \leftarrow 0 $
@@ -347,28 +377,45 @@ invalido, el algoritmo empieza por la enesima tupla, con los valores por defecto
   ]
 \end{forest}
 
-Este método explorara todos los casos y llegará sin duda al conjunto que maximiza \textit{$V_t$}, sin embargo su complejidad
-no será mejor que $O(n * 2^n)$ ya que recorremos todos los conjuntos, como vimos en ejemplos anteriores, se reitera, no tiene podas, considera todos las ramas posibles.\\
+Este método explorara todos los casos y llegará sin duda al conjunto que
+maximiza \textit{$V_t$}, sin embargo su complejidad no será mejor que $O(n *
+2^n)$ ya que recorremos todos los conjuntos, como vimos en ejemplos anteriores,
+se reitera, no tiene podas, considera todos las ramas posibles.
 
-Aqui es donde entra el paso 2, el uso de memoria, a partir de ahora vamos a definir una tabla de valores (matriz),
-con N filas y W columnas.
+Aqui es donde entra el paso 2, el uso de memoria, a partir de ahora vamos a
+definir una tabla de valores (matriz), con N filas y W columnas.
 
-La razón es que definiremos como paso intermedio a la suma parcial de cada rama, dado que la matriz esta definida en
-función de W, notar que los conjuntos que exceden W no pueden ser almacenados, (de ahí deriva el uso de $Q \leq 0$). \\
+La razón es que definiremos como paso intermedio a la suma parcial de cada
+rama, dado que la matriz esta definida en función de W, notar que los conjuntos
+que exceden W no pueden ser almacenados, (de ahí deriva el uso de $Q \leq 0$).
 
-Nos interesan chequear todas las ramas así que estamos obligados a que cada ves que consideremos o no un valor, buscaremos almacenar su resultado parcial, quedará definido como subproblema a la mejor forma de armar una mochila de peso $w' \leq W$ dada una iteración K.
+Nos interesan chequear todas las ramas así que estamos obligados a que cada ves
+que consideremos o no un valor, buscaremos almacenar su resultado parcial,
+quedará definido como subproblema a la mejor forma de armar una mochila de peso
+$w' \leq W$ dada una iteración K.
 
-Recordar que tener una tabla de valores o matriz, no es más que solo un criterio que estamos optando de como almacenar la información parcial, la clave esta en almacenar los problemas ya resueltos, este principio destaca desde el algebra, veamoslo con un ejemplo:
+Recordar que tener una tabla de valores o matriz, no es más que solo un
+criterio que estamos optando de como almacenar la información parcial, la clave
+esta en almacenar los problemas ya resueltos, este principio destaca desde el
+algebra, veamoslo con un ejemplo:
 
-si tenemos $(x1,x2,x3,x4,x5)$ elementos, y nos interesa computar solo la suma de conjuntos que posean $(x1.x2)$ una forma conveniente de realizarlo es separarlos del conjunto original y guardar la suma de ese conjunto (memorizarla), luego mi problema se transformo en operar todos los conjuntos posibles de $(x3,x4,x5)$, un total de $2^3$ conjuntos.
+si tenemos $(x1,x2,x3,x4,x5)$ elementos, y nos interesa computar solo la suma
+de conjuntos que posean $(x1.x2)$ una forma conveniente de realizarlo es
+separarlos del conjunto original y guardar la suma de ese conjunto
+(memorizarla), luego mi problema se transformo en operar todos los conjuntos
+posibles de $(x3,x4,x5)$, un total de $2^3$ conjuntos.
 
-Este principio sin embargo tiene un par de diferencias en nuestro problema original, ya que necesitamos memorizar todos los valores intermedios, y por nuestra elección se separa por $n$ filas y $w$ columnas y lo que almacena son valores parciales de la rama \textit{$V_t$}
+Este principio sin embargo tiene un par de diferencias en nuestro problema
+original, ya que necesitamos memorizar todos los valores intermedios, y por
+nuestra elección se separa por $n$ filas y $w$ columnas y lo que almacena son
+valores parciales de la rama \textit{$V_t$}
 
-Entonces aqui hay una salvedad, puede pasar que fijada una iteración k, llegue por 2 ramas diferentes al mismo Q,
-en dichos casos deberá almacenarse un solo \textit{$V_t$}, el mejor. \\
+Entonces aqui hay una salvedad, puede pasar que fijada una iteración k, llegue
+por 2 ramas diferentes al mismo Q, en dichos casos deberá almacenarse un solo
+\textit{$V_t$}, el mejor.
 
-El algoritmo es recursivo y debe inicializarse con los siguientes parametros en su primera iteración 
-$(n-1, W-1, pares)$ para funcionar. 
+El algoritmo es recursivo y debe inicializarse con los siguientes parametros en
+su primera iteración $(n-1, W-1, pares)$ para funcionar.
 
 \begin{algorithm}
 \caption{Knapsack con programación dinámica}
@@ -401,14 +448,27 @@ $(n-1, W-1, pares)$ para funcionar.
 \end{algorithmic}
 \end{algorithm}
 
-Analizar la complejidad teórica de este algoritmo requiere interpretar cuantos llamados recursivos realiza, y cuántas ramas el algoritmo abre. Analizemos la revisión de si un elemento esta en memoria ( $mem[k][Q] \neq null$ ), en un principio mem esta vacio,  así que nunca se ejecuta, sin embargo cada llamado que se resuelve setea su valor parcial \textit{$V_t$} en mem.
+Analizar la complejidad teórica de este algoritmo requiere interpretar cuantos
+llamados recursivos realiza, y cuántas ramas el algoritmo abre. Analizemos la
+revisión de si un elemento esta en memoria ($mem[k][Q] \neq null$), en un
+principio mem esta vacio,  así que nunca se ejecuta, sin embargo cada llamado
+que se resuelve setea su valor parcial \textit{$V_t$} en mem.
 
-Eso quiere decir los consecutivos llamados que quieran resolver dicho subproblema siempre encontraran el valor $mem[k][Q]$ en la revisión de memoria y lo devolveran, (sin hacer ningun llamado recursivo más). El peor caso es entonces, no tener ningún W repetido para un K, es decir que se tengan que agregar todos los valores posibles en $mem$.
+Eso quiere decir los consecutivos llamados que quieran resolver dicho
+subproblema siempre encontraran el valor $mem[k][Q]$ en la revisión de memoria
+y lo devolveran, (sin hacer ningun llamado recursivo más). El peor caso es
+entonces, no tener ningún W repetido para un K, es decir que se tengan que
+agregar todos los valores posibles en $mem$.
 
-Eso significa que el \textbf{if} $mem[k][Q] \neq null$ \textbf{then;} return $mem[K][Q]$ no se ejecutara en por lo menos (N * W) ocaciones, (las dimensiones de la matriz) dado que siempre al final de un llamado se agregara a la memoria, eso quiere decir que la complejidad de la función recursiva definida al principio $O(n*2^n)$ (el paso de backtracking) esta completamente acotada por la condición superior. \\
+Eso significa que la línea \texttt{5} no se ejecutará en por lo menos $(N
+\times W)$ ocaciones, (las dimensiones de la matriz) dado que siempre al final
+de un llamado se agregara a la memoria, eso quiere decir que la complejidad de
+la función recursiva definida al principio $O(n \times 2^n)$ (el paso de
+backtracking) esta completamente acotada por la condición superior.
 
-\small $O(N * W)$ \textbf{tiempo de cómputo} \\
-\small $O(N * W)$ \textbf{Storage requerido} (debido a que tenemos que generar la matriz) \\
+\small $O(N * W)$ \textbf{Complejidad algorítmica} \\
+\small $O(N * W)$ \textbf{Memoria requerida}
+(debido a que tenemos que generar la matriz)
 
 \section{Experimentación}
 
