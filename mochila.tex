@@ -78,7 +78,6 @@
 \usepackage[noend]{algpseudocode}
 \algrenewcommand\alglinenumber[1]{{\sf\footnotesize\texttt{#1}}}
 \def\is{\coloneqq}
-\def\nulo{\textbf{\textit{nulo}}}
 
 \usepackage[linguistics]{forest}
 
@@ -418,7 +417,7 @@ su primera iteración $(n-1, W-1, pares)$ para funcionar.
 	\item[] $k = \#p - 1$
 	\item[] $Q = W$
 	\item[] $p$ la lista de ítems a considerar
-	\item[] $mem[n][W]$ inicializado con el valor \nulo{} en cada celda
+	\item[] $mem[n][W]$ inicialmente $\bot$ en cada celda
 \end{itemize}
 \Statex
 \Function{Knapsack-Dinamica}{$k, Q, p, mem$}
@@ -426,7 +425,7 @@ su primera iteración $(n-1, W-1, pares)$ para funcionar.
 	\State \Return $0$
 \Comment Casos base
 \EndIf
-	\If{$mem[k][Q] \neq \nulo$}
+	\If{$mem[k][Q] \neq \bot$}
 	\State	\Return $mem[k][Q]$
 	\Comment Memoización
 \EndIf
@@ -439,11 +438,15 @@ su primera iteración $(n-1, W-1, pares)$ para funcionar.
 \State \Return $mem[k][Q]$
 \EndFunction
 \end{algorithmic}
+\begin{description}
+	\item[\textbf{Complejidad algorítmica:}] $O(n \times W)$
+	\item[\textbf{Memoria requerida:}] $O(n \times W)$
+\end{description}
 \end{algorithm}
 
 Analizar la complejidad teórica de este algoritmo requiere interpretar cuantos
 llamados recursivos realiza, y cuántas ramas el algoritmo abre. Analizemos la
-revisión de si un elemento esta en memoria ($mem[k][Q] \neq null$), en un
+revisión de si un elemento esta en memoria ($mem[k][Q] \neq \bot$), en un
 principio mem esta vacio,  así que nunca se ejecuta, sin embargo cada llamado
 que se resuelve setea su valor parcial \textit{$V_t$} en mem.
 
@@ -458,10 +461,6 @@ Eso significa que la línea \texttt{5} no se ejecutará en por lo menos $(N
 de un llamado se agregara a la memoria, eso quiere decir que la complejidad de
 la función recursiva definida al principio $O(n \times 2^n)$ (el paso de
 backtracking) esta completamente acotada por la condición superior.
-
-\small $O(N * W)$ \textbf{Complejidad algorítmica} \\
-\small $O(N * W)$ \textbf{Memoria requerida}
-(debido a que tenemos que generar la matriz)
 
 \section{Experimentación}
 
