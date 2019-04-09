@@ -189,56 +189,49 @@ Para cada algoritmo planteado buscamps responder las siguientes preguntas:
 \subsection{Fuerza bruta}
 
 Como primera aproximación podemos establecer que es un problema combinatorio,
-dado un conjunto de tuplas (items), el máximo valor que cumple la condición de
-no exceder el peso máximo de W, existe entre uno (o varios) de los subconjuntos
+dado un conjunto de items, el máximo valor que cumple la condición de no
+exceder el peso máximo de $W$, existe entre uno (o varios) de los subconjuntos
 posibles que conforman el conjunto original.
 
 Debido a que es combinatorio, el número total de subconjuntos posibles, es
-totalmente dependiente de la cantidad de n-tuplas que posea el problema, y la
-cantidad de combinaciones corresponde por definición algebraica a $2^n$
+totalmente dependiente de la cantidad de items a procesar, y la cantidad de
+combinaciones es el tamaño del conjunto de partes ($2^n$).
 
 Entonces podemos realizar un algoritmo iterativo que recorra sobre todos los
-subconjuntos posibles, comparando cada $\sum \{ y_i : i \in  \quad (y_1, y_2
-\dots y_n)\}$ de cada subconjunto y quedandose con el mejor.
+subconjuntos posibles, calculando su peso y valor y quedandose con el mejor.
 
-\textbf{Dado:}
+\begin{algorithm}
+\caption{Knapsack con fuerza bruta}
+\begin{algorithmic}[1]
+\Statex
+\Function{Knapsack-Dinamica}{$W, \text{items}$}
+\State $\text{mejor} \is 0$
+\State $c \is 1$
+\While{$c < 2^{\#items}$}
+	\State $s \is \Call{calcular}{c, \text{items}}$
+	\If{$s_{peso} \leq W \land s_{valor} > \text{mejor}$}
+		\State mejor $\is s_{valor}$
+	\EndIf
+	\State $c \is c + 1$
+\EndWhile
+\State \Return mejor
+\EndFunction
+\end{algorithmic}
+\begin{description}
+	\item[\textbf{Complejidad algorítmica:}] $O(n \times 2^n)$
+	\item[\textbf{Memoria requerida:}] $O(1)$
+\end{description}
+\end{algorithm}
 
-\begin{tabular}{l l}
-    \textit{c} & = index del conjunto a ser procesado \\
-    \textit{mod} & = El último conjunto comprendido como $2^n$ \\
-    \textit{$s_{value}$} & = la suma de los N-values del conjunto \\
-    \textit{$s_{weight}$} & = la suma de los N-pesos del conjunto \\
-    \textit{temp} & = El mejor encontrado hasta el momento (inicializa en 0) \\
-\end{tabular}
-
-
-El algoritmo es iterativo y debe ser invocado con el peso máx W  y una lista
-de N-tuplas (peso, valor)
-
-\begin{enumerate}
-	\item \textbf{Mientras} $(c < mod)$
-
-	\item   \begin{enumerate}
-	             \item \textbf{if} \quad \textit{$s_{weight}$} $\le  W \land$ \textit{$s_{value}$}  > \textit{temp}  \quad \textbf{then; } \textit{temp} $ = s_{value} $
-	             \item $c = c + 1$
-	        \end{enumerate}
-
-    \item \textbf{return} \textit{temp}
-\end{enumerate}
-
-
-
-Por cada iteración de \textit{c}, el algoritmo produce las sumas de
-\textit{$s_{value}$} y \textit{$s_{weight}$} del conjunto. Esto se realiza
-usando la representación binaria del indice c, dado que cada elemento tiene 2
-posibilidades en un conjunto, estar o no estar.
+En cada ciclo generamos las sumas $s_{valor}$ y $s_{peso}$ del conjunto. $c$ es
+el índice del conjunto en la enumeración utilizada por \textsc{calcular}. Una
+enumeración posible es representar a la pertenencia del $i$ésimo ítem con el
+$i$ésimo dígito de la representación en base 2 de $c$\footnote{Es decir:
+$items[i] \in \text{conjunto} \iff c \mod 2^i = 1$}.
 
 Dicha complejidad de calcular una suma se la toma como $O(n)$, ya que hay que
 revisar n elementos si se encuentra o no en el conjunto y sumarlos, dado que el
-iterador $c \in [1,2^n]$ esta suma se calcula un total de O($2^n$) veces.
-
-\small $O(n * 2^n)$ \textbf{Complejidad algorítmica} \\
-\small $O (n_{tuples})$ \textbf{Memoria requerida}
+iterador $c \in [1,2^n]$ esta suma se calcula un total de $O(2^n)$ veces.
 
 \subsection{Backtracking}
 \subsubsection{Poda por factibilidad}
