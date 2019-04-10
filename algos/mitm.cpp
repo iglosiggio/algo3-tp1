@@ -27,18 +27,13 @@ inline combinacion calcular(uint64_t conjunto, uint32_t* pesos,
 
 soluciones solucionesSubN(uint32_t* pesos, uint32_t* valores, uint32_t n,
                           uint32_t w) {
-	uint64_t conjunto = 1;
-	uint64_t mejor = 0;
+	uint64_t conjunto = 0;
 	uint64_t mod = BIT(n);
 	soluciones resultado;
-
 	resultado.reserve(mod);
-	resultado.push_back(combinacion(0, 0));
 
 	while (conjunto < mod) {
 		combinacion comb = calcular(conjunto, pesos, valores);
-		if (comb.second > mejor)
-			mejor = comb.second;
 		if (comb.first <= w)
 			resultado.push_back(comb);
 		conjunto++;
@@ -48,14 +43,6 @@ soluciones solucionesSubN(uint32_t* pesos, uint32_t* valores, uint32_t n,
 }
 
 uint64_t mochila(uint32_t n, uint32_t w, uint32_t* pesos, uint32_t* valores) {
-	/* Ordenamos en n^2 */
-	for (int i = 0; i < n; i++)
-		for (int j = i; j < n; j++)
-			if(pesos[i] > pesos[j]) {
-				std::swap(pesos[i], pesos[j]);
-				std::swap(valores[i], valores[j]);
-			}
-
 	/* Armo mis 2 subconjuntos */
 	soluciones menores = solucionesSubN(pesos, valores, n/2, w);
 	soluciones mayores = solucionesSubN(pesos + n/2, valores + n/2,
