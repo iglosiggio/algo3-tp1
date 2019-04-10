@@ -315,8 +315,91 @@ el orden que le dimos a $p_{items}$
 
 \subsection{Meet in Middle}
 
-Otra forma en la podemos
+También podemoes encarar el problema con una técnica de búsqueda diferennte, la
+idea será dividir el problema en 2 partes iguales de dimensión $\frac{n}{2}$,
+resolver los problemas individualmente y luego combinarlos.
 
+El problema es que por la esencia del problema, no podemos simplemente
+resolverlos individualmente y a partir de los 2 subproblemas planteados (de
+ahora en más A y B), y asegurar que su resultado es la solución final.
+Necesitaremos calcular todos los posibles resultados de A y B, y compararlos.
+
+Si es cierto que si tenemos todas las posibles combinaciones de A y B
+digamosles formalemte $(A_1,A_2 \dots A_t)$ soluciones del subconjunto A y
+$(B_1,B_2 \dots B_t)$ soluciones del subconjunto B  la solución se encuentra en
+la suma de de un par $(A_x,B_x)$, solo tenemos que hallar dicha combinación.
+
+Definiremos entonces que nuestro algoritmo debe realizar los siguientes pasos:
+
+\begin{enumerate}
+\item Separar el conjunto de tuplas en 2 subsets A, B. A teniendo los primeros
+n/2 tuplas y B el resto
+
+\item Realizar partes sobre ambos conjuntos, A y B. Para obtener todas los
+posibles candidatos. El precio de armar cada uno de estos subsets de partes es
+$O(2^{n/2})$
+
+\item Combinar los 2 subproblemas, encontrar todas las posibles combinaciones
+de X y Y y quedarnos con la mejor. Existen multiples formas de hacerlo.
+
+\begin{enumerate}
+	\item Una forma de hacerlo es simpelemten iterar sobre todos los
+	elementos, sin embargo desestimaremos esta posibilidad, eso posee
+	complejidad lineal y el resultado sería $O((2^{n/2})^n)$ que simplifica
+	a $O(2^n)$ (misma complejidad que fuerza bruta)
+
+	\item Para hacerlo menos complejo podemos ordenar uno de los 2 arrays A
+	o B, entonces ahora podemos recorrer uno de los 2 subconjuntos
+	linealmente, y en el otro buscar su mejor combinación con una búsqueda
+	binaria. Esto nos ayuda a reducir la complejidad final a
+	$O(2^{n/2}log(2^{n/2}))$ la cual es equivalente a $O(2^{n/2}\times n)$
+	corriendo el exponente del logaritmo.
+\end{enumerate}
+\end{enumerate}
+
+\begin{algorithm}
+\caption{Meet in the middle}
+\begin{algorithmic}[1]
+\item[\textbf{Inicialización:}]
+\item[] \begin{itemize}
+	\item[] $p$ conjunto de pares inicial.
+	\item[] $p[i]_{peso}$ i-ésimo peso del par p
+	\item[] $p[i]_{valor}$ i-ésimo valor del par p
+	\item[] $v_{mejor} = 0$
+\end{itemize}
+\item[\textbf{Funciones auxiliares:}]
+\item[] \begin{itemize}
+	\item[] \Call{ordenar}{$p$} Un ordenamiendo por compacación con
+	complejidad $O(n\log n)$
+
+	\item[] \Call{construirCombinaciones}{$p, start, end$} como algoritmo
+	que te calcula todas las sumas de subconjuntos p' de los pares p que se
+	encuentran entre los indices enteros start y end, incluye conjunto
+	vacio.
+
+	\item[] \Call{busquedaPorLimiteSuperior}{$p, k$} Búsquedab binaria de
+	pares, devuelve la primera aparición ques es igual a k, o el valor
+	pequeña más cercano.
+\end{itemize}
+\Statex
+\Function{Knapsack-MeetInMiddle}{$p, w$}
+\State izq $\is \Call{construirCombinaciones}{p, 0, \frac{n}{2}}$
+\State der $\is \Call{construirCombinaciones}{p, \frac{n}{2}, n}$
+\Comment Armo los subconjuntos
+\State der $\is \Call{ordenar}{\text{der}}$
+\Comment Ordeno uno de los 2 subconjuntos
+\For{$A \in \text{izq}$}
+	\If{$A_{peso} \leq w$}
+	\State $B := busquedaPorLimiteSuperior(der, w - A_{peso})$
+		\If{$A_{peso} + B_{peso} > v_{mejor}$}
+			\State  $v_{mejor} := A_{peso} + B_{peso} > $
+		\EndIf
+	\EndIf
+\EndFor
+\State \Return $v_{mejor}$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
 
 \subsection{Programación dinámica}
 
