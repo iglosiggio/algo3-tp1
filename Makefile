@@ -7,8 +7,8 @@ tests=$(casos:.in=.test)
 
 all: mochila.pdf $(exes) $(algos_graficos) main.o
 
-%.pdf: %.tex
-	pdflatex $(LATEXFLAGS) $<
+mochila.pdf: mochila.tex
+	latexmk mochila.tex -pdf
 
 %.algo: algos/%.cpp main.o
 	$(CXX) $(CXXFLAGS) $^ -o $@
