@@ -99,105 +99,84 @@
 
 \tableofcontents
 
-\section{Presentación de Knapsack Problem}
+\section{Presentación del Knapsack Problem}
 
-El problema de la mochila (KP), consiste en elegir de un conjunto de items con
-peso y valor asociados los necesarios para llenar una mochila limitada por el
-peso máximo que puede tolerar, buscando maximizar el valor de los objetos
+El problema de la mochila consiste en elegir de un conjunto de ítems con peso y
+valor los necesarios para llenar una mochila de acuerdo al peso máximo que
+puede tolerar buscando al mismo tiempo maximizar el valor de los objetos
 elegidos.
 
 \subsection{Formulacion del problema}
 
-Dado un espacio de tamaño W (la mochila), y un conjunto de tuplas $(x_i, y_i)$
-con pesos $(x_1, x_2 \dots x_n)$ y precios $(y_1, y_2 \dots y_n)$ ambos enteros
-no negativos, hallar un subconjunto de indices que maximize el valor $z_{out}
-\in\mathbb{E} \geq 0$, de la siguiente forma:
+Dado un espacio de tamaño $W$ (la mochila), y un conjunto de ítems $(x_1, x_2,
+\dots, x_n)$ con pesos $(p_1, p_2 \dots x_n)$ y valores $(v_1, v_2 \dots v_n)$
+ambos enteros no negativos, hallar un subconjunto de indices que maximice el
+valor total sin exceder el peso máximo $W$, es decir:
 
-\begin{itemize}
-	\item $z_{out} $ = max $\sum \{ y_i : i \in indices \}$ \\
-		(subconjunto cuya sumatoria maximiza el precio)
-	\item $\sum \{ x_i : i \in indices \} \le W $ \\
-		(subconjunto cuyos pesos no exceda el tamaño de W)
-\end{itemize}
+\begin{enumerate}
+	\item $\sum_{\{i \in \text{índices}\}} v_i$ es la respueta
+	\item $\sum_{\{i \in \text{índices}\}} p_i \le W$
+	\item La respuesta es máxima (no existe otro conjunto que tenga un
+	valor mayor y  pese menor o igual a $W$).
+\end{enumerate}
 
 \subsection{Ejemplos}
 
-\begin{enumerate}[A.]
-
-\item
+$W = 30$, ítems $=$
 \begin{tabular}{l l}
-	peso (size) & precio \\ \toprule
-    20 & 50 \\
-    10 & 5  \\
-    30 & 35  \\
-\end{tabular}
-con W = 30.
+	Peso  & Valor \\ \toprule
+	20 & 50 \\
+	10 & 5  \\
+	30 & 35
+\end{tabular} \\
+\textbf{Respuesta:} 55 \\
+\textbf{Subconjunto:} $\{(20,50), (10,5)\}$
 
-Res: $z_{out}$ es 55 y el subconjunto que maximiza el valor son las tuplas
-[(20,50) y (10,5)]
-
-Se destaca en este caso que solo existen cuatro formas posibles de armar la
-mochila, las otras forma serían usar tuplas singulares, (20,50), (10,5),
-(30,35), nada inhibe armar una mochila que no utilize todo su peso. Notar que
-el valor que maximiza puede encontrarse en cualquier subconjunto del conjunto
-de tuplas.
-
-\item
+$W = 60$, ítems $=$
 \begin{tabular}{l l}
-	peso (size) & precio \\
-	\toprule
+	Peso & Valor \\ \toprule
 	45 & 150 \\
 	20 & 50 \\
-	20  & 40 \\
+	20 & 40 \\
 	20 & 60
-\end{tabular}
-con W = 60.
+\end{tabular} \\
+\textbf{Respuesta:} 150 \\
+\textbf{Subconjuntos:} $\{(45, 150)\}$, $\{(20, 50)\}$ ó $\{(20, 40), (20,
+60)\}$
 
-Res: $z_{out}$ es 150 y los subconjunto que maximizan el valor son la tupla
-$[(45,150)]$ y el subconjunto $[(20, 50)]$ y $[(20, 40), (20, 60)]$
+Como puede notarse, es posible que exista más de un subconjunto máximo.
 
-Se observa, que puede suceder que más de un solo subconjunto sea máximo.
+\subsection{Pautas de diseño}
 
-\end{enumerate}
-
-\subsection{Pautas de diseño utilizadas en este exámen:}
-
-La idea en este estudio, será demostrar diferentes algoritmos que cumplen con
-las condiciones propuestas por KP, así como comparar la eficiencia de los
-mismos, Para esto se definiran diferentes entornos de prueba, en los cuales se
-someterá a los algoritmos a superar experimentos generados.
-
-Para cada prueba de un experimento se forzara al algoritmo a resolverlo por lo
-menos 50 veces, y se determinará su velocidad para resolver el problema, con el
-promedio de las ejecuciones, de esa manera nos aseguraremos que si el algoritmo
-tiene un buen desempeño en resolver dicha prueba, sea altamente probable que se
-asemeje a la velocidad real.
+El objetivo de este trabajo es mostrar diferentes algoritmos que resuelven el
+problema planteado comparando sus ventajas y desventajas.Para esto se
+construirán diferentes experimentos buscando respaldar los resultados teóricos
+con experimentos apropiados.
 
 Para cada algoritmo planteado buscamps responder las siguientes preguntas:
 
 \begin{itemize}
-\item[] ¿Cómo es la resolución del algoritmo?
-\item[] ¿Cómo afectan la variable W y la cantidad de N-tuplas a la complejidad?
-\item[] ¿Existen cotas de complejidad, o podas realizables?
-\item[] ¿Cuál es la complejidad teórica en el peor caso, y en el promedio?
-\item[] ¿Cuál es su impacto en la memoria?
+\item[] ¿Cómo funciona?
+\item[] ¿Cómo afectan el peso máximo y la cantidad de ítems al rendimiento?
+\item[] ¿En qué situaciones resulta útil este algoritmo respecto de los otros?
+\item[] ¿Cuál es la complejidad teórica?
+\item[] ¿Cuál es el requisito en memoria? ¿Puede suponer un problema?
 \end{itemize}
 
 \section{Algoritmos explorados}
 
 \subsection{Fuerza bruta}
 
-Como primera aproximación podemos establecer que es un problema combinatorio,
-dado un conjunto de items, el máximo valor que cumple la condición de no
+Dado un conjunto de ítems, el máximo valor que cumple la condición de no
 exceder el peso máximo de $W$, existe entre uno (o varios) de los subconjuntos
-posibles que conforman el conjunto original.
+posibles.
 
-Debido a que es combinatorio, el número total de subconjuntos posibles, es
-totalmente dependiente de la cantidad de items a procesar, y la cantidad de
-combinaciones es el tamaño del conjunto de partes ($2^n$).
+Si no conocemos ninguna forma buena de eliminar subconjuntos inútiles entonces
+el número total de subconjuntos a revisar es el tamaño del conjunto de partes
+de nuestros ítems ($2^n$).
 
-Entonces podemos realizar un algoritmo iterativo que recorra sobre todos los
-subconjuntos posibles, calculando su peso y valor y quedandose con el mejor.
+Podemos ofrecer como primer acercamiento un algoritmos iterativo que recorra todos los
+subconjuntos posibles, calculando peso y valor y quedándose con el mejor.
 
 \begin{algorithm}
 \caption{Knapsack con fuerza bruta}
@@ -228,15 +207,24 @@ enumeración posible es representar a la pertenencia del $i$ésimo ítem con el
 $i$ésimo dígito de la representación en base 2 de $c$\footnote{Es decir:
 $items[i] \in \text{conjunto} \iff c \mod 2^i = 1$}.
 
-Dicha complejidad de calcular una suma se la toma como $O(n)$, ya que hay que
-revisar n elementos si se encuentra o no en el conjunto y sumarlos, dado que el
-iterador $c \in [1,2^n]$ esta suma se calcula un total de $O(2^n)$ veces.
+La forma más simple de calcular las sumas es $O(n)$\footnote{Ya que hay que
+revisar por cada uno de los $n$ ítems si se encuentra en el conjunto para
+sumarlos}.  Dado que el $c$ recorre todos los valores en el intervalo $[1,2^n -
+1]$ esta suma se calcula $O(2^n)$ veces ofreciéndonos la complejidad mostrada
+de $O(n \times 2^n)$
 
 \subsection{Backtracking}
-\subsubsection{Poda por factibilidad}
-\textbf{Nota:} Podemos cortar cuando el nuevo peso sería mayor a $p_{peso}$ por
-el orden que le dimos a $p_{items}$
+\subsubsection{Argumentos utilizados por los algoritmos}
 
+Para simplificar la escritura de los algoritmos de backtracking utilizamos un
+argumento $p$ que codifica el ``problema'' en cuestión y un argumento $s$ que
+codifica la ``solución parcial'' a mejorar en cada etapa del algoritmo. También
+estos algoritmos requieren un orden de los ítems previo a instanciarlos. Si
+bien esto no es necesario y podrían realizarse algoritmos similares sin este
+paso previo ordenar los elementos nos permite realizar ciertas podas que de
+otro modo reducirían el espacio de búsqueda mucho menos.
+
+\subsubsection{Poda por factibilidad}
 \begin{algorithm}
 \caption{Backtracking con poda por factibilidad}
 \begin{algorithmic}[1]
@@ -273,7 +261,14 @@ el orden que le dimos a $p_{items}$
 \State \Return $\Call{max}{\textit{valor-tomando}, \textit{valor-sin-tomar}}$
 \EndFunction
 \end{algorithmic}
+\begin{description}
+	\item[\textbf{Complejidad algorítmica:}] $O(n \times 2^n)$
+	\item[\textbf{Memoria requerida:}] $O(1)$
+\end{description}
 \end{algorithm}
+
+\textbf{Nota:} Podemos cortar cuando el nuevo peso sería mayor a $p_{peso}$ por
+el orden que le dimos a $p_{items}$
 
 \subsubsection{Poda por optimalidad}
 \begin{algorithm}
@@ -309,51 +304,50 @@ el orden que le dimos a $p_{items}$
 \Comment $s_i \not\in mochila$
 \EndFunction
 \end{algorithmic}
+\begin{description}
+	\item[\textbf{Complejidad algorítmica:}] $O(n \times 2^n)$
+	\item[\textbf{Memoria requerida:}] $O(1)$
+\end{description}
 \end{algorithm}
 
 \subsubsection{Casos favorables y desfavorables esperados}
 
 \subsection{Meet in Middle}
 
-También podemoes encarar el problema con una técnica de búsqueda diferennte, la
-idea será dividir el problema en 2 partes iguales de dimensión $\frac{n}{2}$,
-resolver los problemas individualmente y luego combinarlos.
+También podemos encarar el problema con una técnica de búsqueda diferente:
+dividimos el problema en 2 partes iguales de dimensión $\frac{n}{2}$,
+conseguimos suficiente información para poder resolver nuestro problema y
+finalmente construimos la respuesta.
 
-El problema es que por la esencia del problema, no podemos simplemente
-resolverlos individualmente y a partir de los 2 subproblemas planteados (de
-ahora en más A y B), y asegurar que su resultado es la solución final.
-Necesitaremos calcular todos los posibles resultados de A y B, y compararlos.
-
-Si es cierto que si tenemos todas las posibles combinaciones de A y B
-digamosles formalemte $(A_1,A_2 \dots A_t)$ soluciones del subconjunto A y
-$(B_1,B_2 \dots B_t)$ soluciones del subconjunto B  la solución se encuentra en
-la suma de de un par $(A_x,B_x)$, solo tenemos que hallar dicha combinación.
+Si construimos $\text{izq} = \{a : a \subseteq A\}$ y $\text{der} = \{b : b
+\subseteq B\}$ siendo $A$ y $B$ las dos mitades de nuestro conjunto de ítems
+los conjuntos solución son todos de la forma $a \bigcup b$\footnote{Si una
+solución se encontrase completa en cualquiera de las dos mitades se puede unir
+al conjunto vacío de la otra}. Una vez construidos izq y der podemos buscar la
+mejor pareja de cualquier subconjunto de una mitad dentro de los subconjuntos
+de la otra.
 
 Definiremos entonces que nuestro algoritmo debe realizar los siguientes pasos:
 
 \begin{enumerate}
-\item Separar el conjunto de tuplas en 2 subsets A, B. A teniendo los primeros
-n/2 tuplas y B el resto
+\item Separar el conjunto de ítems en $A$, $B$. $A$ teniendo los primeros
+$\frac{n}{2}$ ítems y $B$ el resto.
 
-\item Realizar partes sobre ambos conjuntos, A y B. Para obtener todas los
-posibles candidatos. El precio de armar cada uno de estos subsets de partes es
-$O(2^{n/2})$
+\item Construir los conjuntos de partes de $A$ y $B$. Para obtener los posibles
+candidatos. El precio de armar cada uno es de $O(2^{\frac{n}{2}})$.
 
-\item Combinar los 2 subproblemas, encontrar todas las posibles combinaciones
-de X y Y y quedarnos con la mejor. Existen multiples formas de hacerlo.
+\item Combinarlos, encontrar las combinaciones $a \bigcup b$ quedándonos con la
+mejor de todas. Existen multiples formas de hacerlo:
 
 \begin{enumerate}
-	\item Una forma de hacerlo es simpelemten iterar sobre todos los
-	elementos, sin embargo desestimaremos esta posibilidad, eso posee
-	complejidad lineal y el resultado sería $O((2^{n/2})^n)$ que simplifica
-	a $O(2^n)$ (misma complejidad que fuerza bruta)
+	\item Iterar sobre todos los elementos, sin embargo desestimaremos esta
+	posibilidad dado que nos daría una complejidad $O(2^n)$ por lo que no
+	ganaríamos mucho respecto de fuerza bruta.
 
-	\item Para hacerlo menos complejo podemos ordenar uno de los 2 arrays A
-	o B, entonces ahora podemos recorrer uno de los 2 subconjuntos
-	linealmente, y en el otro buscar su mejor combinación con una búsqueda
-	binaria. Esto nos ayuda a reducir la complejidad final a
-	$O(2^{n/2}log(2^{n/2}))$ la cual es equivalente a $O(2^{n/2}\times n)$
-	corriendo el exponente del logaritmo.
+	\item Ordenar $A$ ó $B$, descartando conjuntos inútiles. Entonces ahora
+	podemos recorrer el otro linealmente hallar su mejor combinación con
+	una búsqueda binaria. Este método nos ofrece una complejidad final de
+	$O(n \times 2^{\frac{n}{2}})$.
 \end{enumerate}
 \end{enumerate}
 
@@ -390,9 +384,9 @@ de X y Y y quedarnos con la mejor. Existen multiples formas de hacerlo.
 \Comment Ordeno uno de los 2 subconjuntos
 \For{$A \in \text{izq}$}
 	\If{$A_{peso} \leq w$}
-	\State $B := busquedaPorLimiteSuperior(der, w - A_{peso})$
+	\State $B \is busquedaPorLimiteSuperior(der, w - A_{peso})$
 		\If{$A_{peso} + B_{peso} > v_{mejor}$}
-			\State  $v_{mejor} := A_{peso} + B_{peso} > $
+			\State  $v_{mejor} \is A_{peso} + B_{peso} > $
 		\EndIf
 	\EndIf
 \EndFor
@@ -512,11 +506,11 @@ su primera iteración $(n-1, W-1, pares)$ para funcionar.
 	\State	\Return $mem[k][Q]$
 	\Comment Memoización
 \EndIf
-\State $\text{sin} := \Call{Knapsack-Dinamica}{i - 1, r, p}$
+\State $\text{sin} \is \Call{Knapsack-Dinamica}{i - 1, r, p}$
 \Comment $p[i] \not \in \text{mochila}$
-	\State $\text{con} := p[i]_{peso} + \Call{Knapsack-Dinamica}{i - 1, r - p[i]_{peso}, p}$
+	\State $\text{con} \is p[i]_{peso} + \Call{Knapsack-Dinamica}{i - 1, r - p[i]_{peso}, p}$
 \Comment $p[i] \in \text{mochila}$
-\State $mem[k][Q] := \Call{max}{sin, con}$
+\State $mem[k][Q] \is \Call{max}{sin, con}$
 \Comment Guardo el mejor de ambos
 \State \Return $mem[k][Q]$
 \EndFunction
