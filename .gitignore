@@ -1,12 +1,19 @@
+# Targets del Makefile
 *.o
 *.algo
 *.algografico
-*.aux
-*.log
-*.toc
-.vscode
-.gdb_history
 fotos/*.fact.png
 fotos/*.opt.png
 mochila.pdf
+
+# IDEs y esas cosas
+.vscode
+.gdb_history
+
+# LaTeX
 mochila.synctex.gz
+*.fls
+*.fdb_latexmk
+*.aux
+*.log
+*.toc
