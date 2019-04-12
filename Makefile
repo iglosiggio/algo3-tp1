@@ -1,5 +1,5 @@
 algos=fuerza_bruta mitm backtracking_opt backtracking_fact dinamica
-algos_graficos=backtracking_opt.algografico backtracking_fact.algografico
+algos_graficos=backtracking_opt.algografico backtracking_fact.algografico dinamica.algografico
 exes=$(algos:=.algo)
 tmp=*.log *.aux
 casos=$(wildcard casos/*.in)
@@ -28,6 +28,12 @@ fotos/%.opt.png: casos/%.in backtracking_opt.algografico
 
 fotos/%.fact.png: casos/%.in backtracking_fact.algografico
 	./backtracking_fact.algografico < casos/$*.in \
+	| head -n -1 \
+	| awk 'BEGIN { print "digraph {" } { print $0 } END { print "}" }' \
+	| dot -Tpng > $@
+
+fotos/%.dinamica.png: casos/%.in dinamica.algografico
+	./dinamica.algografico < casos/$*.in \
 	| head -n -1 \
 	| awk 'BEGIN { print "digraph {" } { print $0 } END { print "}" }' \
 	| dot -Tpng > $@

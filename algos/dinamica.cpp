@@ -1,6 +1,10 @@
 #include <cstdint>
 #include <vector>
 
+#ifdef REPORTAR
+#include <iostream>
+#endif
+
 const char* algo = __FILE__;
 
 using Fila = std::vector<uint64_t>;
@@ -10,7 +14,6 @@ using Matriz = std::vector<Fila>;
 
 uint64_t dinamica(uint32_t i, uint32_t restante, uint32_t* pesos,
                   uint32_t* valores, Matriz& dp) {
-
 	if (i == UINT32_MAX)
 		return 0;
 
@@ -18,6 +21,25 @@ uint64_t dinamica(uint32_t i, uint32_t restante, uint32_t* pesos,
 
 	if (celda != VACIO)
 		return celda;
+
+#ifdef REPORTAR
+	static std::vector<std::string> padres(i + 1);
+	std::string node;
+	node += "[i=";
+	node += std::to_string(i);
+	node += ", r=";
+	node += std::to_string(restante);
+	node += "]";
+
+	padres[i] = '"' + node + '"';
+
+	if (i + 1 == padres.size())
+		std::cout << padres[i] << std::endl;
+
+	if (i + 1 != padres.size())
+		std::cout << padres[i + 1] << " -> " << padres[i]
+		          << std::endl;
+#endif
 
 	celda = dinamica(i - 1, restante, pesos, valores, dp);
 
@@ -33,7 +55,7 @@ uint64_t dinamica(uint32_t i, uint32_t restante, uint32_t* pesos,
 
 
 uint64_t mochila(uint32_t n, uint32_t w, uint32_t* pesos, uint32_t* valores) {
-	Matriz dp(n, Fila(w, VACIO));
+	Matriz dp(n, Fila(w + 1, VACIO));
 
-	return dinamica(n - 1, w - 1, pesos, valores, dp);
+	return dinamica(n - 1, w, pesos, valores, dp);
 }
