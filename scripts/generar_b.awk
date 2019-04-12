@@ -14,7 +14,7 @@ BEGIN {
 		pesos += items["peso"][i]
 	}
 
-	w = rand_rango(2, pesos)
+	w = rand_rango(2, pesos + 1)
 	print int(n), int(w)
 
 	for (i = 0; i < n; i++)
