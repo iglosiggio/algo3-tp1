@@ -397,121 +397,57 @@ mejor de todas. Existen multiples formas de hacerlo:
 
 \subsection{Programación dinámica}
 
-El algoritmo de programación dinámica hace uso de las mismas técnicas
-exploratorias, que los de backtracking. A partir de un elemento realizaremos
+El algoritmo de programación dinámica hace uso de las técnicas
+exploratorias de backtracking. A partir de un elemento realizaremos
 sucesivos llamados recursivos considerando si agregarlo o no. La diferencia que
 lo distingue de la técnica anterior es que almacenaremos las decisiones tomadas
-para no tener que volver a calcularlas luego.
+para no tener que volver a calcularlas.
 
-Veamoslos por partes, la esencia del algoritmo será top-down (arrancamos con la
-premisa de la solución, y seccionamos en subconjuntos del problema más chicos),
-y consta de 2 pasos, primero diseñaremos la implementación de una solución
-recursiva, y luego como segundo paso incorporaremos la memorización de
-resultados intermedios.
+Nuestros subproblemas son las mochilas con los primeros $i \le \#\text{items}$
+elementos y un peso máximo $w' \le W$. Podemos notar que si tenemos todas las
+mochilas $(i' < i, w'' \le w')$ entonces nuestro problema se reduce a
+determinar si el mayor valor se obtiene utilzando el $i$-ésimo elemento (dado
+que no se exceda en peso) o ignorándolo.
 
-Para el primer paso necesitamos un algoritmo recursivo, no nos interesa buscar
-cotas ni intentar tener podas eficientes, es suficiente con un algoritmo
-recursivo sencillo.
+La esencia del algoritmo será \emph{top-down} (consideramos el problema
+completo y lo dividimos hasta llegar a problemas triviales) y tendrá dos
+partes, un algoritmo recursivo simple y la memorización de sus resultados
+intermedios.
 
-Tomaremos el último elemento la enésimo par y armaremos 2 ramas, considerarla y
-no considerarla: en cada rama restamos en uno un indice k, para que la
-siguiente decisión se tome sobre el $(n - k)$ par, consideramos nuevamente
-ambas ramas y así sucesivamente hasta el primer par.
-
-Consideramos.\\
-\begin{tabular}{l l}
-    \textit{$k$} & = indice del e-nesimo par  \\
-    \textit{Q} & = Peso restante, de la rama, vive $ \in 0 \leq \textit{Q} \leq W $  \\
-    \textit{$V_t$} & = Valor total de la rama, el cual siempre será positivo o cero  \\
-    \textit{$p_{peso}$} & = peso de la e-nesimo par  \\
-    \textit{$p_{valor}$} & = valor de la e-nesimo par  \\
-
-\end{tabular}
-
-las restricciones vienen dadas por el problema, ningun conjunto puede exceder
-el peso restante, ya que será considerado invalido, el algoritmo empieza por la
-enesima tupla, con los valores por defecto $Q = W$ y $V_t = 0$.
-
-\begin{forest}
-  [\textbf{Start} \\ $Q \leftarrow W $ \\  $V_t \leftarrow 0 $
-    [Agrego  $(n)par$ \\ $ Q \leftarrow (Q - $ \textit{$p_{peso}$})  \\  \textit{$V_t$} $\leftarrow$ (\textit{$V_t$} + \textit{$p_{valor}$)}
-     [Agrego $(n-1)par$]
-     [No agrego \\$(n-1)par$]
-    ]
-    [No agrego $(n)par$ \\  Q y \textit{$V_t$} \\ mantienen el valor
-     [Agrego $(n-1)par$]
-     [No agrego \\$(n-1)par$]
-    ]
-  ]
-\end{forest}
-
-Este método explorara todos los casos y llegará sin duda al conjunto que
-maximiza \textit{$V_t$}, sin embargo su complejidad no será mejor que $O(n *
-2^n)$ ya que recorremos todos los conjuntos, como vimos en ejemplos anteriores,
-se reitera, no tiene podas, considera todos las ramas posibles.
-
-Aqui es donde entra el paso 2, el uso de memoria, a partir de ahora vamos a
-definir una tabla de valores (matriz), con N filas y W columnas.
-
-La razón es que definiremos como paso intermedio a la suma parcial de cada
-rama, dado que la matriz esta definida en función de W, notar que los conjuntos
-que exceden W no pueden ser almacenados, (de ahí deriva el uso de $Q \leq 0$).
-
-Nos interesan chequear todas las ramas así que estamos obligados a que cada ves
-que consideremos o no un valor, buscaremos almacenar su resultado parcial,
-quedará definido como subproblema a la mejor forma de armar una mochila de peso
-$w' \leq W$ dada una iteración K.
-
-Recordar que tener una tabla de valores o matriz, no es más que solo un
-criterio que estamos optando de como almacenar la información parcial, la clave
-esta en almacenar los problemas ya resueltos, este principio destaca desde el
-algebra, veamoslo con un ejemplo:
-
-si tenemos $(x1,x2,x3,x4,x5)$ elementos, y nos interesa computar solo la suma
-de conjuntos que posean $(x1.x2)$ una forma conveniente de realizarlo es
-separarlos del conjunto original y guardar la suma de ese conjunto
-(memorizarla), luego mi problema se transformo en operar todos los conjuntos
-posibles de $(x3,x4,x5)$, un total de $2^3$ conjuntos.
-
-Este principio sin embargo tiene un par de diferencias en nuestro problema
-original, ya que necesitamos memorizar todos los valores intermedios, y por
-nuestra elección se separa por $n$ filas y $w$ columnas y lo que almacena son
-valores parciales de la rama \textit{$V_t$}
-
-Entonces aqui hay una salvedad, puede pasar que fijada una iteración k, llegue
-por 2 ramas diferentes al mismo Q, en dichos casos deberá almacenarse un solo
-\textit{$V_t$}, el mejor.
-
-El algoritmo es recursivo y debe inicializarse con los siguientes parametros en
-su primera iteración $(n-1, W-1, pares)$ para funcionar.
+Una vez reducido el problema a la construcción de una mochila de $0$ elementos
+está claro que el mejor valor posible es $0$.
 
 \begin{algorithm}
 \caption{Knapsack con programación dinámica}
 \begin{algorithmic}[1]
 \item[\textbf{Inicialización:}]
 \item[] \begin{itemize}
-	\item[] $k = \#p - 1$
-	\item[] $Q = W$
+	\item[] $i = \#p - 1$
+	\item[] $\text{restante} = W$
 	\item[] $p$ la lista de ítems a considerar
 	\item[] $mem[n][W]$ inicialmente $\bot$ en cada celda
 \end{itemize}
 \Statex
-\Function{Knapsack-Dinamica}{$k, Q, p, mem$}
-\If{$k < 0 \vee Q < 0$}
+\Function{Knapsack-Dinamica}{$i, \text{restante}, p, mem$}
+\If{$i < 0$}
 	\State \Return $0$
 \Comment Casos base
 \EndIf
-	\If{$mem[k][Q] \neq \bot$}
-	\State	\Return $mem[k][Q]$
+\If{$mem[i][\text{restante}] \neq \bot$}
+	\State	\Return $mem[i][\text{restante}]$
 	\Comment Memoización
 \EndIf
 \State $\text{sin} \is \Call{Knapsack-Dinamica}{i - 1, r, p}$
 \Comment $p[i] \not \in \text{mochila}$
-	\State $\text{con} \is p[i]_{peso} + \Call{Knapsack-Dinamica}{i - 1, r - p[i]_{peso}, p}$
-\Comment $p[i] \in \text{mochila}$
-\State $mem[k][Q] \is \Call{max}{sin, con}$
+\If{$p[i]_{peso} \le \text{restante}$}
+	\State $\text{con} \is p[i]_{valor} + \Call{Knapsack-Dinamica}{i - 1, r - p[i]_{peso}, p}$
+	\Comment $p[i] \in \text{mochila}$
+\Else
+	\State $\text{con} \is 0$
+\EndIf
+\State $mem[i][\text{restante}] \is \Call{max}{\text{sin}, \text{con}}$
 \Comment Guardo el mejor de ambos
-\State \Return $mem[k][Q]$
+\State \Return $mem[i][\text{restante}]$
 \EndFunction
 \end{algorithmic}
 \begin{description}
@@ -520,23 +456,11 @@ su primera iteración $(n-1, W-1, pares)$ para funcionar.
 \end{description}
 \end{algorithm}
 
-Analizar la complejidad teórica de este algoritmo requiere interpretar cuantos
-llamados recursivos realiza, y cuántas ramas el algoritmo abre. Analizemos la
-revisión de si un elemento esta en memoria ($mem[k][Q] \neq \bot$), en un
-principio mem esta vacio,  así que nunca se ejecuta, sin embargo cada llamado
-que se resuelve setea su valor parcial \textit{$V_t$} en mem.
-
-Eso quiere decir los consecutivos llamados que quieran resolver dicho
-subproblema siempre encontraran el valor $mem[k][Q]$ en la revisión de memoria
-y lo devolveran, (sin hacer ningun llamado recursivo más). El peor caso es
-entonces, no tener ningún W repetido para un K, es decir que se tengan que
-agregar todos los valores posibles en $mem$.
-
-Eso significa que la línea \texttt{5} no se ejecutará en por lo menos $(N
-\times W)$ ocaciones, (las dimensiones de la matriz) dado que siempre al final
-de un llamado se agregara a la memoria, eso quiere decir que la complejidad de
-la función recursiva definida al principio $O(n \times 2^n)$ (el paso de
-backtracking) esta completamente acotada por la condición superior.
+En un principio inicializamos $mem$ como $\bot$ en todas sus celdas lo cual nos
+obliga a un primer paso con coste $O(n \times W)$. Por cada valor de $i$ no
+trivial se realizarán a lo sumo $2n$ llamadas recursivas, dado que la primera
+llamada tiene coste pero la segunda es $O(1)$ entonces para cada $i$ tenemos
+$O(i) + T_{n-1}$
 
 \section{Experimentación}
 
@@ -549,12 +473,12 @@ estándar.
 	0 \leq p_i, v_i \leq 100)$
 
 \begin{itemize}
-\item Corremos todos los algoritmos.
+	\item Corremos todos los algoritmos.
 \item Queremos las cotas de complejidad.
 \end{itemize}
 
-\item $(n \in [25; 70; \text{ de a } 5];
-	W \in [2; \sum p_i; \text{ de a } 100];
+\item $(n \in [25; 70];
+	W \in [2; \sum p_i];
 	0 \leq p_1, v_i \leq 100)$
 
 \begin{itemize}
