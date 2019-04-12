@@ -30,7 +30,6 @@ soluciones solucionesSubN(uint32_t* pesos, uint32_t* valores, uint32_t n,
 	uint64_t conjunto = 0;
 	uint64_t mod = BIT(n);
 	soluciones resultado;
-	resultado.reserve(mod);
 
 	while (conjunto < mod) {
 		combinacion comb = calcular(conjunto, pesos, valores);
