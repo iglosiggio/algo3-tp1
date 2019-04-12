@@ -397,12 +397,11 @@ mejor de todas. Existen multiples formas de hacerlo:
 
 \subsection{Programación dinámica}
 
-El algoritmo de programación dinámica hace uso de técnicas exploratorias, al
-igual que en backtracking la idea es partir de un elemento, en este caso
-empezaremos del último, y realizar sucesivos llamados recursivos considerando
-en cada elemento, las 2 opciones, agregarlo y no agregarlo, pero con una
-salvedad, ya que los valores de las ramas, serán almacenados en memoria, para
-ser considerados más adelante.
+El algoritmo de programación dinámica hace uso de las mismas técnicas
+exploratorias, que los de backtracking. A partir de un elemento realizaremos
+sucesivos llamados recursivos considerando si agregarlo o no. La diferencia que
+lo distingue de la técnica anterior es que almacenaremos las decisiones tomadas
+para no tener que volver a calcularlas luego.
 
 Veamoslos por partes, la esencia del algoritmo será top-down (arrancamos con la
 premisa de la solución, y seccionamos en subconjuntos del problema más chicos),
