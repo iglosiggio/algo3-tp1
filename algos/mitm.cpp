@@ -43,14 +43,14 @@ soluciones solucionesSubN(uint32_t* pesos, uint32_t* valores, uint32_t n,
 
 uint64_t mochila(uint32_t n, uint32_t w, uint32_t* pesos, uint32_t* valores) {
 	/* Armo mis 2 subconjuntos */
-	soluciones menores = solucionesSubN(pesos, valores, n/2, w);
-	soluciones mayores = solucionesSubN(pesos + n/2, valores + n/2,
+	soluciones izq = solucionesSubN(pesos, valores, n/2, w);
+	soluciones der = solucionesSubN(pesos + n/2, valores + n/2,
 	                                    n - n/2, w);
-	std::sort(mayores.begin(), mayores.end());
+	std::sort(der.begin(), der.end());
 
 	uint64_t mejor_valor = 0;
 
-	for (combinacion& c : mayores) {
+	for (combinacion& c : der) {
 		if (c.second < mejor_valor)
 			c.second = mejor_valor;
 		else
@@ -59,9 +59,9 @@ uint64_t mochila(uint32_t n, uint32_t w, uint32_t* pesos, uint32_t* valores) {
 
 	uint64_t resultado = 0;
 
-	for (combinacion c : menores) {
-		auto inicio = mayores.begin();
-		auto fin = mayores.end();
+	for (combinacion c : izq) {
+		auto inicio = der.begin();
+		auto fin = der.end();
 		combinacion deseada = {w - c.first, 0xFFFFFFFFFFFFFFFFLL};
 		auto mejor = std::upper_bound(inicio, fin, deseada);
 
