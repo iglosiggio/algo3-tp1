@@ -6,6 +6,9 @@ fotos/*.fact.png
 fotos/*.opt.png
 mochila.pdf
 
+# Test autogenerados
+casos/exp.*
+
 # IDEs y esas cosas
 .vscode
 .gdb_history
