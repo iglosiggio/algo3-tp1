@@ -99,18 +99,18 @@
 
 \tableofcontents
 
-\section{Presentación del Knapsack Problem}
+\section{Introducción}
 
 El problema de la mochila consiste en elegir de un conjunto de ítems con peso y
 valor los necesarios para llenar una mochila de acuerdo al peso máximo que
 puede tolerar buscando al mismo tiempo maximizar el valor de los objetos
 elegidos.
 
-\subsection{Formulacion del problema}
+\subsection{Formulación del problema}
 
 Dado un espacio de tamaño $W$ (la mochila), y un conjunto de ítems $(x_1, x_2,
 \dots, x_n)$ con pesos $(p_1, p_2 \dots x_n)$ y valores $(v_1, v_2 \dots v_n)$
-ambos enteros no negativos, hallar un subconjunto de indices que maximice el
+ambos enteros no negativos, hallar un subconjunto de índices que maximice el
 valor total sin exceder el peso máximo $W$, es decir:
 
 \begin{enumerate}
@@ -149,7 +149,7 @@ Como puede notarse, es posible que exista más de un subconjunto máximo.
 \subsection{Pautas de diseño}
 
 El objetivo de este trabajo es mostrar diferentes algoritmos que resuelven el
-problema planteado comparando sus ventajas y desventajas.Para esto se
+problema planteado comparando sus ventajas y desventajas. Para esto se
 construirán diferentes experimentos buscando respaldar los resultados teóricos
 con experimentos apropiados.
 
@@ -210,32 +210,35 @@ La forma más simple de calcular las sumas es $O(n)$\footnote{Ya que hay que
 revisar por cada uno de los $n$ ítems si se encuentra en el conjunto para
 sumarlos.}.  Dado que el $c$ recorre todos los valores en el intervalo $[1,2^n -
 1]$ esta suma se calcula $O(2^n)$ veces ofreciéndonos la complejidad mostrada
-de $O(n \times 2^n)$
+de $O(n \times 2^n)$.
 
 \subsection{Backtracking}
 \subsubsection{Argumentos utilizados por los algoritmos}
 
 Para simplificar la escritura de los algoritmos de backtracking utilizamos un
-argumento $s$ que codifica la ``solución parcial'' $(s)$ a mejorar en cada etapa del algoritmo. Veremos 2 soluciones, ambas recursivas, que implementan diferentes podas en sus búsquedas.
+argumento $s$ que codifica la ``solución parcial'' a mejorar en cada etapa del
+algoritmo. Veremos 2 soluciones, ambas recursivas, que implementan diferentes
+podas en sus búsquedas.
 
 \subsubsection{Poda por factibilidad}
 
-El primero que veremos requiere un orden de los ítems previo a instanciarlos, deben estar ordenados por peso de forma creciente.
-
-Entonces al asegurar que para un indice $(i)$ si $\sum_{j = 0}^{i} p[i]_{peso} > W$ entonces todas las sumatorias con indice mayor a $(i)$ también exceden W.
-
+El primero que veremos requiere un orden de los ítems previo (por peso de forma
+creciente) a llamarlo, esto nos supone un coste inicial de $O(n \times \log
+n)$. Gracias al orden podemos asegurar que si para un índice $i$ el $i$-ésimo
+ítem no puede agregarse a $s$ entonces todos los ítems con índice mayor tampoco
+pueden.
 
 \begin{algorithm}
 \caption{Backtracking con poda por factibilidad}
 \begin{algorithmic}[1]
 \item[\textbf{Inicialización:}]
 \item[] \begin{itemize}
-	\item[] $p$,  Los pares ordenados de menor a mayor según su peso
-	\item[] $W$, El peso máximo de la mochila
-	\item[] $s$ - (solución parcial)
+	\item[] $p$ los ítems ordenados de menor a mayor según su peso
+	\item[] $W$ el peso máximo de la mochila
+	\item[] $s$ (solución parcial)
 	\begin{itemize}
-		\item[] $s_i = 0$ indice actual
-		\item[] $s_{valor} = s_{peso} = 0$ inicializa con la mochila vacia \O
+		\item[] $s_i = 0$ índice actual
+		\item[] $s_{valor} = s_{peso} = 0$ (la mochila vacia \O)
 		\item[] $s_{pesosCalculados} = \sum_{i = 0}^{\#p - 1} p[i]_{peso}$
 	\end{itemize}
 \end{itemize}
@@ -254,11 +257,11 @@ Entonces al asegurar que para un indice $(i)$ si $\sum_{j = 0}^{i} p[i]_{peso} >
 	\State \Return $s_{valor}$
 \EndIf
 
-\State $\textit{con-valor} \is \Call{Knapsack-Optimalidad}{p, W, \textit{ considerar } s_i}$
-\Comment $s_i \in mochila$
-\State $\textit{sin-valor} \is \Call{Knapsack-Optimalidad}{p, W, \textit{ no considerar } s_i}$
-\Comment $s_i \not\in mochila$
-\State \Return $\Call{max}{\textit{con-valor}, \textit{sin-valor}}$
+\State $\text{con-valor} \is \Call{Knapsack-Optimalidad}{p, W, \text{ considerar } s_i}$
+\Comment $s_i \in$ mochila
+\State $\text{sin-valor} \is \Call{Knapsack-Optimalidad}{p, W, \text{ no considerar } s_i}$
+\Comment $s_i \not\in$ mochila
+\State \Return $\Call{max}{\text{con-valor}, \text{sin-valor}}$
 \EndFunction
 \end{algorithmic}
 \begin{description}
@@ -267,16 +270,22 @@ Entonces al asegurar que para un indice $(i)$ si $\sum_{j = 0}^{i} p[i]_{peso} >
 \end{description}
 \end{algorithm}
 
-La poda por factibilidad podemos estimar que sus casos favorables rondarán cuando W sea muy pequeño o muy grande en comparación de ($\sum_{i = 0}^{\#p - 1} p[i]_{peso}$).
-
-\textit{ver experimentación}
-
+Los casos favorables de esta poda se encuentran cuando $W$ resulta mucho más
+pequeño o grande que los pesos de todos los ítems, dado que se puede evitar el
+analisis de mochilas inviables (\text{6}) o rellenar a la mochila sin
+considerar los pesos individuales (\texttt{4}).
 
 \subsubsection{Poda por optimalidad}
 
-La segunda poda que veremos no requiere un ordenamiento previo, en su lugar se debe calcularse $\sum_{i = 0}^{\#p - 1}p[i]_{valor}$ la suma de los valores a considerar y ofrecer un candidato ($m$) el cual es una mochila válida.
+La segunda poda que veremos no requiere un ordenamiento previo, en su lugar
+debe calcularse $\sum_{i = 0}^{\#p - 1}p[i]_{valor}$ la suma de los valores a
+considerar y ofrecer un candidato ($m$) el cual es una mochila válida.
 
-A la hora de considerar cada ítem podemos utilizar la mochila candidato $m$ y el valor de nuestros hijos para determinar si somos capaces de mejorar $m$\footnote{En caso contrario podemos devolver $m$ ya que sabemos que es una mochila válda.}. En nuestra implementación previo a correr el algoritmo ordenamos los ítems para conseguir un $m$ grande lo antes posible.
+A la hora de considerar cada ítem podemos utilizar la mochila candidato $m$ y
+el valor de nuestros hijos para determinar si somos capaces de
+mejorarla\footnote{En caso contrario podemos devolver $m$ ya que sabemos que es
+una mochila válda.}. En nuestra implementación previo a correr el algoritmo
+ordenamos los ítems para conseguir un $m$ grande lo antes posible.
 
 \clearpage
 
@@ -285,15 +294,15 @@ A la hora de considerar cada ítem podemos utilizar la mochila candidato $m$ y e
 \begin{algorithmic}[1]
 \item[\textbf{Inicialización:}]
 \item[] \begin{itemize}
-	\item[] $p$, Los pares (preferiblemente ordenados por valor)
-	\item[] $W$, El peso máximo de la mochila
-	\item[] $s$ - (solución parcial)
+	\item[] $p$ los ítems (preferiblemente ordenados por valor)
+	\item[] $W$ el peso máximo de la mochila
+	\item[] $s$ (solución parcial)
 	\begin{itemize}
 		\item[] $s_i = \#p - 1$
 		\item[] $s_{valor} = s_{peso} = 0$
 		\item[] $s_{valoresRestantes} = \sum_{i = 0}^{\#p - 1} p[i]_{valor}$
 	\end{itemize}
-	\item[] $m = 0$ (la mejor combinación de valores encontrada)
+	\item[] $m = 0$ la mejor mochila encontrada hasta el momento
 \end{itemize}
 \Statex
 \Function{Knapsack-Optimalidad}{$p, W, m, s$}
@@ -306,11 +315,11 @@ A la hora de considerar cada ítem podemos utilizar la mochila candidato $m$ y e
 	\State \Return $m$
 \EndIf
 \If{$s_{peso} + p[s_i]_{peso} \leq W$}
-	\Comment $s_i \in mochila$
+	\Comment $s_i \in$ mochila
 	\State $m \is \Call{Knapsack-Optimalidad}{p,W,m, \text{ considerar } s_i,)}$
 \EndIf
 \State $m \is \Call{Knapsack-Optimalidad}{p,W,m, \text{ no considerar } s_i}$
-\Comment $s_i \not\in mochila$
+\Comment $s_i \not\in$ mochila
 \State \Return $m$
 \EndFunction
 \end{algorithmic}
@@ -329,11 +338,11 @@ finalmente construimos la respuesta.
 
 Si construimos $\text{izq} = \{a : a \subseteq A\}$ y $\text{der} = \{b : b
 \subseteq B\}$ siendo $A$ y $B$ las dos mitades de nuestro conjunto de ítems
-los conjuntos solución son todos de la forma $a \bigcup b$\footnote{Si una
-solución se encontrase completa en cualquiera de las dos mitades se puede unir
-al conjunto vacío de la otra.}. Una vez construidos izq y der podemos buscar la
-mejor pareja de cualquier subconjunto de una mitad dentro de los subconjuntos
-de la otra.
+entonces los conjuntos solución son todos de la forma $a \bigcup b$\footnote{Si
+una solución se encontrase completa en cualquiera de las dos mitades se puede
+unir al conjunto vacío de la otra.}. Una vez construidos izq y der podemos
+buscar la mejor pareja de cualquier subconjunto de una mitad dentro de los
+subconjuntos de la otra.
 
 Definiremos entonces que nuestro algoritmo debe realizar los siguientes pasos:
 
@@ -348,9 +357,9 @@ candidatos. El precio de armar cada uno es de $O(2^{\frac{n}{2}})$.
 mejor de todas. Existen multiples formas de hacerlo:
 
 \begin{enumerate}
-	\item Iterar sobre todos los elementos, sin embargo desestimaremos esta
-	posibilidad dado que nos daría una complejidad $O(2^n)$ por lo que no
-	ganaríamos mucho respecto de fuerza bruta.
+	\item Iterar sobre todos los elementos (desestimaremos esta posibilidad
+	dado que nos daría una complejidad $O(2^n)$ por lo que no ganaríamos
+	mucho respecto de fuerza bruta).
 
 	\item Ordenar $A$ ó $B$, descartando conjuntos inútiles. Entonces ahora
 	podemos recorrer el otro linealmente hallar su mejor combinación con
@@ -375,16 +384,16 @@ mejor de todas. Existen multiples formas de hacerlo:
 	complejidad $O(n\log n)$
 
 	\item[] \Call{construirCombinaciones}{$p, start, end$} como algoritmo
-	que te calcula todas las sumas de subconjuntos p' de los pares p que se
+	que calcula todas las sumas de subconjuntos $p'$ de los pares p que se
 	encuentran entre los indices enteros start y end, incluye conjunto
 	vacio.
 
-	\item[] \Call{busquedaPorLimiteSuperior}{$p, k$} Búsquedab binaria de
+	\item[] \Call{busquedaPorLimiteSuperior}{$p, k$} Búsqueda binaria de
 	pares, devuelve la primera aparición ques es igual a k, o el valor
 	pequeña más cercano.
 \end{itemize}
 \Statex
-\Function{Knapsack-MeetInMiddle}{$p, w$}
+\Function{Knapsack-MeetInTheMiddle}{$p, w$}
 \State izq $\is \Call{construirCombinaciones}{p, 0, \frac{n}{2}}$
 \State der $\is \Call{construirCombinaciones}{p, \frac{n}{2}, n}$
 \Comment Armo los subconjuntos
@@ -392,7 +401,7 @@ mejor de todas. Existen multiples formas de hacerlo:
 \Comment Ordeno uno de los 2 subconjuntos
 \For{$A \in \text{izq}$}
 	\If{$A_{peso} \leq w$}
-	\State $B \is busquedaPorLimiteSuperior(der, w - A_{peso})$
+	\State $B \is \Call{busquedaPorLimiteSuperior}{der, w - A_{peso}}$
 		\If{$A_{peso} + B_{peso} > v_{mejor}$}
 			\State  $v_{mejor} \is A_{peso} + B_{peso} > $
 		\EndIf
@@ -405,11 +414,11 @@ mejor de todas. Existen multiples formas de hacerlo:
 
 \subsection{Programación dinámica}
 
-El algoritmo de programación dinámica hace uso de las técnicas
-exploratorias de backtracking. A partir de un elemento realizaremos
-sucesivos llamados recursivos considerando si agregarlo o no. La diferencia que
-lo distingue de la técnica anterior es que almacenaremos las decisiones tomadas
-para no tener que volver a calcularlas.
+El algoritmo de programación dinámica hace uso de las técnicas exploratorias de
+backtracking. A partir de un elemento realizaremos dos llamados recursivos
+considerando si agregarlo o no. La diferencia que lo distingue de backtracking
+anterior es que almacenaremos las decisiones tomadas para no tener que volver a
+calcularlas.
 
 Nuestros subproblemas son las mochilas con los primeros $i \le \#\text{items}$
 elementos y un peso máximo $w' \le W$. Podemos notar que si tenemos todas las
@@ -419,11 +428,11 @@ que no se exceda en peso) o ignorándolo.
 
 La esencia del algoritmo será \emph{top-down} (consideramos el problema
 completo y lo dividimos hasta llegar a problemas triviales) y tendrá dos
-partes, un algoritmo recursivo simple y la memorización de sus resultados
+partes, un algoritmo recursivo simple y la memoización de sus resultados
 intermedios.
 
 Una vez reducido el problema a la construcción de una mochila de $0$ elementos
-está claro que el mejor valor posible es $0$.
+está claro que el mejor valor posible es $0$. Este será nuestro caso base.
 
 \begin{algorithm}
 \caption{Knapsack con programación dinámica}
