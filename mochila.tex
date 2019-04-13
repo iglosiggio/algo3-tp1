@@ -153,10 +153,9 @@ problema planteado comparando sus ventajas y desventajas.Para esto se
 construirán diferentes experimentos buscando respaldar los resultados teóricos
 con experimentos apropiados.
 
-Para cada algoritmo planteado buscamps responder las siguientes preguntas:
+Para cada algoritmo planteado buscamos responder las siguientes preguntas:
 
 \begin{itemize}
-\item[] ¿Cómo funciona?
 \item[] ¿Cómo afectan el peso máximo y la cantidad de ítems al rendimiento?
 \item[] ¿En qué situaciones resulta útil este algoritmo respecto de los otros?
 \item[] ¿Cuál es la complejidad teórica?
@@ -197,7 +196,7 @@ subconjuntos posibles, calculando peso y valor y quedándose con el mejor.
 \end{algorithmic}
 \begin{description}
 	\item[\textbf{Complejidad algorítmica:}] $O(n \times 2^n)$
-	\item[\textbf{Memoria requerida:}] $O(1)$
+	\item[\textbf{Memoria requerida:}] $O(n)$
 \end{description}
 \end{algorithm}
 
@@ -217,48 +216,49 @@ de $O(n \times 2^n)$
 \subsubsection{Argumentos utilizados por los algoritmos}
 
 Para simplificar la escritura de los algoritmos de backtracking utilizamos un
-argumento $p$ que codifica el ``problema'' en cuestión y un argumento $s$ que
-codifica la ``solución parcial'' a mejorar en cada etapa del algoritmo. También
-estos algoritmos requieren un orden de los ítems previo a instanciarlos. Si
-bien esto no es necesario y podrían realizarse algoritmos similares sin este
-paso previo ordenar los elementos nos permite realizar ciertas podas que de
-otro modo reducirían el espacio de búsqueda mucho menos.
+argumento $s$ que codifica la ``solución parcial'' $(s)$ a mejorar en cada etapa del algoritmo. Veremos 2 soluciones, ambas recursivas, que implementan diferentes podas en sus búsquedas.
 
 \subsubsection{Poda por factibilidad}
+
+El primero que veremos requiere un orden de los ítems previo a instanciarlos, deben estar ordenados por peso de forma creciente.
+
+Entonces al asegurar que para un indice $(i)$ si $\sum_{j = 0}^{i} p[i]_{peso} > W$ entonces todas las sumatorias con indice mayor a $(i)$ también exceden W.
+
+
 \begin{algorithm}
 \caption{Backtracking con poda por factibilidad}
 \begin{algorithmic}[1]
 \item[\textbf{Inicialización:}]
 \item[] \begin{itemize}
-	\item[] $p_{items}$ ordenados de menor a mayor según su peso
-	\item[] $p_{peso}$ peso máximo de la mochila
-	\item[] $s_i = 0$
-	\item[] $s_{valor} = 0$
-	\item[] $s_{peso} = 0$
-	\item[] $s_{restante} = \sum_{i = 0}^{\#p_{items} - 1} p_{items}[i]_{peso}$
+	\item[] $p$,  Los pares ordenados de menor a mayor según su peso
+	\item[] $W$, El peso máximo de la mochila
+	\item[] $s$ - (solución parcial)
+	\begin{itemize}
+		\item[] $s_i = 0$ indice actual
+		\item[] $s_{valor} = s_{peso} = 0$ inicializa con la mochila vacia \O
+		\item[] $s_{pesosCalculados} = \sum_{i = 0}^{\#p - 1} p[i]_{peso}$
+	\end{itemize}
 \end{itemize}
 \Statex
-\Function{Knapsack-Factibilidad}{$p, s$}
-\If{$s_i = \#p_{items}$}
-	\State \Return $s_{valor}$
+\Function{Knapsack-Factibilidad}{$p, W, s$}
+\If{$s_i = \#p$}
 	\Comment Caso base
-\EndIf
-\If{$s_{peso} + s_{restante} \leq p_{peso}$}
-	\State \Return $s_{valor} + \sum_{i=s_i}^{\#p_{items} - 1} p_{items}[i]_{valor}$
-	\Comment Agrego todo a la mochila
-\EndIf
-\If{$s_{peso} + p_{items}[i]_{peso} > p_{peso} $}
 	\State \Return $s_{valor}$
-	\Comment No puedo sumar nada
+\EndIf
+\If{$s_{peso} + s_{pesosCalculados} \leq W$}
+	\Comment Agrego todo a la mochila
+	\State \Return $s_{valor} + \sum_{i=s_i}^{\#p - 1} p[i]_{valor}$
+\EndIf
+\If{$s_{peso} + p[s_i]_{peso} > W $}
+	\Comment No puedo sumar ningún valor más
+	\State \Return $s_{valor}$
 \EndIf
 
-\State $\textit{s-tomando} \is \Call{Mochila-Tomando}{p, s}$
-\State $\textit{valor-tomando} \is \Call{Knapsack-Optimalidad}{p, \textit{s-tomando}}$
+\State $\textit{con-valor} \is \Call{Knapsack-Optimalidad}{p, W, \textit{ considerar } s_i}$
 \Comment $s_i \in mochila$
-\State $\textit{s-sin-tomar} \is \Call{Mochila-Sin-Tomar}{p, s}$
-\State $\textit{valor-sin-tomar} \is \Call{Knapsack-Optimalidad}{p, \textit{s-sin-tomar}}$
+\State $\textit{sin-valor} \is \Call{Knapsack-Optimalidad}{p, W, \textit{ no considerar } s_i}$
 \Comment $s_i \not\in mochila$
-\State \Return $\Call{max}{\textit{valor-tomando}, \textit{valor-sin-tomar}}$
+\State \Return $\Call{max}{\textit{con-valor}, \textit{sin-valor}}$
 \EndFunction
 \end{algorithmic}
 \begin{description}
@@ -267,41 +267,51 @@ otro modo reducirían el espacio de búsqueda mucho menos.
 \end{description}
 \end{algorithm}
 
-\textbf{Nota:} Podemos cortar cuando el nuevo peso sería mayor a $p_{peso}$ por
-el orden que le dimos a $p_{items}$
+La poda por factibilidad podemos estimar que sus casos favorables rondarán cuando W sea muy pequeño o muy grande en comparación de ($\sum_{i = 0}^{\#p - 1} p[i]_{peso}$).
+
+\textit{ver experimentación}
+
 
 \subsubsection{Poda por optimalidad}
+
+La segunda poda que veremos no requiere un ordenamiento previo, en su lugar se debe calcularse $\sum_{i = 0}^{\#p - 1}p[i]_{valor}$ la suma de los valores a considerar y ofrecer un candidato ($m$) el cual es una mochila válida.
+
+A la hora de considerar cada ítem podemos utilizar la mochila candidato $m$ y el valor de nuestros hijos para determinar si somos capaces de mejorar $m$\footnote{En caso contrario podemos devolver $m$ ya que sabemos que es una mochila válda.}. En nuestra implementación previo a correr el algoritmo ordenamos los ítems para conseguir un $m$ grande lo antes posible.
+
+\clearpage
+
 \begin{algorithm}
 \caption{Backtracking con poda por optimalidad}
 \begin{algorithmic}[1]
 \item[\textbf{Inicialización:}]
 \item[] \begin{itemize}
-	\item[] $p_{items}$ ordenados de menor a mayor según su valor
-	\item[] $p_{peso}$ peso máximo de la mochila
-	\item[] $s_i = \#p_{items} - 1$
-	\item[] $s_{valor} = 0$
-	\item[] $s_{mejor} = 0$
-	\item[] $s_{restante} = \sum_{i = 0}^{\#p_{items} - 1} p_{items}[i]_{valor}$
+	\item[] $p$, Los pares 
+	\item[] $W$, 
+	\item[] $s$ - (solución parcial)
+	\begin{itemize}
+		\item[] $s_i = \#p - 1$
+		\item[] $s_{valor} = s_{peso} = 0$
+		\item[] $s_{valoresRestantes} = \sum_{i = 0}^{\#p - 1} p[i]_{valor}$
+	\end{itemize}
+	\item[] $m = 0$ (la mejor combinación de valores encontrada)
 \end{itemize}
 \Statex
-\Function{Knapsack-Optimalidad}{$p, s$}
-\Comment Retorna la mejor mochila o $s_{mejor}$
+\Function{Knapsack-Optimalidad}{$p, W, m, s$}
 \If{$s_i = -1$}
-	\State \Return $s_{mejor}$
 	\Comment Caso base
+	\State \Return m
 \EndIf
-\If{$s_{valor} + s_{restante} \leq s_{mejor}$}
-	\State \Return $s_{mejor}$
+\If{$s_{valor} + s_{valoresRestantes} \leq \text{mejor}$}
 	\Comment No puedo mejorar
+	\State \Return $m$
 \EndIf
-\If{$s_{peso} + p_{items}[s_i]_{peso} \leq p_{peso}$}
-	\State $\textit{s-tomando} \is \Call{Mochila-Tomando}{p, s}$
-	\State $s_{mejor} \is \Call{Knapsack-Optimalidad}{p, \textit{s-tomando}}$
+\If{$s_{peso} + p[s_i]_{peso} \leq W$}
 	\Comment $s_i \in mochila$
+	\State $m \is \Call{Knapsack-Optimalidad}{p,W,m, \text{ considerar } s_i,)}$
 \EndIf
-\State $\textit{s-sin-tomar} \is \Call{Mochila-Sin-Tomar}{p, s}$
-\State \Return $\Call{Knapsack-Optimalidad}{p, \textit{s-sin-tomar}}$
+\State $m \is \Call{Knapsack-Optimalidad}{p,W,m, \text{ no considerar } s_i}$
 \Comment $s_i \not\in mochila$
+\State \Return $m$
 \EndFunction
 \end{algorithmic}
 \begin{description}
@@ -309,8 +319,6 @@ el orden que le dimos a $p_{items}$
 	\item[\textbf{Memoria requerida:}] $O(1)$
 \end{description}
 \end{algorithm}
-
-\subsubsection{Casos favorables y desfavorables esperados}
 
 \subsection{Meet in Middle}
 
