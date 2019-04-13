@@ -28,43 +28,55 @@ casos/%.test: $(exes) casos/%.in casos/%.out
 		echo $* $$(cat casos/$*.out) $$(./$$exe < casos/$*.in); \
 	done;
 
-fotos/%.opt.png: casos/%.in backtracking_opt.algografico
+fotos/%.opt.pdf: casos/%.in backtracking_opt.algografico
 	./backtracking_opt.algografico < casos/$*.in \
 	| head -n -1 \
 	| awk 'BEGIN { print "digraph {" } { print $0 } END { print "}" }' \
-	| dot -Tpng > $@
+	| dot -Tpdf > $@
 
-fotos/%.fact.png: casos/%.in backtracking_fact.algografico
+fotos/%.fact.pdf: casos/%.in backtracking_fact.algografico
 	./backtracking_fact.algografico < casos/$*.in \
 	| head -n -1 \
 	| awk 'BEGIN { print "digraph {" } { print $0 } END { print "}" }' \
-	| dot -Tpng > $@
+	| dot -Tpdf > $@
 
-fotos/%.dinamica.png: casos/%.in dinamica.algografico
+fotos/%.dinamica.pdf: casos/%.in dinamica.algografico
 	./dinamica.algografico < casos/$*.in \
 	| head -n -1 \
 	| awk 'BEGIN { print "digraph {" } { print $0 } END { print "}" }' \
-	| dot -Tpng > $@
+	| dot -Tpdf > $@
 
 casos_a=$(wildcard casos/exp.a.*.in)
 runs_a=$(casos_a:casos/%.in=%)
 targets_a=$(foreach algo, $(algos), \
 		$(foreach run, $(runs_a), $(run).$(algo).stats))
 targets_a+=$(foreach algo, $(algos), exp.a.$(algo).series)
-fotos_a=$(foreach algo, $(algos), fotos/exp.a.$(algo).svg)
+fotos_a=$(foreach algo, $(algos), fotos/exp.a.$(algo).pdf)
 
-fotos/exp.a.%.svg: data/exp.a.%.series
+fotos/exp.a.%.pdf: data/exp.a.%.series
 	scripts/experimento_a.plot $^ $@
 
 exp_a:
 	(cd data; $(MAKE) $(targets_a))
 
+casos_b=$(wildcard casos/exp.b.*.in)
+runs_b=$(casos_b:casos/%.in=%)
+targets_b=$(foreach algo, backtracking_fact backtracking_opt mitm, \
+		$(foreach run, $(runs_b), $(run).$(algo).resultados))
+fotos_b=fotos/exp.b.dinamica.pdf
+
+exp_b:
+	(cd data; $(MAKE) $(targets_b))
+
 casos_c=$(wildcard casos/exp.c.*.in)
 targets_c=$(casos_c:casos/%.in=%.dinamica.stats)
-fotos_b=fotos/exp.c.dinamica.svg
+fotos_c=fotos/exp.c.dinamica.pdf
+
+fotos/exp.c.dinamica.pdf: data/exp.c.dinamica.series
+	scripts/experimento_c.plot
 
 exp_c:
 	(cd data; $(MAKE) $(targets_c))
 
-experimentos: exp_a $(fotos_a) exp_c $(fotos_c)
+experimentos: exp_a $(fotos_a) exp_b  exp_c $(fotos_c)
 	@

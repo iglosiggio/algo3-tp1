@@ -3,10 +3,10 @@
 # Eje Y = Tiempo
 
 file = "data/exp.c.dinamica.series"
-salida = "fotos/exp.c.dinamica.svg"
+salida = "fotos/exp.c.dinamica.pdf"
 
 set key noenhanced
-set term svg
+set term pdf
 set output salida
 set xlabel "n"
 set ylabel "Tiempo (ms)"

@@ -19,7 +19,8 @@ RUN=../scripts/run_test.sh
 	$(RUN) ../casos/$*.in ../dinamica.algo $(veces) $(timeout) | tee $@
 
 %.stats: %.resultados
-	../scripts/stats.awk < $^ > $@
+	grep -v Timeout $^ >/dev/null && ../scripts/stats.awk < $^ > $@ \
+	|| echo Timeout
 
 exp.a.%.series:
 	for stat in exp.a.*.$*.stats; do \

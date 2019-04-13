@@ -3,13 +3,13 @@
 # Eje Y = Tiempo
 
 file = "data/exp.a.fuerza_bruta.series"
-salida = "fotos/exp.a.fuerza_bruta.svg"
+salida = "fotos/exp.a.fuerza_bruta.pdf"
 
 if (ARG1 ne "") file = ARG1
 if (ARG2 ne "") salida = ARG2
 
 set key noenhanced
-set term svg
+set term pdf
 set output salida
 set xlabel "n"
 set ylabel "Tiempo (ms)"
