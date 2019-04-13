@@ -2,8 +2,8 @@
 *.o
 *.algo
 *.algografico
-fotos/*.fact.png
-fotos/*.opt.png
+fotos/*.png
+fotos/*.pdf
 mochila.pdf
 
 # Test autogenerados
