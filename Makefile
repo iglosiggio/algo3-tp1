@@ -71,7 +71,9 @@ exp_b:
 	(cd data; $(MAKE) $(targets_b))
 
 casos_c=$(wildcard casos/exp.c.*.in)
-targets_c=$(casos_c:casos/%.in=%.dinamica.stats)
+targets_c=$(casos_c:casos/%.in=%.dinamica.resultados)
+targets_c+=$(casos_c:casos/%.in=%.dinamica.stats)
+targets_c+=exp.c.dinamica.series
 fotos_c=fotos/exp.c.dinamica.pdf
 
 fotos/exp.c.dinamica.pdf: data/exp.c.dinamica.series
@@ -80,7 +82,7 @@ fotos/exp.c.dinamica.pdf: data/exp.c.dinamica.series
 exp_c:
 	(cd data; $(MAKE) $(targets_c))
 
-experimentos: exp_a $(fotos_a) exp_b $(fotos_b) exp_c $(fotos_c)
+experimentos: exp_a exp_b exp_c
 	@
 
 ilustraciones=fotos/pdf.dinamica.pdf
