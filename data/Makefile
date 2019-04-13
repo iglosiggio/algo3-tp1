@@ -20,7 +20,7 @@ RUN=../scripts/run_test.sh
 
 %.stats: %.resultados
 	grep -v Timeout $^ >/dev/null && ../scripts/stats.awk < $^ > $@ \
-	|| echo Timeout
+	|| echo 0 99999 99999 99999 > $@
 
 exp.a.%.series:
 	for stat in exp.a.*.$*.stats; do \
@@ -28,6 +28,13 @@ exp.a.%.series:
 		archivo=../casos/$$exp.in \
 		n=$$(head -n1 $$archivo | cut -f1 -d' '); \
 		echo $$n $$(cut -f3,4 -d' ' $$stat); \
+	done | sort > $@
+
+exp.b.%.series:
+	for stat in exp.b.*.$*.stats; do \
+		exp=$${stat%\.$*\.stats}; \
+		archivo=../casos/$$exp.in; \
+		echo $$(head -n1 $$archivo) $$(cut -f3,4 -d' ' $$stat); \
 	done | sort > $@
 
 exp.c.%.series:

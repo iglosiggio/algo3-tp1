@@ -62,8 +62,13 @@ exp_a:
 casos_b=$(wildcard casos/exp.b.*.in)
 runs_b=$(casos_b:casos/%.in=%)
 targets_b=$(foreach algo, backtracking_fact backtracking_opt mitm, \
-		$(foreach run, $(runs_b), $(run).$(algo).resultados))
-fotos_b=fotos/exp.b.dinamica.pdf
+		$(foreach run, $(runs_b), $(run).$(algo).stats))
+targets_b+=$(foreach algo, backtracking_fact backtracking_opt mitm, \
+		exp.b.$(algo).series)
+fotos_b=fotos/exp.b.backtracking_fact.pdf fotos/exp.b.backtracking_opt.pdf fotos/exp.b.mitm.pdf
+
+fotos/exp.b.%.pdf: data/exp.b.%.series
+	scripts/experimento_b.plot $^ $@
 
 exp_b:
 	(cd data; $(MAKE) $(targets_b))
@@ -78,5 +83,5 @@ fotos/exp.c.dinamica.pdf: data/exp.c.dinamica.series
 exp_c:
 	(cd data; $(MAKE) $(targets_c))
 
-experimentos: exp_a $(fotos_a) exp_b  exp_c $(fotos_c)
+experimentos: exp_a $(fotos_a) exp_b $(fotos_b) exp_c $(fotos_c)
 	@
