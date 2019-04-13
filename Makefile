@@ -51,7 +51,7 @@ runs_a=$(casos_a:casos/%.in=%)
 targets_a=$(foreach algo, $(algos), \
 		$(foreach run, $(runs_a), $(run).$(algo).stats))
 targets_a+=$(foreach algo, $(algos), exp.a.$(algo).series)
-fotos_a+=$(foreach algo, $(algos), fotos/exp.a.$(algo).svg)
+fotos_a=$(foreach algo, $(algos), fotos/exp.a.$(algo).svg)
 
 fotos/exp.a.%.svg: data/exp.a.%.series
 	scripts/experimento_a.plot $^ $@
@@ -61,9 +61,10 @@ exp_a:
 
 casos_c=$(wildcard casos/exp.c.*.in)
 targets_c=$(casos_c:casos/%.in=%.dinamica.stats)
+fotos_b=fotos/exp.c.dinamica.svg
 
 exp_c:
 	(cd data; $(MAKE) $(targets_c))
 
-experimentos: exp_a $(fotos_a) exp_c
+experimentos: exp_a $(fotos_a) exp_c $(fotos_c)
 	@

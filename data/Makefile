@@ -28,3 +28,11 @@ exp.a.%.series:
 		n=$$(head -n1 $$archivo | cut -f1 -d' '); \
 		echo $$n $$(cut -f3,4 -d' ' $$stat); \
 	done | sort > $@
+
+exp.c.%.series:
+	for stat in exp.c.*.$*.stats; do \
+		exp=$${stat%\.$*\.stats}; \
+		archivo=../casos/$$exp.in; \
+		n=$$(head -n1 $$archivo | cut -f1 -d' '); \
+		echo $$n $$(cut -f3,4 -d' ' $$stat); \
+	done | sort > $@
