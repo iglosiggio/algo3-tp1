@@ -20,6 +20,14 @@ clean:
 
 %.test: casos/%.test
 	@
+
+test: $(tests)
+
+casos/%.test: $(exes) casos/%.in casos/%.out
+	@for exe in $(exes); do \
+		echo $* $$(cat casos/$*.out) $$(./$$exe < casos/$*.in); \
+	done;
+
 fotos/%.opt.png: casos/%.in backtracking_opt.algografico
 	./backtracking_opt.algografico < casos/$*.in \
 	| head -n -1 \
@@ -38,9 +46,13 @@ fotos/%.dinamica.png: casos/%.in dinamica.algografico
 	| awk 'BEGIN { print "digraph {" } { print $0 } END { print "}" }' \
 	| dot -Tpng > $@
 
-casos/%.test: $(exes) casos/%.in casos/%.out
-	@for exe in $(exes); do \
-		echo $* $$(cat casos/$*.out) $$(./$$exe < casos/$*.in); \
-	done;
+experimentos: exp_a
+	@
 
-test: $(tests)
+casos_a=$(wildcard casos/exp.a.*.in)
+runs_a=$(casos_a:casos/%.in=%)
+targets_a=$(foreach algo, $(algos), \
+		$(foreach run, $(runs_a), $(run).$(algo).resultados))
+
+exp_a:
+	(cd data; $(MAKE) $(targets_a)); \

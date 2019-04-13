@@ -8,26 +8,14 @@ algo=$2
 veces=$3
 timeout=$4
 
-run_with_timeout() (
-	"$algo" < "$test" &
-	corrida=$!
-	(
-		sleep "$timeout"
-		if [ -d /proc/$corrida ]; then
-			kill $corrida
-			echo error timeout
-		fi
-	) &
-	limite=$!
-	wait $corrida
-	rval=$?
-	[ -d /proc/$limite ] && kill $limite
-	return $rval
-)
+die() {
+	echo "$@"
+	exit
+}
 
 i=0
 while [ "$i" -lt "$veces" ]; do
-	run_with_timeout || exit 1
+	timeout "${timeout}s" "$algo" < "$test" || die Timeout
 	i=$((i + 1))
 done
 
