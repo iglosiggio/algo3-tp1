@@ -420,11 +420,11 @@ considerando si agregarlo o no. La diferencia que lo distingue de backtracking
 es que almacenaremos las decisiones tomadas para no tener que volver a
 calcularlas.
 
-Nuestros subproblemas son las mochilas con los primeros $i \le \#\text{items}$
-elementos y un peso máximo $w' \le W$. Podemos notar que si tenemos todas las
-mochilas $(i' < i, w'' \le w')$ entonces nuestro problema se reduce a
-determinar si el mayor valor se obtiene utilzando el $i$-ésimo elemento (dado
-que no se exceda en peso) o ignorándolo.
+Nuestros subproblemas son las mochilas con los primeros $i$ elementos ($i \le
+\#\text{items}$) y un peso máximo $w'$ ($w' \le W$). Podemos notar que si
+tenemos todas las mochilas $(i' < i, w'' \le w')$ entonces nuestro problema se
+reduce a determinar si el mayor valor se obtiene utilzando el $i$-ésimo
+elemento (dado que no se exceda en peso) o ignorándolo.
 
 La esencia del algoritmo será \emph{top-down} (consideramos el problema
 completo y lo dividimos hasta llegar a problemas triviales) y tendrá dos
