@@ -7,9 +7,6 @@ tests=$(casos:.in=.test)
 
 all: mochila.pdf $(exes) $(algos_graficos) main.o
 
-mochila.pdf: mochila.tex
-	latexmk mochila.tex -pdf
-
 %.algo: algos/%.cpp main.o
 	$(CXX) $(CXXFLAGS) $^ -o $@
 %.algografico: algos/%.cpp main.o
@@ -85,3 +82,6 @@ exp_c:
 
 experimentos: exp_a $(fotos_a) exp_b $(fotos_b) exp_c $(fotos_c)
 	@
+
+mochila.pdf: mochila.tex $(fotos_a) $(fotos_b) $(fotos_c)
+	latexmk mochila.tex -pdf
