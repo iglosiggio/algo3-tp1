@@ -17,7 +17,7 @@
 
 %%% PAGE DIMENSIONS
 \usepackage{geometry} % to change the page dimensions
-\geometry{a4paper} % or letterpaper (US) or a5paper or....
+\geometry{a4paper,top=20mm,bottom=20mm}
 % for example, change the margins to 2 inches all round
 % \geometry{margin=2in}
 % set up the page for landscape
@@ -26,6 +26,7 @@
 
 % support the \includegraphics command and options
 \usepackage{graphicx}
+\usepackage{wrapfig}
 
 % Activate to begin paragraphs with an empty line rather than an indent
 \usepackage[parfill]{parskip}
@@ -77,6 +78,7 @@
 \usepackage{algorithm,algorithmicx}
 \usepackage[noend]{algpseudocode}
 \algrenewcommand\alglinenumber[1]{{\sf\footnotesize\texttt{#1}}}
+\renewcommand{\figurename}{Fig.}
 \def\is{\coloneqq}
 
 \usepackage[linguistics]{forest}
@@ -287,8 +289,6 @@ mejorarla\footnote{En caso contrario podemos devolver $m$ ya que sabemos que es
 una mochila válda.}. En nuestra implementación previo a correr el algoritmo
 ordenamos los ítems para conseguir un $m$ grande lo antes posible.
 
-\clearpage
-
 \begin{algorithm}
 \caption{Backtracking con poda por optimalidad}
 \begin{algorithmic}[1]
@@ -481,58 +481,116 @@ subproblema de otro es el par $(i, w')$.} por lo que por cada $i$
 realizaremos a lo sumo $W$ cálculos. Entonces para cada $i$ tenemos una
 complejidad de $O(W)$ y $\sum_{i=0}^{n} O(W) = O(n \times W)$.
 
+\begin{figure}[h]
 \begin{center}
-\includegraphics[width=0.9\linewidth]{{fotos/pdf.dinamica}.pdf}
+\includegraphics[width=0.9\textwidth]{{fotos/pdf.dinamica}.pdf}
+\caption{Llamadas recursivas sobre \texttt{casos/pdf.in}. Las líneas punteadas
+indican valores ya calculados.}
 \end{center}
+\end{figure}
 
 \section{Experimentación}
 
-Cada test se repite 50 veces. Se usa el promedio y se calcula la desviación
-estándar.
-
-\begin{enumerate}[A.]
-\item $(n \in [15; 24];
-	W=\frac{\sum p_i}{2};
-	0 \leq p_i, v_i \leq 100)$
-
 \begin{itemize}
-	\item Corremos todos los algoritmos.
-\item Queremos las cotas de complejidad.
+\item Se repite cada prueba 50 veces. Se calcula el promedio.
+
+\item Se dispone de un tiempo límite de 30 segundos por cada prueba (es decir,
+el máximo tiempo de procesamiento por un caso de prueba es 25 minutos).
+
+\item Cada experimentación consta de 250 casos de prueba.
 \end{itemize}
 
-\item $(n \in [25; 70];
-	W \in [2; \sum p_i];
-	0 \leq p_1, v_i \leq 100)$
+\subsubsection{Experimento A}
 
-\begin{itemize}
-\item No corremos fuerza bruta.
-\item Queremos anlizar los casos favorables y desfavorables de backtracking.
-\item No corremos \emph{meet-in-the-middle} para $n \geq 55$
-\end{itemize}
+\begin{wrapfigure}{R}[2cm]{0.45\linewidth}
+\vspace{-50pt}
+\includegraphics[width=\linewidth]{{fotos/exp.a.fuerza_bruta}.pdf}
+\caption{Fuerza bruta}
+\includegraphics[width=\linewidth]{{fotos/exp.a.backtracking_fact}.pdf}
+\caption{Backtracking (factibilidad)}
+\includegraphics[width=\linewidth]{{fotos/exp.a.backtracking_opt}.pdf}
+\caption{Backtracking (optimalidad)}
+\includegraphics[width=0.45\textwidth]{{fotos/exp.a.dinamica}.pdf}
+\caption{Programación dinámica}
+\end{wrapfigure}
 
-\item $(n = W \in [100; 1000];
-        0 < p_i < \frac{W}{2};
-        1 \leq v_i \leq 5000)$
+Nuestro primer experimento tiene como objetivo ver cómo se relaciona la
+cantidad de ítems a procesar con el tiempo que tarda cada lagoritmo en
+procesarlos. Para este fin usaremos una entre 15 y 24 ítems y para evitar los
+casos favorables de las podas de backtracking el peso máximo será la mitad del
+peso total a procesar. Cada peso y valor estará entre 0 y 100.
 
-Corremos dinámica para analizar la cota de complejida y comparar.
-\end{enumerate}
+\begin{center}
+$n \in [15; 24]; W=\frac{\sum p_i}{2}; 0 \leq p_i, v_i \leq 100$
+\end{center}
 
-\includegraphics[width=0.5\linewidth]{{fotos/exp.a.fuerza_bruta}.pdf}
+Los resultados fueron los esperables para casi todos los algoritmos exceptuando
+el caso de la poda de optimalidad. Es probable que ésta esté podando de manera
+muy agresiva haciendo que la complejidad promedio esté alrededor de
+$2^\frac{n}{2}$.
 
-\includegraphics[width=0.5\linewidth]{{fotos/exp.a.backtracking_fact}.pdf}
+\begin{center}
+\includegraphics[width=0.45\textwidth]{{fotos/exp.a.mitm}.pdf}
+\captionof{figure}{Meet in the Middle}
+\end{center}
 
-\includegraphics[width=0.5\linewidth]{{fotos/exp.a.backtracking_opt}.pdf}
+\subsubsection{Experimento B}
 
-\includegraphics[width=0.5\linewidth]{{fotos/exp.a.mitm}.pdf}
+Para analizar más a fondo los casos favorables y desfavorable de nuestros
+algoritmos de backtracking construimos tests variando $n$ y $W$. $W$ es un
+valor aleatorio menor o igual a la suma de todos los pesos (un $W$ muy alto es
+trivial de resolver para las podas contruídas).
 
-\includegraphics[width=0.5\linewidth]{{fotos/exp.a.dinamica}.pdf}
+\begin{center}
+$n \in [25; 70]; W \in [2; \sum p_i]; 0 \leq p_1, v_i \leq 100$
+\end{center}
 
-\includegraphics{{fotos/exp.b.backtracking_fact}.pdf}
+\clearpage
 
-\includegraphics{{fotos/exp.b.backtracking_opt}.pdf}
+Cada punto en los gráficos a continuación es el promedio de 50 corridas de un
+caso de prueba. Los puntos grises son casos que no pudimos evaluar debido al
+tiempo límite de 30 segundos por corrida. El script que genera estos gráficos
+puede encontrarse  en \texttt{scripts/experimento\_b.plot}.
 
-\includegraphics{{fotos/exp.b.mitm}.pdf}
+\vspace{1em}
+\hspace{-3cm}
+\begin{minipage}{1.4\textwidth}
+\begin{minipage}{0.33\textwidth}
+\centering
+\includegraphics[width=\linewidth]{{fotos/exp.b.backtracking_fact}.pdf}
+\captionof{figure}{Backtracking (factibilidad)}
+\end{minipage}
+\begin{minipage}{0.33\textwidth}
+\centering
+\includegraphics[width=\linewidth]{{fotos/exp.b.backtracking_opt}.pdf}
+\captionof{figure}{Backtracking (optimalidad)}
+\end{minipage}
+\begin{minipage}{0.33\textwidth}
+\centering
+\includegraphics[width=\linewidth]{{fotos/exp.b.mitm}.pdf}
+\captionof{figure}{Meet in the Middle}
+\end{minipage}
+\end{minipage}
 
+Puede verse que tanto la poda por factibilidad cómo la poda por optimalidad
+logran resolver valores de $n$ dónde meet-in-the-middle se queda sin memoria o
+tiene que operar con subconjuntos demasiado grandes. Sin embargo sólo son
+capaces de resolver éstos problemas para combinaciones de $n$ y $W$ dónde la
+solución no requiera explorar mochilas de demasiados elementos.
+
+\subsubsection{Experimento C}
+
+Corremos dinámica para analizar la cota de complejidad y comparar. La idea de
+este experimento es poder ver el crecimiento cuadrático del algoritmo de
+dinámica cuando $n = W$.
+
+\begin{center}
+$n = W \in [100; 1000]; 0 < p_i < \frac{W}{2}; 1 \leq v_i \leq 5000$
+\end{center}
+
+\begin{figure}[h]
 \includegraphics{{fotos/exp.c.dinamica}.pdf}
+\caption{Programación Dinámica}
+\end{figure}
 
 \end{document}
