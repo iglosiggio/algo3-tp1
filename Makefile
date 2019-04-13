@@ -46,13 +46,24 @@ fotos/%.dinamica.png: casos/%.in dinamica.algografico
 	| awk 'BEGIN { print "digraph {" } { print $0 } END { print "}" }' \
 	| dot -Tpng > $@
 
-experimentos: exp_a
-	@
-
 casos_a=$(wildcard casos/exp.a.*.in)
 runs_a=$(casos_a:casos/%.in=%)
 targets_a=$(foreach algo, $(algos), \
-		$(foreach run, $(runs_a), $(run).$(algo).resultados))
+		$(foreach run, $(runs_a), $(run).$(algo).stats))
+targets_a+=$(foreach algo, $(algos), exp.a.$(algo).series)
+fotos_a+=$(foreach algo, $(algos), fotos/exp.a.$(algo).svg)
+
+fotos/exp.a.%.svg: data/exp.a.%.series
+	scripts/experimento_a.plot $^ $@
 
 exp_a:
-	(cd data; $(MAKE) $(targets_a)); \
+	(cd data; $(MAKE) $(targets_a))
+
+casos_c=$(wildcard casos/exp.c.*.in)
+targets_c=$(casos_c:casos/%.in=%.dinamica.stats)
+
+exp_c:
+	(cd data; $(MAKE) $(targets_c))
+
+experimentos: exp_a $(fotos_a) exp_c
+	@

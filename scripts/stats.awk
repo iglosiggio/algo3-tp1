@@ -7,13 +7,16 @@
 
 {
 	suma += $3
-	suma_cuadrada += $3 ^ 2
-	veces++
+	datos[veces++] = $3
 }
 
 END {
 	esperanza = suma / veces
-	esperanza_cuadrada = suma_cuadrada / veces
-	varianza = esperanza_cuadrada - (esperanza ^ 2)
+
+	for (i = 0; i < veces; i++)
+		error_cuadrado += (datos[i] - esperanza) ^ 2
+
+	varianza = error_cuadrado / (veces - 1)
+
 	print veces, suma, esperanza, sqrt(varianza)
 }
