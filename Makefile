@@ -83,5 +83,7 @@ exp_c:
 experimentos: exp_a $(fotos_a) exp_b $(fotos_b) exp_c $(fotos_c)
 	@
 
-mochila.pdf: mochila.tex $(fotos_a) $(fotos_b) $(fotos_c)
+ilustraciones=fotos/pdf.dinamica.pdf
+
+mochila.pdf: mochila.tex $(fotos_a) $(fotos_b) $(fotos_c) $(ilustraciones)
 	latexmk mochila.tex -pdf

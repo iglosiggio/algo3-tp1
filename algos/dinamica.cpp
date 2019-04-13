@@ -14,13 +14,11 @@ using Matriz = std::vector<Fila>;
 
 uint64_t dinamica(uint32_t i, uint32_t restante, uint32_t* pesos,
                   uint32_t* valores, Matriz& dp) {
+
 	if (i == UINT32_MAX)
 		return 0;
 
 	uint64_t& celda = dp[i][restante];
-
-	if (celda != VACIO)
-		return celda;
 
 #ifdef REPORTAR
 	static std::vector<std::string> padres(i + 1);
@@ -33,13 +31,22 @@ uint64_t dinamica(uint32_t i, uint32_t restante, uint32_t* pesos,
 
 	padres[i] = '"' + node + '"';
 
+	if (celda != VACIO)
+		std::cout << "edge [style=dashed]" << std::endl;
+
 	if (i + 1 == padres.size())
 		std::cout << padres[i] << std::endl;
 
 	if (i + 1 != padres.size())
 		std::cout << padres[i + 1] << " -> " << padres[i]
 		          << std::endl;
+
+	if (celda != VACIO)
+		std::cout << "edge [style=solid]" << std::endl;
 #endif
+
+	if (celda != VACIO)
+		return celda;
 
 	celda = dinamica(i - 1, restante, pesos, valores, dp);
 
