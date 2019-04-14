@@ -17,6 +17,7 @@ clean:
 
 %.algo: algos/%.cpp main.o
 	$(CXX) $(CXXFLAGS) $^ -o $@
+
 %.algografico: algos/%.cpp main.o
 	$(CXX) $(CXXFLAGS) -DREPORTAR $^ -o $@
 
@@ -52,8 +53,20 @@ correlacion=fotos/exp.a.correlacion.fuerza_bruta.pdf \
 grafos=fotos/pdf.dinamica.pdf
 
 # Gráficos de cada experimento
-fotos/exp.a.%.pdf: data/exp.a.%.series scripts/experimento_a.plot
-	scripts/experimento_a.plot data/exp.a.$*.series $@
+# En los gráficos que toman una función como parámetro x=n y=W
+fotos/exp.a.fuerza_bruta.pdf: data/exp.a.fuerza_bruta.series \
+	scripts/experimento_a.plot
+	scripts/experimento_a.plot data/exp.a.fuerza_bruta.series $@ 'k*x*2**x'
+
+fotos/exp.a.backtracking%.pdf: data/exp.a.backtracking%.series \
+	scripts/experimento_a.plot
+	scripts/experimento_a.plot data/exp.a.backtracking$*.series $@ 'k*2**x'
+
+fotos/exp.a.mitm.pdf: data/exp.a.mitm.series scripts/experimento_a.plot
+	scripts/experimento_a.plot data/exp.a.mitm.series $@ 'k*2**(x/2)'
+
+fotos/exp.a.dinamica.pdf: data/exp.a.dinamica.series scripts/experimento_a.plot
+	scripts/experimento_a.plot data/exp.a.dinamica.series $@ 'k*x*y'
 
 fotos/exp.b.%.pdf: data/exp.b.%.series scripts/experimento_b.plot
 	scripts/experimento_b.plot data/exp.b.$*.series $@

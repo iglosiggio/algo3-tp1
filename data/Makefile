@@ -57,9 +57,8 @@ endif
 exp.a.%.series: $(nombres_a:=.%.stats)
 	for stat in exp.a.*.$*.stats; do \
 		exp=$${stat%\.$*\.stats}; \
-		archivo=../casos/$$exp.in \
-		n=$$(head -n1 $$archivo | cut -f1 -d' '); \
-		echo $$n $$(cut -f3,4 -d' ' $$stat); \
+		archivo=../casos/$$exp.in; \
+		echo $$(head -n1 $$archivo) $$(cut -f3,4 -d' ' $$stat); \
 	done | sort > $@
 
 exp.b.%.series: $(nombres_b:=.%.stats)
