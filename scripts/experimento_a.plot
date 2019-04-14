@@ -10,7 +10,7 @@ if (ARG1 ne "") file = ARG1
 if (ARG2 ne "") salida = ARG2
 if (ARG3 ne "") fn = ARG3
 
-f(x,y) = @fn
+f(n,W) = @fn
 
 fit f(x,y) file using 1:2:3 via k
 stats file using 3:(f($1,$2)) name "DATA"
