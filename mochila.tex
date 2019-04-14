@@ -362,8 +362,7 @@ mejor de todas. Existen multiples formas de hacerlo:
 
 \begin{enumerate}
 	\item Iterar sobre todos los elementos (desestimaremos esta posibilidad
-	dado que nos daría una complejidad $O(2^n)$ por lo que no ganaríamos
-	mucho respecto de fuerza bruta).
+	dado que su complejidad sería $O(2^n)$, no ganaríamos mucho respecto de fuerza bruta).
 
 	\item Ordenar $A$ ó $B$, descartando conjuntos inútiles y recorrer el otro linealmente, hallar su mejor combinación con el conjunto ordenado con una búsqueda binaria. Este método nos ofrece una complejidad final de
 	$O(n \times 2^{\frac{n}{2}})$.
@@ -382,30 +381,30 @@ mejor de todas. Existen multiples formas de hacerlo:
 \end{itemize}
 \item[\textbf{Funciones auxiliares:}]
 \item[] \begin{itemize}
-	\setlength\itemsep{0.5em}
-	\item[] \Call{resCombinaciones}{$p, start, end$} Arma resultados con partes de $p \in $ indices $start$ y $end$, siendo cada resultado $\sum_{i = 0}^{(\#combinacion -1)} (peso_i, valor_i)$. 
+	\setlength\itemsep{0.4em}
+	\item[] \Call{mochilas}{$p$} Arma resultados con partes de $p$, siendo cada resultado $\sum_{i = 0}^{(\#combinacion -1)} (peso_i, valor_i)$. 
 	
 	\item[] \Call{ordenar}{$p$} Ordenamiendo por compacación con
 	complejidad $O(n\log n)$
 	
-	\item[] \Call{descartarCombinaciones}{$p$} donde $\forall (W' < W$), elimina todos los pares con peso W', cuyo valor no sea máximo. Complejidad $O(p)$ si ordenados. 
+	\item[] \Call{descartar}{$p$} donde $\forall (par_i)$ con $(0 < i < \#p)$, elimina el par si el $par_{i-1}$ poseé un valor mayor. Requiere $p$ ordenado, complejidad $O(p)$
 
-	\item[] \Call{busquedaDeLimiteSuperior}{$p, k$} búsqueda binaria, devuelve la primera aparición que es igual a k, o el valor pequeña más cercano.
+	\item[] \Call{busqueda}{$p, k$} búsqueda binaria, devuelve la primera aparición que es igual a k, o el valor pequeño más cercano.
 \end{itemize}
 \Statex
 \Function{Knapsack-MeetInTheMiddle}{$p, w$}
-\State $Izq$ $\is \Call{resCombinaciones}{p, 0, \frac{n}{2}}$
-\State $Der$ $\is \Call{resCombinaciones}{p, \frac{n}{2}, n}$
+\State $Izq$ $\is \Call{mochilas}{p[0\dots \frac{n}{2}]}$
+\State $Der$ $\is \Call{mochilas}{p[\frac{n}{2}\dots n]}$
 \Comment Armo los subconjuntos
 
 \State $Der$ $\is \Call{ordenar}{\text{der}}$
 \Comment Ordeno uno de los 2 subconjuntos
-\State $Der$ $\is \Call{descartarCombinaciones}{\text{der}}$
+\State $Der$ $\is \Call{descartar}{\text{der}}$
 \Comment elimino conjuntos sobrantes.
 
 \For{$(a \in Izq)$}
 	\If{$a_{peso} \leq w$}
-	\State $b \is \Call{busquedaDeLimiteSuperior}{Der, w - a_{peso}}$
+	\State $b \is \Call{busqueda}{Der, w - a_{peso}}$
 		\If{$a_{peso} + b_{peso} > v_{mejor}$}
 			\State  $v_{mejor} \is a_{peso} + b_{peso} > $
 		\EndIf
