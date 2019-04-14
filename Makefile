@@ -52,13 +52,13 @@ correlacion=fotos/exp.a.correlacion.fuerza_bruta.pdf \
 grafos=fotos/pdf.dinamica.pdf
 
 # Gráficos de cada experimento
-fotos/exp.a.%.pdf: data/exp.a.%.series
-	scripts/experimento_a.plot $^ $@
+fotos/exp.a.%.pdf: data/exp.a.%.series scripts/experimento_a.plot
+	scripts/experimento_a.plot data/exp.a.$*.series $@
 
-fotos/exp.b.%.pdf: data/exp.b.%.series
-	scripts/experimento_b.plot $^ $@
+fotos/exp.b.%.pdf: data/exp.b.%.series scripts/experimento_b.plot
+	scripts/experimento_b.plot data/exp.b.$*.series $@
 
-fotos/exp.c.dinamica.pdf: data/exp.c.dinamica.series
+fotos/exp.c.dinamica.pdf: data/exp.c.dinamica.series scripts/experimento_c.plot
 	scripts/experimento_c.plot
 
 # Gráficos de llamadas recursivas
@@ -81,18 +81,26 @@ fotos/%.dinamica.pdf: casos/%.in dinamica.algografico
 	| dot -Tpdf > $@
 
 # Gráficos de correlación
-fotos/exp.a.correlacion.fuerza_bruta.pdf: data/exp.a.fuerza_bruta.series
-	scripts/experimento_a_correlacion.plot $^ $@ '$$1*2**$$1'
+fotos/exp.a.correlacion.fuerza_bruta.pdf: data/exp.a.fuerza_bruta.series \
+	scripts/experimento_a_correlacion.plot
+	scripts/experimento_a_correlacion.plot \
+		data/exp.a.fuerza_bruta.series $@ '$$1*2**$$1'
 
-fotos/exp.a.correlacion.backtracking%.pdf: data/exp.a.backtracking%.series
+fotos/exp.a.correlacion.backtracking%.pdf: data/exp.a.backtracking%.series \
+	scripts/experimento_a_correlacion.plot
 	# ¿Esto está bien? ¿Realmente son O(2^n)?
-	scripts/experimento_a_correlacion.plot $^ $@ '2**$$1'
+	scripts/experimento_a_correlacion.plot \
+		data/exp.a.backtracking$*.series $@ '2**$$1'
 
-fotos/exp.a.correlacion.mitm.pdf: data/exp.a.mitm.series
-	scripts/experimento_a_correlacion.plot $^ $@ '$$1*2**($$1 / 2)'
+fotos/exp.a.correlacion.mitm.pdf: data/exp.a.mitm.series \
+	scripts/experimento_a_correlacion.plot
+	scripts/experimento_a_correlacion.plot \
+		data/exp.a.mitm.series $@ '$$1*2**($$1 / 2)'
 
-fotos/exp.b.correlacion.dinamica.pdf: data/exp.b.dinamica.series
-	scripts/experimento_correlacion_dinamica.plot $^ $@
+fotos/exp.b.correlacion.dinamica.pdf: data/exp.b.dinamica.series \
+	scripts/experimento_correlacion_dinamica.plot
+	scripts/experimento_correlacion_dinamica.plot \
+		data/exp.b.dinamica.series $@
 
 mochila.pdf: mochila.tex $(fotos_a) $(fotos_b) $(fotos_c) $(correlacion) \
 	$(grafos)
