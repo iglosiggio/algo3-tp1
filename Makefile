@@ -90,7 +90,7 @@ correlacion=fotos/exp.a.correlacion.fuerza_bruta.pdf \
 	    fotos/exp.a.correlacion.backtracking_fact.pdf \
 	    fotos/exp.a.correlacion.backtracking_opt.pdf \
 	    fotos/exp.a.correlacion.mitm.pdf \
-	    fotos/exp.c.correlacion.dinamica.pdf # Usamos un dataset más acorde
+	    fotos/exp.b.correlacion.dinamica.pdf # Usamos un dataset más acorde
 
 fotos/exp.a.correlacion.fuerza_bruta.pdf: data/exp.a.fuerza_bruta.series
 	scripts/experimento_a_correlacion.plot $^ $@ '$$1*2**$$1'
@@ -108,9 +108,6 @@ fotos/exp.a.correlacion.mitm.pdf: data/exp.a.mitm.series
 
 fotos/exp.b.correlacion.dinamica.pdf: data/exp.b.dinamica.series
 	scripts/experimento_correlacion_dinamica.plot $^ $@
-
-fotos/exp.c.correlacion.dinamica.pdf: data/exp.c.dinamica.series
-	scripts/experimento_a_correlacion.plot $^ $@ '$$1**2'
 
 ilustraciones=fotos/pdf.dinamica.pdf
 
