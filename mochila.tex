@@ -336,11 +336,11 @@ dividimos el problema en 2 partes iguales de dimensión $\frac{n}{2}$,
 conseguimos suficiente información para poder resolver nuestro problema y
 finalmente construimos la respuesta.
 
-Si construimos $\text{izq} = \{a : a \subseteq A\}$ y $\text{der} = \{b : b
-\subseteq B\}$ siendo $A$ y $B$ las dos mitades de nuestro conjunto de ítems
+Si construimos $\text{A} = \{a : a \subseteq p\}$ y $\text{B} = \{b : b
+\subseteq p\}$ siendo $A$ y $B$ las dos mitades de nuestro conjunto de ítems
 entonces los conjuntos solución son todos de la forma $a \bigcup b$\footnote{Si
 una solución se encontrase completa en cualquiera de las dos mitades se puede
-unir al conjunto vacío de la otra.}. Una vez construidos izq y der podemos
+unir al conjunto vacío de la otra.}. Una vez construidos podemos
 buscar la mejor pareja de cualquier subconjunto de una mitad dentro de los
 subconjuntos de la otra.
 
@@ -380,13 +380,12 @@ mejor de todas. Existen multiples formas de hacerlo:
 \end{itemize}
 \item[\textbf{Funciones auxiliares:}]
 \item[] \begin{itemize}
-	\item[] \Call{ordenar}{$p$} Un ordenamiendo por compacación con
+	\item[] \Call{resCombinaciones}{$p, start, end$} Arma resultados en partes de $p$ siendo cada resultado $\sum_{i = 0}^{(\#combinacion -1)} (peso_i, valor_i)$.
+	
+	\item[] \Call{ordenar}{$p$} Ordenamiendo por compacación con
 	complejidad $O(n\log n)$
-
-	\item[] \Call{construirCombinaciones}{$p, start, end$} como algoritmo
-	que calcula todas las sumas de subconjuntos $p'$ de los pares p que se
-	encuentran entre los indices enteros start y end, incluye conjunto
-	vacio.
+	
+	\item[] \Call{descartarCombinaciones}{$p$} donde $\forall (W' < W$), elimina todos los pares con peso W', cuyo valor no sea máximo. Complejidad $O(p)$ si ordenados.
 
 	\item[] \Call{busquedaPorLimiteSuperior}{$p, k$} Búsqueda binaria de
 	pares, devuelve la primera aparición ques es igual a k, o el valor
@@ -397,8 +396,12 @@ mejor de todas. Existen multiples formas de hacerlo:
 \State izq $\is \Call{construirCombinaciones}{p, 0, \frac{n}{2}}$
 \State der $\is \Call{construirCombinaciones}{p, \frac{n}{2}, n}$
 \Comment Armo los subconjuntos
+
 \State der $\is \Call{ordenar}{\text{der}}$
 \Comment Ordeno uno de los 2 subconjuntos
+\State der $\is \Call{descartarCombinaciones}{\text{der}}$
+\Comment elimino conjuntos sobrantes.
+
 \For{$A \in \text{izq}$}
 	\If{$A_{peso} \leq w$}
 	\State $B \is \Call{busquedaPorLimiteSuperior}{der, w - A_{peso}}$
