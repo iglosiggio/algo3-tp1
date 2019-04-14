@@ -321,7 +321,7 @@ ordenamos los ítems para conseguir un $m$ grande lo antes posible.
 \EndFunction
 \end{algorithmic}
 \begin{description}
-	\item[\textbf{Complejidad algorítmica:}] $O(n \times 2^n)$
+	\item[\textbf{Complejidad algorítmica:}] $O(2^n)$
 	\item[\textbf{Memoria requerida:}] $O(1)$
 \end{description}
 \end{algorithm}
@@ -345,10 +345,9 @@ Definiremos entonces que nuestro algoritmo debe realizar los siguientes pasos:
 
 \begin{enumerate}
 \item Separar el conjunto de ítems en 2 subconjuntos $A$, $B$. $A$ teniendo los
-primeros $\frac{n}{2}$ ítems y $B$ el resto.
+primeros $\frac{n}{2}$ mochilas posibles de partes de p y $B$ el resto.
 
-\item Construir los conjuntos de partes de $A$ y $B$. Para obtener los posibles
-candidatos. El precio de armar cada uno es de $O(2^{\frac{n}{2}})$.
+\item Construir las mochilas de partes de $A$ y $B$. Es decir los pares $(peso, valor)$. El precio de armar cada uno es de $O(2^{\frac{n}{2}})$.
 
 \item Combinarlos, encontrar las combinaciones $a \bigcup b$ quedándonos con la
 mejor de todas. Existen multiples formas de hacerlo:
@@ -377,7 +376,7 @@ mejor de todas. Existen multiples formas de hacerlo:
 \end{itemize}
 \item[\textbf{Funciones auxiliares:}]
 \item[] \begin{itemize}
-	\setlength\itemsep{0.4em}
+	\setlength\itemsep{0.3em}
 	\item[] \Call{mochilas}{$p$} Arma el conjunto de mochilas posibles con
 	los ítems de $p$.
 	
@@ -413,7 +412,7 @@ mejor de todas. Existen multiples formas de hacerlo:
 \EndFunction
 \end{algorithmic}
 \begin{description}
-	\item[\textbf{Complejidad algorítmica:}] $O(n \times 2^{\frac{n}{2}})$
+	\item[\textbf{Complejidad algorítmica:}] $O(2^{\frac{n}{2}})$
 	\item[\textbf{Memoria requerida:}] $O(2^{\frac{n}{2}}))$
 \end{description}
 \end{algorithm}
