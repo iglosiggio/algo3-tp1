@@ -157,16 +157,8 @@ Como puede notarse, es posible que exista más de un subconjunto máximo.
 El objetivo de este trabajo es mostrar diferentes algoritmos que resuelven el
 problema planteado comparando sus ventajas y desventajas. Para esto se
 construirán diferentes experimentos buscando respaldar los resultados teóricos
-con experimentos apropiados.
-
-Para cada algoritmo planteado buscamos responder las siguientes preguntas:
-
-\begin{itemize}
-\item[] ¿Cómo afectan el peso máximo y la cantidad de ítems al rendimiento?
-\item[] ¿En qué situaciones resulta útil este algoritmo respecto de los otros?
-\item[] ¿Cuál es la complejidad teórica?
-\item[] ¿Cuál es el requisito en memoria? ¿Puede suponer un problema?
-\end{itemize}
+con experimentos apropiados. Por cada algoritmo ofreceremos cotas de
+complejidad tanto en tiempo como en memoria.
 
 \section{Algoritmos explorados}
 
@@ -180,8 +172,9 @@ Si no conocemos ninguna forma buena de eliminar subconjuntos inútiles entonces
 el número total de subconjuntos a revisar es el tamaño del conjunto de partes
 de nuestros ítems ($2^n$).
 
-Podemos ofrecer como primer acercamiento un algoritmos iterativo que recorra todos los
-subconjuntos posibles, calculando peso y valor y quedándose con el mejor.
+Podemos ofrecer como primer acercamiento un algoritmos iterativo que recorra
+todos los subconjuntos posibles, calculando peso y valor y quedándose con el
+mejor.
 
 \begin{algorithm}
 \caption{Knapsack con fuerza bruta}
@@ -201,7 +194,7 @@ subconjuntos posibles, calculando peso y valor y quedándose con el mejor.
 \EndFunction
 \end{algorithmic}
 \begin{description}
-	\item[\textbf{Complejidad algorítmica:}] $O(n \times 2^n)$
+	\item[\textbf{Complejidad algorítmica:}] $O(2^n)$
 	\item[\textbf{Memoria requerida:}] $O(n)$
 \end{description}
 \end{algorithm}
@@ -214,8 +207,8 @@ $items[i] \in \text{conjunto} \iff c \mod 2^i = 1$.}.
 
 La forma más simple de calcular las sumas es $O(n)$\footnote{Ya que hay que
 revisar por cada uno de los $n$ ítems si se encuentra en el conjunto para
-sumarlos.}.  Dado que el $c$ recorre todos los valores en el intervalo $[1,2^n -
-1]$ esta suma se calcula $O(2^n)$ veces ofreciéndonos la complejidad mostrada
+sumarlos.}.  Dado que el $c$ recorre todos los valores en el intervalo $[1,2^n
+- 1]$ esta suma se calcula $O(2^n)$ veces ofreciéndonos la complejidad mostrada
 de $O(n \times 2^n)$.
 
 \subsection{Backtracking}
@@ -271,7 +264,7 @@ pueden.
 \EndFunction
 \end{algorithmic}
 \begin{description}
-	\item[\textbf{Complejidad algorítmica:}] $O(n \times 2^n)$
+	\item[\textbf{Complejidad algorítmica:}] $O(2^n)$
 	\item[\textbf{Memoria requerida:}] $O(1)$
 \end{description}
 \end{algorithm}
@@ -320,9 +313,9 @@ ordenamos los ítems para conseguir un $m$ grande lo antes posible.
 \EndIf
 \If{$s_{peso} + p[s_i]_{peso} \leq W$}
 	\Comment $s_i \in$ mochila
-	\State $m \is \Call{Knapsack-Optimalidad}{p,W,m, \text{ considerar } s_i,)}$
+	\State $m \is \Call{Knapsack-Optimalidad}{p, W, m, \text{ considerar } s_i,)}$
 \EndIf
-\State $m \is \Call{Knapsack-Optimalidad}{p,W,m, \text{ no considerar } s_i}$
+\State $m \is \Call{Knapsack-Optimalidad}{p, W, m, \text{ no considerar } s_i}$
 \Comment $s_i \not\in$ mochila
 \State \Return $m$
 \EndFunction
@@ -344,15 +337,15 @@ Si construimos $\text{A} = \{a : a \subseteq p\}$ y $\text{B} = \{b : b
 \subseteq p\}$ siendo $A$ y $B$ las dos mitades de nuestro conjunto de ítems
 entonces los conjuntos solución son todos de la forma $a \bigcup b$\footnote{Si
 una solución se encontrase completa en cualquiera de las dos mitades se puede
-unir al conjunto vacío de la otra.}. Una vez construidos podemos
-buscar la mejor pareja de cualquier subconjunto de una mitad dentro de los
-subconjuntos de la otra.
+unir al conjunto vacío de la otra.}. Una vez construidos podemos buscar la
+mejor pareja de cualquier subconjunto de una mitad dentro de los subconjuntos
+de la otra.
 
 Definiremos entonces que nuestro algoritmo debe realizar los siguientes pasos:
 
 \begin{enumerate}
-\item Separar el conjunto de ítems en 2 subconjuntos $A$, $B$. $A$ teniendo los primeros
-$\frac{n}{2}$ ítems y $B$ el resto.
+\item Separar el conjunto de ítems en 2 subconjuntos $A$, $B$. $A$ teniendo los
+primeros $\frac{n}{2}$ ítems y $B$ el resto.
 
 \item Construir los conjuntos de partes de $A$ y $B$. Para obtener los posibles
 candidatos. El precio de armar cada uno es de $O(2^{\frac{n}{2}})$.
@@ -362,10 +355,13 @@ mejor de todas. Existen multiples formas de hacerlo:
 
 \begin{enumerate}
 	\item Iterar sobre todos los elementos (desestimaremos esta posibilidad
-	dado que su complejidad sería $O(2^n)$, no ganaríamos mucho respecto de fuerza bruta).
+	dado que su complejidad sería $O(2^n)$, no ganaríamos mucho respecto de
+	fuerza bruta).
 
-	\item Ordenar $A$ ó $B$, descartando conjuntos inútiles y recorrer el otro linealmente, hallar su mejor combinación con el conjunto ordenado con una búsqueda binaria. Este método nos ofrece una complejidad final de
-	$O(n \times 2^{\frac{n}{2}})$.
+	\item Ordenar $A$ ó $B$, descartando conjuntos inútiles y recorrer el
+	otro linealmente, hallar su mejor combinación con el conjunto ordenado
+	con una búsqueda binaria. Este método nos ofrece una complejidad final
+	de $O(n \times 2^{\frac{n}{2}})$.
 \end{enumerate}
 \end{enumerate}
 
@@ -382,25 +378,28 @@ mejor de todas. Existen multiples formas de hacerlo:
 \item[\textbf{Funciones auxiliares:}]
 \item[] \begin{itemize}
 	\setlength\itemsep{0.4em}
-	\item[] \Call{mochilas}{$p$} Arma resultados con partes de $p$, siendo cada resultado $\sum_{i = 0}^{(\#combinacion -1)} (peso_i, valor_i)$. 
+	\item[] \Call{mochilas}{$p$} Arma el conjunto de mochilas posibles con
+	los ítems de $p$.
 	
 	\item[] \Call{ordenar}{$p$} Ordenamiendo por comparación con
 	complejidad $O(n\log n)$
 	
-	\item[] \Call{descartar}{$p$} donde $\forall (par_i)$ con $(0 < i < \#p)$, elimina el par si el $par_{i-1}$ poseé un valor mayor. Requiere $p$ ordenado, complejidad $O(p)$
+	\item[] \Call{descartar}{$p$} Elimina el $p_i$ si $p_{i-1}$ posee un
+	valor mayor. Complejidad $O(p)$.
 
-	\item[] \Call{buscar}{$p, k$} búsqueda binaria, devuelve la última aparición que es igual a k, o el valor pequeño más cercano.
+	\item[] \Call{buscar}{$p, k$} Búsqueda binaria, devuelve la última
+	mochila de peso $k$ o la última con un peso menor.
 \end{itemize}
 \Statex
 \Function{Knapsack-MeetInTheMiddle}{$p, w$}
-\State $Izq$ $\is \Call{mochilas}{p[0\dots \frac{n}{2}]}$
-\State $Der$ $\is \Call{mochilas}{p[\frac{n}{2}\dots n]}$
+\State $Izq$ $\is \Call{mochilas}{p[0:\frac{n}{2}]}$
+\State $Der$ $\is \Call{mochilas}{p[\frac{n}{2}:n]}$
 \Comment Armo los subconjuntos
 
 \State $Der$ $\is \Call{ordenar}{\text{der}}$
 \Comment Ordeno uno de los 2 subconjuntos
 \State $Der$ $\is \Call{descartar}{\text{der}}$
-\Comment elimino conjuntos sobrantes.
+\Comment Elimino sobrantes
 
 \For{$(a \in Izq)$}
 	\If{$a_{peso} \leq w$}
@@ -415,7 +414,7 @@ mejor de todas. Existen multiples formas de hacerlo:
 \end{algorithmic}
 \begin{description}
 	\item[\textbf{Complejidad algorítmica:}] $O(n \times 2^{\frac{n}{2}})$
-	\item[\textbf{Memoria requerida:}] $O(2^{\frac{n}{2}+1}))$
+	\item[\textbf{Memoria requerida:}] $O(2^{\frac{n}{2}}))$
 \end{description}
 \end{algorithm}
 
@@ -433,13 +432,14 @@ tenemos todas las mochilas $(i' < i, w'' \le w')$ entonces nuestro problema se
 reduce a determinar si el mayor valor se obtiene utilzando el $i$-ésimo
 elemento (dado que no se exceda en peso) o ignorándolo.
 
-La esencia del algoritmo será \emph{top-down} (consideramos el problema
-completo y lo dividimos hasta llegar a problemas triviales) y tendrá dos
-partes, un algoritmo recursivo simple y la memoización de sus resultados
-intermedios.
+Construiremos un algoritmo \emph{top-down} (consideramos el problema completo y
+lo dividimos hasta llegar a problemas triviales) con dos partes, un algoritmo
+recursivo simple y la memoización de sus resultados intermedios.
 
 Una vez reducido el problema a la construcción de una mochila de $0$ elementos
 está claro que el mejor valor posible es $0$. Este será nuestro caso base.
+
+\newpage
 
 \begin{algorithm}
 \caption{Knapsack con programación dinámica}
@@ -484,17 +484,19 @@ En un principio inicializamos $mem$ como $\bot$ lo que cuesta $O(n \times W)$.
 Por cada valor de $i$ no trivial se realizarán a lo sumo $2i$ llamadas
 recursivas, si $i > W$ tendremos superposición de subproblemas\footnote{Dado
 que no realizamos llamadas con peso negativo y que lo único que diferencia un
-subproblema de otro es el par $(i, w')$.} por lo que por cada $i$
-realizaremos a lo sumo $W$ cálculos. Entonces para cada $i$ tenemos una
-complejidad de $O(W)$ y $\sum_{i=0}^{n} O(W) = O(n \times W)$.
+subproblema de otro es el par $(i, w')$.} por lo que por cada $i$ realizaremos
+a lo sumo $W$ cálculos. Entonces para cada $i$ tenemos una complejidad de
+$O(W)$ y $\sum_{i=0}^{n} O(W) = O(n \times W)$.
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=0.8\textwidth]{{fotos/pdf.dinamica}.pdf}
+\includegraphics[width=0.9\textwidth]{{fotos/pdf.dinamica}.pdf}
 \caption{Llamadas recursivas sobre \texttt{casos/pdf.in}. Las líneas punteadas
 indican valores ya calculados.}
 \end{center}
 \end{figure}
+
+\clearpage
 
 \section{Experimentación}
 
@@ -587,9 +589,10 @@ solución no requiera explorar mochilas de demasiados elementos.
 
 \subsubsection{Experimento C}
 
-Corremos dinámica para analizar la cota de complejidad y comparar. La idea de
-este experimento es poder ver el crecimiento cuadrático del algoritmo de
-dinámica cuando $n = W$.
+Cómo el experimento A resultó muy pequeño para mostrar el comportamiento del
+algoritmo de programación dinámica construimos decidimos construir casos de
+test mucho más grandes. Los peores casos posibles eran los de $n = W$ por lo
+que decidimos utilizar muchos de éstos y esperar un crecimiento cuadrático.
 
 \begin{center}
 $n = W \in [100; 1000]; 0 < p_i < \frac{W}{2}; 1 \leq v_i \leq 5000$
