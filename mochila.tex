@@ -384,12 +384,12 @@ mejor de todas. Existen multiples formas de hacerlo:
 	\setlength\itemsep{0.4em}
 	\item[] \Call{mochilas}{$p$} Arma resultados con partes de $p$, siendo cada resultado $\sum_{i = 0}^{(\#combinacion -1)} (peso_i, valor_i)$. 
 	
-	\item[] \Call{ordenar}{$p$} Ordenamiendo por compacación con
+	\item[] \Call{ordenar}{$p$} Ordenamiendo por comparación con
 	complejidad $O(n\log n)$
 	
 	\item[] \Call{descartar}{$p$} donde $\forall (par_i)$ con $(0 < i < \#p)$, elimina el par si el $par_{i-1}$ poseé un valor mayor. Requiere $p$ ordenado, complejidad $O(p)$
 
-	\item[] \Call{busqueda}{$p, k$} búsqueda binaria, devuelve la primera aparición que es igual a k, o el valor pequeño más cercano.
+	\item[] \Call{buscar}{$p, k$} búsqueda binaria, devuelve la última aparición que es igual a k, o el valor pequeño más cercano.
 \end{itemize}
 \Statex
 \Function{Knapsack-MeetInTheMiddle}{$p, w$}
@@ -404,7 +404,7 @@ mejor de todas. Existen multiples formas de hacerlo:
 
 \For{$(a \in Izq)$}
 	\If{$a_{peso} \leq w$}
-	\State $b \is \Call{busqueda}{Der, w - a_{peso}}$
+	\State $b \is \Call{buscar}{Der, w - a_{peso}}$
 		\If{$a_{peso} + b_{peso} > v_{mejor}$}
 			\State  $v_{mejor} \is a_{peso} + b_{peso} > $
 		\EndIf
