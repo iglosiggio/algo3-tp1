@@ -78,6 +78,10 @@
 \usepackage{algorithm,algorithmicx}
 \usepackage[noend]{algpseudocode}
 \algrenewcommand\alglinenumber[1]{{\sf\footnotesize\texttt{#1}}}
+
+\usepackage{xcolor}
+\renewcommand\thefootnote{\textcolor{blue}{\arabic{footnote}}}
+
 \renewcommand{\figurename}{Fig.}
 \def\is{\coloneqq}
 
@@ -132,7 +136,7 @@ $W = 30$, ítems $=$
 	30 & 35
 \end{tabular} \\
 \textbf{Respuesta:} 55 \\
-\textbf{Subconjunto:} $\{(20,50), (10,5)\}$
+\textbf{Subconjuntos solución:} $\{(20,50), (10,5)\}$
 
 $W = 60$, ítems $=$
 \begin{tabular}{l l}
@@ -143,7 +147,7 @@ $W = 60$, ítems $=$
 	20 & 60
 \end{tabular} \\
 \textbf{Respuesta:} 150 \\
-\textbf{Subconjuntos:} $\{(45, 150)\}$, $\{(20, 50)\}$ ó $\{(20, 40), (20,
+\textbf{Subconjuntos solución:} $\{(45, 150)\}$ ó $\{(20, 50), (20, 40), (20,
 60)\}$
 
 Como puede notarse, es posible que exista más de un subconjunto máximo.
@@ -379,7 +383,7 @@ mejor de todas. Existen multiples formas de hacerlo:
 \item[\textbf{Funciones auxiliares:}]
 \item[] \begin{itemize}
 	\setlength\itemsep{1em}
-	\item[] \Call{resCombinaciones}{$p, start, end$} Arma resultados en partes de $p$ siendo cada resultado $\sum_{i = 0}^{(\#combinacion -1)} (peso_i, valor_i)$. 
+	\item[] \Call{resCombinaciones}{$p, start, end$} Arma resultados con partes de $p$ siendo cada resultado $\sum_{i = 0}^{(\#combinacion -1)} (peso_i, valor_i)$. 
 	
 	\item[] \Call{ordenar}{$p$} Ordenamiendo por compacación con
 	complejidad $O(n\log n)$
