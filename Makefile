@@ -58,11 +58,12 @@ exp_a:
 
 casos_b=$(wildcard casos/exp.b.*.in)
 runs_b=$(casos_b:casos/%.in=%)
-targets_b=$(foreach algo, backtracking_fact backtracking_opt mitm, \
+targets_b=$(foreach algo, backtracking_fact backtracking_opt mitm dinamica, \
 		$(foreach run, $(runs_b), $(run).$(algo).stats))
-targets_b+=$(foreach algo, backtracking_fact backtracking_opt mitm, \
+targets_b+=$(foreach algo, backtracking_fact backtracking_opt mitm dinamica, \
 		exp.b.$(algo).series)
-fotos_b=fotos/exp.b.backtracking_fact.pdf fotos/exp.b.backtracking_opt.pdf fotos/exp.b.mitm.pdf
+fotos_b=fotos/exp.b.backtracking_fact.pdf fotos/exp.b.backtracking_opt.pdf \
+	fotos/exp.b.mitm.pdf
 
 fotos/exp.b.%.pdf: data/exp.b.%.series
 	scripts/experimento_b.plot $^ $@
@@ -85,7 +86,34 @@ exp_c:
 experimentos: exp_a exp_b exp_c
 	@
 
+correlacion=fotos/exp.a.correlacion.fuerza_bruta.pdf \
+	    fotos/exp.a.correlacion.backtracking_fact.pdf \
+	    fotos/exp.a.correlacion.backtracking_opt.pdf \
+	    fotos/exp.a.correlacion.mitm.pdf \
+	    fotos/exp.c.correlacion.dinamica.pdf # Usamos un dataset más acorde
+
+fotos/exp.a.correlacion.fuerza_bruta.pdf: data/exp.a.fuerza_bruta.series
+	scripts/experimento_a_correlacion.plot $^ $@ '$$1*2**$$1'
+
+fotos/exp.a.correlacion.backtracking_fact.pdf: data/exp.a.backtracking_fact.series
+	# ¿Esto está bien? ¿Realmente es O(2^n)?
+	scripts/experimento_a_correlacion.plot $^ $@ '2**$$1'
+
+fotos/exp.a.correlacion.backtracking_opt.pdf: data/exp.a.backtracking_opt.series
+	# ¿Esto está bien? ¿Realmente es O(2^n)?
+	scripts/experimento_a_correlacion.plot $^ $@ '2**$$1'
+
+fotos/exp.a.correlacion.mitm.pdf: data/exp.a.mitm.series
+	scripts/experimento_a_correlacion.plot $^ $@ '$$1*2**($$1 / 2)'
+
+fotos/exp.b.correlacion.dinamica.pdf: data/exp.b.dinamica.series
+	scripts/experimento_correlacion_dinamica.plot $^ $@
+
+fotos/exp.c.correlacion.dinamica.pdf: data/exp.c.dinamica.series
+	scripts/experimento_a_correlacion.plot $^ $@ '$$1**2'
+
 ilustraciones=fotos/pdf.dinamica.pdf
 
-mochila.pdf: mochila.tex $(fotos_a) $(fotos_b) $(fotos_c) $(ilustraciones)
+mochila.pdf: mochila.tex $(fotos_a) $(fotos_b) $(fotos_c) $(ilustraciones) \
+	$(correlacion)
 	latexmk mochila.tex -pdf
