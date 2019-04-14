@@ -199,11 +199,12 @@ mejor.
 \end{description}
 \end{algorithm}
 
-En cada ciclo generamos las sumas $s_{valor}$ y $s_{peso}$ del conjunto. $c$ es
-el índice del conjunto en la enumeración utilizada por \textsc{calcular}. Una
-enumeración posible es representar a la pertenencia del $i$ésimo ítem con el
-$i$ésimo dígito de la representación en base 2 de $c$\footnote{Es decir:
-$items[i] \in \text{conjunto} \iff c \mod 2^i = 1$.}.
+En cada ciclo generamos las sumas $s_{valor}$ y $s_{peso}$ del $c$ésimo
+conjunto\footnote{$c$ es el índice del conjunto en la enumeración utilizada por
+\textsc{calcular}}. Entonces, una enumeración posible es representar la
+pertenencia del $i$ésimo ítem con el $i$ésimo dígito de la representación en
+base 2 de $c$\footnote{Es decir: $items[i] \in \text{conjunto} \iff c \mod 2^i
+= 1$.}.
 
 La forma más simple de calcular las sumas es $O(n)$\footnote{Ya que hay que
 revisar por cada uno de los $n$ ítems si se encuentra en el conjunto para
@@ -535,7 +536,10 @@ $n \in [15; 24]; W=\frac{\sum p_i}{2}; 0 \leq p_i, v_i \leq 100$
 Los resultados fueron los esperables para casi todos los algoritmos exceptuando
 el caso de la poda de optimalidad. Es probable que ésta esté podando de manera
 muy agresiva haciendo que la complejidad promedio esté alrededor de
-$2^\frac{n}{2}$.
+$2^\frac{n}{2}$. El gráfico del algoritmo de programación dinámica es
+particular pero dado que su complejidad depende tanto de $n$ como de $W$ no se
+puede plotear mucho mejor\footnote{Probablemente una serie de boxplots hubiera
+sido lo más acertado para ese gráfico en particular.}.
 
 \begin{center}
 \includegraphics[width=0.45\textwidth]{{fotos/exp.a.mitm}.pdf}
