@@ -14,6 +14,7 @@ all: mochila.pdf $(exes) $(algos_graficos) main.o
 
 clean:
 	rm -f mochila.pdf $(exes) $(tmp)
+	$(MAKE) -C data clean
 
 %.test: casos/%.test
 	@
@@ -43,48 +44,29 @@ fotos/%.dinamica.pdf: casos/%.in dinamica.algografico
 	| awk 'BEGIN { print "digraph {" } { print $0 } END { print "}" }' \
 	| dot -Tpdf > $@
 
-casos_a=$(wildcard casos/exp.a.*.in)
-runs_a=$(casos_a:casos/%.in=%)
-targets_a=$(foreach algo, $(algos), \
-		$(foreach run, $(runs_a), $(run).$(algo).stats))
-targets_a+=$(foreach algo, $(algos), exp.a.$(algo).series)
+# Lógica de experimentación
+
+series_a=$(foreach algo, $(algos), exp.a.$(algo).series)
+series_b+=exp.b.backtracking_fact.series exp.b.backtracking_opt.series \
+	  exp.b.mitm.series exp.b.dinamica.series
+series_c=exp.c.dinamica.series
+
+data/%.series:
+	$(MAKE) -C data $*.series
+
 fotos_a=$(foreach algo, $(algos), fotos/exp.a.$(algo).pdf)
+fotos_b=fotos/exp.b.backtracking_fact.pdf fotos/exp.b.backtracking_opt.pdf \
+	fotos/exp.b.mitm.pdf
+fotos_c=fotos/exp.c.dinamica.pdf
 
 fotos/exp.a.%.pdf: data/exp.a.%.series
 	scripts/experimento_a.plot $^ $@
 
-exp_a:
-	(cd data; $(MAKE) $(targets_a))
-
-casos_b=$(wildcard casos/exp.b.*.in)
-runs_b=$(casos_b:casos/%.in=%)
-targets_b=$(foreach algo, backtracking_fact backtracking_opt mitm dinamica, \
-		$(foreach run, $(runs_b), $(run).$(algo).stats))
-targets_b+=$(foreach algo, backtracking_fact backtracking_opt mitm dinamica, \
-		exp.b.$(algo).series)
-fotos_b=fotos/exp.b.backtracking_fact.pdf fotos/exp.b.backtracking_opt.pdf \
-	fotos/exp.b.mitm.pdf
-
 fotos/exp.b.%.pdf: data/exp.b.%.series
 	scripts/experimento_b.plot $^ $@
 
-exp_b:
-	(cd data; $(MAKE) $(targets_b))
-
-casos_c=$(wildcard casos/exp.c.*.in)
-targets_c=$(casos_c:casos/%.in=%.dinamica.resultados)
-targets_c+=$(casos_c:casos/%.in=%.dinamica.stats)
-targets_c+=exp.c.dinamica.series
-fotos_c=fotos/exp.c.dinamica.pdf
-
 fotos/exp.c.dinamica.pdf: data/exp.c.dinamica.series
 	scripts/experimento_c.plot
-
-exp_c:
-	(cd data; $(MAKE) $(targets_c))
-
-experimentos: exp_a exp_b exp_c
-	@
 
 correlacion=fotos/exp.a.correlacion.fuerza_bruta.pdf \
 	    fotos/exp.a.correlacion.backtracking_fact.pdf \
@@ -95,12 +77,8 @@ correlacion=fotos/exp.a.correlacion.fuerza_bruta.pdf \
 fotos/exp.a.correlacion.fuerza_bruta.pdf: data/exp.a.fuerza_bruta.series
 	scripts/experimento_a_correlacion.plot $^ $@ '$$1*2**$$1'
 
-fotos/exp.a.correlacion.backtracking_fact.pdf: data/exp.a.backtracking_fact.series
-	# ¿Esto está bien? ¿Realmente es O(2^n)?
-	scripts/experimento_a_correlacion.plot $^ $@ '2**$$1'
-
-fotos/exp.a.correlacion.backtracking_opt.pdf: data/exp.a.backtracking_opt.series
-	# ¿Esto está bien? ¿Realmente es O(2^n)?
+fotos/exp.a.correlacion.backtracking%.pdf: data/exp.a.backtracking%.series
+	# ¿Esto está bien? ¿Realmente son O(2^n)?
 	scripts/experimento_a_correlacion.plot $^ $@ '2**$$1'
 
 fotos/exp.a.correlacion.mitm.pdf: data/exp.a.mitm.series
