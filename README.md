@@ -25,10 +25,10 @@ algos/\<algoritmo\>.cpp
 : Algoritmos implementados
 
 casos/\<caso\>.in casos/\<caso\>.out
-: Casos de prueba, cada uno consta de dos archivos **\<experimento\>.in** (la
-  entrada del algoritmo) y **\<experimento\>.out**. Estos archivos pueden
-  generarse con los scripts _generar\_casos.sh_, _generar\_experimentacion.sh_
-  que construyen las entradas y _completar\_casos.sh_ que las soluciona.
+: Casos de prueba, cada uno consta de dos archivos **\<caso\>.in** (la entrada
+  entrada del algoritmo) y **\<caso\>.out**. Estos archivos pueden generarse
+  con los scripts _generar\_casos.sh_, _generar\_experimentacion.sh_ que
+  construyen las entradas y _completar\_casos.sh_ que las soluciona.
 
 data/\<caso\>.\<algoritmo\>.resultados
 : Experimentación conseguida, estos archivos son las salidas utilizadas en

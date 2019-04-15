@@ -29,9 +29,8 @@ Fuente del informe
 Algoritmos implementados
 .TP
 .B casos/<caso>.in casos/<caso>.out
-Casos de prueba, cada uno consta de dos archivos
-\f[B]<experimento>.in\f[R] (la entrada del algoritmo) y
-\f[B]<experimento>.out\f[R].
+Casos de prueba, cada uno consta de dos archivos \f[B]<caso>.in\f[R] (la
+entrada entrada del algoritmo) y \f[B]<caso>.out\f[R].
 Estos archivos pueden generarse con los scripts
 \f[I]generar_casos.sh\f[R], \f[I]generar_experimentacion.sh\f[R] que
 construyen las entradas y \f[I]completar_casos.sh\f[R] que las
