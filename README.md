@@ -143,7 +143,7 @@ veces por cada caso.
 # Ejemplo: volver a correr el experimento C
 $ cd data/
 $ rm exp.c.dinamica.{series,stats,resultados}
-$ make veces=250 timeout=60 exp.c.dinamica.series
+$ make TEST=y veces=250 timeout=60 exp.c.dinamica.series
 ```
 
 # Scripts
