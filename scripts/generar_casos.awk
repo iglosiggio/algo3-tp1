@@ -9,10 +9,10 @@ BEGIN {
 		n = int(12 * rand() + 4)
 	if (!w)
 		w = 240 * rand() + 16
-	if (!s_piso)
-		s_piso = 1
-	if (!s_techo)
-		s_techo = 64
+	if (!p_piso)
+		p_piso = 1
+	if (!p_techo)
+		p_techo = 64
 	if (!v_piso)
 		v_piso = 1
 	if (!v_techo)
@@ -21,6 +21,6 @@ BEGIN {
 	print int(n), int(w)
 
 	for (i = 0; i < n; i++)
-		print(int(s_techo * rand() + s_piso),
-		      int(v_techo * rand() + v_piso))
+		print(int((p_techo - p_piso) * rand() + p_piso),
+		      int((v_techo - v_piso) * rand() + v_piso))
 }

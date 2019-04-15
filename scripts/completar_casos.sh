@@ -13,7 +13,7 @@ not() {
 }
 
 if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
-	echo "Uso: $0 -h [casos] [algoritmo]"
+	echo "Uso: $0 [-h] [carpeta] [algoritmo]"
 	echo "     El algoritmo por defecto es \`fuerza_bruta\`"
 	echo "     La carpeta de casos por defecto es \`casos\`"
 	exit 1
