@@ -2,7 +2,8 @@ algos=fuerza_bruta mitm backtracking_opt backtracking_fact dinamica
 algos_graficos=backtracking_opt.algografico backtracking_fact.algografico \
 	dinamica.algografico
 exes=$(algos:=.algo)
-tmp=*.log *.aux
+tmp=*.log *.aux *.o *.fls *.fdb_latexmk *.aux *.log *.toc mochila.synctex.gz
+imagenes=fotos/*.pdf
 casos=$(wildcard casos/*.in)
 tests=$(casos:.in=.test)
 
@@ -12,7 +13,7 @@ tests=$(casos:.in=.test)
 all: $(exes) $(algos_graficos) mochila.pdf
 
 clean:
-	rm -f mochila.pdf $(exes) $(tmp)
+	rm -f mochila.pdf $(exes) $(algos_graficos) $(tmp) $(imagenes)
 	$(MAKE) -C data clean
 
 help: $(if $(DEV), README.man)
