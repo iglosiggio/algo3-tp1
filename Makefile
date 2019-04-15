@@ -15,6 +15,9 @@ clean:
 	rm -f mochila.pdf $(exes) $(tmp)
 	$(MAKE) -C data clean
 
+help: $(if $(DEV), README.man)
+	man ./README.man
+
 %.algo: algos/%.cpp main.o
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
@@ -117,3 +120,8 @@ fotos/exp.b.correlacion.dinamica.pdf: data/exp.b.dinamica.series \
 mochila.pdf: mochila.tex $(fotos_a) $(fotos_b) $(fotos_c) $(correlacion) \
 	$(grafos)
 	latexmk mochila.tex -pdf
+
+README.man: README.md
+	pandoc  -V header:"Trabajo Práctico 1" \
+		-V section:algo3 \
+		$^ -s -t man -o $@
