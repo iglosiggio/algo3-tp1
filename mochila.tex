@@ -223,7 +223,6 @@ Su complejidad espacial tampoco es trivial, ya que necesita realizar un total de
 Sin embargo, la ventaja de implementarlo de esta manera es que si podemos en base a algún criterio o heurística logramos saber con antelación que una posible solución no cumple las renstricciones o no es óptima, podemos evitar explorarla. Dichas estrategias se denominarán  
 podas del problema a partir de ahora. Veremos 2 algoritmos que implementan podas en sus búsquedas.
 
-
 \subsubsection{Argumentos utilizados por los algoritmos}
 
 Para simplificar la escritura de los algoritmos de backtracking utilizamos un
@@ -239,6 +238,8 @@ n)$. Gracias al orden podemos asegurar que si para un índice $i$ el $i$-ésimo
 pueden. (dado que su peso es superior)
 
 Es sencillo notar en esta poda que no descartamos soluciones óptimas debido a que solo estamos descartando soluciones cuyos peso total no cumple las renstricciones del problema.
+
+\clearpage
 
 \begin{algorithm}
 \caption{Backtracking con poda por factibilidad}
@@ -290,14 +291,17 @@ considerar los pesos individuales (\texttt{4}).
 \subsubsection{Poda por optimalidad}
 
 La segunda poda que veremos no requiere un ordenamiento previo, en su lugar
-debe calcularse $\sum_{i = 0}^{\#p - 1}p[i]_{valor}$ la suma de los valores a
-considerar y ofrecer un candidato ($m$) el cual es una mochila válida.
+debe calcularse $\sum_{i = 0}^{\#p - 1}p[i]_{valor}$ la suma de los valores y ofrecer un candidato ($m$) el cual debe ser una mochila válida.
+
+La idea, es que podemos saber con antelación cual es el valor de la mochila final considerando todos los elementos restantes y si ese valor no excede al candidato $m$, podemos podar, por que esa solución no será óptima.
 
 A la hora de considerar cada ítem podemos utilizar la mochila candidato $m$ y
 el valor de nuestros hijos para determinar si somos capaces de
 mejorarla\footnote{En caso contrario podemos devolver $m$ ya que sabemos que es
 una mochila válda.}. En nuestra implementación previo a correr el algoritmo
 ordenamos los ítems para conseguir un $m$ grande lo antes posible.
+
+\clearpage
 
 \begin{algorithm}
 \caption{Backtracking con poda por optimalidad}
