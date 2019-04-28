@@ -402,10 +402,10 @@ Finalmente recorrer el conjunto no ordenado linealmente es $O(2^\frac{n}{2})$ y 
 	los ítems de $p$.
 	
 	\item[] \Call{ordenar}{$p$} Ordenamiendo por comparación con
-	complejidad $O(n\log n)$
+	complejidad $O(p\log p)$
 	
 	\item[] \Call{descartar}{$p$} Elimina el $p_i$ si $p_{i-1}$ posee un
-	valor mayor. Complejidad $O(p)$.
+	valor mayor a igual o menor peso. Complejidad $O(p)$.
 
 	\item[] \Call{buscar}{$p, k$} Búsqueda binaria, devuelve la última
 	mochila de peso $k$ o la última con un peso menor.
@@ -419,7 +419,7 @@ Finalmente recorrer el conjunto no ordenado linealmente es $O(2^\frac{n}{2})$ y 
 \State $Der$ $\is \Call{ordenar}{\text{der}}$
 \Comment Ordeno uno de los 2 subconjuntos
 \State $Der$ $\is \Call{descartar}{\text{der}}$
-\Comment Elimino sobrantes
+\Comment Elimino repetidos o no óptimos
 
 \For{$(a \in Izq)$}
 	\If{$a_{peso} \leq w$}
