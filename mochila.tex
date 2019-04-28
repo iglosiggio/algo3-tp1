@@ -374,12 +374,16 @@ mejor de todas. Existen multiples formas de hacerlo:
 	dado que su complejidad sería $O(2^n)$, no ganaríamos mucho respecto de
 	fuerza bruta).
 
-	\item Ordenar $A$ ó $B$, descartando conjuntos inútiles y recorrer el
-	otro linealmente, hallar su mejor combinación con el conjunto ordenado
-	con una búsqueda binaria. Este método nos ofrece una complejidad final
+	\item Ordenar $A$ ó $B$, luego descartar conjuntos que no sean óptimos o esten repetidos en el conjunto ordenado y recorrer el otro conjunto linealmente, hallar su mejor combinación con el conjunto ordenado con una búsqueda binaria. Este método nos ofrece una complejidad final
 	de $O(n \times 2^{\frac{n}{2}})$.
 \end{enumerate}
 \end{enumerate}
+
+Veamos la solución en detalle, Ordenar es $O(2^\frac{n}{2} \times \log(2^\frac{n}{2}))$ ya que el conjunto que estoy ordenando es partes de $n$, simplifica a $O(n \times 2^{\frac{n}{2}})$.
+
+Descartar los conjuntos no óptimos, tras haberse ordenado previamente por peso y luego por valor, es lineal sobre partes $O(2^\frac{n}{2}))$ ya que solo debes comparar el conjunto actual contra el anterior para descartarlo\footnote{ Dado un conjunto de peso $x$, se consideran no optimos o repetidos aquellos conjuntos con peso igual o mayor a x, que no lo superen en valor final}, eliminación que es vital para aplicar búsqueda binaria.
+
+Finalmente recorrer el conjunto no ordenado linealmente es $O(2^\frac{n}{2})$ y por cada conjunto se debe encontrar su mejor pareja, dado que el otro conjunto es ordenado esta complejidad es $O(\log{2^\frac{n}{2}})$ que simplifica a $O(n)$ dandonos nuevamente la complejidad $O(n \times 2^{\frac{n}{2}})$.
 
 \begin{algorithm}
 \caption{Meet in the middle}
@@ -430,7 +434,7 @@ mejor de todas. Existen multiples formas de hacerlo:
 \end{algorithmic}
 \begin{description}
 	\item[\textbf{Complejidad algorítmica:}] $O(n \times 2^{\frac{n}{2}})$
-	\item[\textbf{Memoria requerida:}] $O(2^{\frac{n}{2}}))$
+	\item[\textbf{Memoria requerida:}] $O(2^{\frac{n}{2}})$
 \end{description}
 \end{algorithm}
 
@@ -454,8 +458,6 @@ recursivo simple y la memoización de sus resultados intermedios.
 
 Una vez reducido el problema a la construcción de una mochila de $0$ elementos
 está claro que el mejor valor posible es $0$. Este será nuestro caso base.
-
-\newpage
 
 \begin{algorithm}
 \caption{Knapsack con programación dinámica}
