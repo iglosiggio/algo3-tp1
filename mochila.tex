@@ -202,7 +202,7 @@ mejor.
 En cada ciclo generamos las sumas $s_{valor}$ y $s_{peso}$ del $c$ésimo
 conjunto\footnote{$c$ es el índice del conjunto en la enumeración utilizada por
 \textsc{calcular}}. Entonces, una enumeración posible es representar la
-pertenencia del $i$ésimo ítem con el $i$ésimo dígito de la representación en
+pertenencia del $i$ésimo ítem con el $i$ésimo dígito de la repres entación en
 base 2 de $c$\footnote{Es decir: $items[i] \in \text{conjunto} \iff c \mod 2^i
 = 1$.}.
 
@@ -213,12 +213,22 @@ sumarlos.}.  Dado que el $c$ recorre todos los valores en el intervalo $[1,2^n
 de $O(n \times 2^n)$.
 
 \subsection{Backtracking}
+
+Otra estrategia consiste en el uso de un algoritmo exploratorio, por cada elemento del problema, bifurcaremos en 2 llamados recurisvos, considerar el elemento en la mochila final (agregar su peso y valor), o no hacerlo.
+
+Repetido el proceso por $n$ elementos, la cantidad de ramas del problema crece de forma exponencial, con un total de $2^n$ llamados. Si nos aseguramos que resolver un llamado es una constante $O(1)$ la complejidad no excedera $O(2^n)$.
+
+Su complejidad espacial tampoco es trivial, ya que necesita realizar un total de n llamados recursivos para haber explorado una de las posibles soluciones, eso es $O(n)$.
+
+Sin embargo, la ventaja de implementarlo de esta manera es que si podemos en base a algún criterio o heurística logramos saber con antelación que una posible solución no cumple las renstricciones o no es óptima, podemos evitar explorarla. Dichas estrategias se denominarán  
+podas del problema a partir de ahora. Veremos 2 algoritmos que implementan podas en sus búsquedas.
+
+
 \subsubsection{Argumentos utilizados por los algoritmos}
 
 Para simplificar la escritura de los algoritmos de backtracking utilizamos un
 argumento $s$ que codifica la ``solución parcial'' a mejorar en cada etapa del
-algoritmo. Veremos 2 soluciones, ambas recursivas, que implementan diferentes
-podas en sus búsquedas.
+algoritmo. 
 
 \subsubsection{Poda por factibilidad}
 
@@ -226,7 +236,9 @@ El primero que veremos requiere un orden de los ítems previo (por peso de forma
 creciente) a llamarlo, esto nos supone un coste inicial de $O(n \times \log
 n)$. Gracias al orden podemos asegurar que si para un índice $i$ el $i$-ésimo
 ítem no puede agregarse a $s$ entonces todos los ítems con índice mayor tampoco
-pueden.
+pueden. (dado que su peso es superior)
+
+Es sencillo notar en esta poda que no descartamos soluciones óptimas debido a que solo estamos descartando soluciones cuyos peso total no cumple las renstricciones del problema.
 
 \begin{algorithm}
 \caption{Backtracking con poda por factibilidad}
