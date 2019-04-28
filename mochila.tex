@@ -454,9 +454,11 @@ elemento (dado que no se exceda en peso) o ignorándolo.
 
 Construiremos un algoritmo \emph{top-down} (consideramos el problema completo y
 lo dividimos hasta llegar a problemas triviales) con dos partes, un algoritmo
-recursivo simple y la memoización de sus resultados intermedios. Para esto optaremos como estructura inicializar una matriz, de $n$ filas con $W$ columnas
+recursivo simple y la memoización de sus resultados intermedios. Para esto optaremos como estructura inicializar una matriz, de $n$ filas con $W$ columnas.
 
-Una vez reducido el problema a la construcción de una mochila de $0$ elementos
+Notar que mientras el algoritmo recursivo simple sea correcto siempre y cuando la memoización no pise información relevante, mantendrá su correctitud.
+
+Finalmente una vez reducido el problema a la construcción de una mochila de $0$ elementos
 está claro que el mejor valor posible es $0$. Este será nuestro caso base.
 
 \begin{algorithm}
@@ -508,7 +510,7 @@ $O(W)$ y $\sum_{i=0}^{n} O(W) = O(n \times W)$.
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=0.9\textwidth]{{fotos/pdf.dinamica}.pdf}
+\includegraphics[width=0.8\textwidth]{{fotos/pdf.dinamica}.pdf}
 \caption{Llamadas recursivas sobre \texttt{casos/pdf.in}. Las líneas punteadas
 indican valores ya calculados.}
 \end{center}
