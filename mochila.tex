@@ -454,7 +454,7 @@ elemento (dado que no se exceda en peso) o ignorándolo.
 
 Construiremos un algoritmo \emph{top-down} (consideramos el problema completo y
 lo dividimos hasta llegar a problemas triviales) con dos partes, un algoritmo
-recursivo simple y la memoización de sus resultados intermedios.
+recursivo simple y la memoización de sus resultados intermedios. Para esto optaremos como estructura inicializar una matriz, de $n$ filas con $W$ columnas
 
 Una vez reducido el problema a la construcción de una mochila de $0$ elementos
 está claro que el mejor valor posible es $0$. Este será nuestro caso base.
@@ -525,6 +525,8 @@ indican valores ya calculados.}
 el máximo tiempo de procesamiento por un caso de prueba es 25 minutos).
 
 \item Cada experimentación consta de 250 casos de prueba.
+
+\item los datasets en cada prueba son elegidos uniformemente.
 \end{itemize}
 
 \subsubsection{Experimento A}
