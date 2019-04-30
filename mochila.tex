@@ -501,9 +501,6 @@ recursivo simple y la memoización de sus resultados intermedios. Para esto
 optaremos como estructura inicializar una matriz, de $n$ filas con $W$
 columnas.
 
-Notar que mientras el algoritmo recursivo simple sea correcto siempre y cuando
-la memoización no pise información relevante, mantendrá su correctitud.
-
 Finalmente una vez reducido el problema a la construcción de una mochila de $0$
 elementos está claro que el mejor valor posible es $0$. Este será nuestro caso
 base.
@@ -554,6 +551,16 @@ que no realizamos llamadas con peso negativo y que lo único que diferencia un
 subproblema de otro es el par $(i, w')$.} por lo que por cada $i$ realizaremos
 a lo sumo $W$ cálculos. Entonces para cada $i$ tenemos una complejidad de
 $O(W)$ y $\sum_{i=0}^{n} O(W) = O(n \times W)$.
+
+La correctitud de este algoritmo depende de dos variables: tener un algoritmo
+de ``backtracking'' correcto y no perder información al memoizar. Lo segundo
+puede notarse dado que la clave con la que memoizamos depende de los únicos
+parámetros que cambian en cada llamada recursiva\footnote{Y nuestro algoritmo
+sólo depende de sus parámetros de entrada, por lo que es correcto memoizarlo}.
+Lo primero es más complejo, pero comparando la estructura con la de
+$\Call{Knapsack-Factibilidad}{p, W, s}$ se puede ver que el algoritmo de
+backtracking subyacente es una variación de éste\footnote{Dónde se recorren los
+ítems al revés y no se corta si entran todos los ítems próximos en la mochila.}
 
 \begin{figure}[h]
 \begin{center}
