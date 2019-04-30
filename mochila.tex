@@ -214,14 +214,11 @@ de $O(n \times 2^n)$.
 
 \subsection{Backtracking}
 
-Otra estrategia consiste en el uso de un algoritmo exploratorio, por cada elemento del problema, bifurcaremos en 2 llamados recurisvos, considerar el elemento en la mochila final (agregar su peso y valor), o no hacerlo.
+Otra estrategia consiste en el uso de un algoritmo exploratorio dónde por cada elemento del problema consideraremos agregarlo o no y buscaremos la mejor mochila en cada caso.
 
-Repetido el proceso por $n$ elementos, la cantidad de ramas del problema crece de forma exponencial, con un total de $2^n$ llamados. Si nos aseguramos que resolver un llamado es una constante $O(1)$ la complejidad no excedera $O(2^n)$.
+Repetido el proceso por $n$ elementos, la cantidad de ramas del problema crece de forma exponencial, con un total de $2^n$ mochilas. Siempre y cunado la complejidad de evaluar cada mochila esté en $O(1)$ la complejidad final no excederá $O(2^n)$.
 
-Su complejidad espacial tampoco es trivial, ya que necesita realizar un total de n llamados recursivos para haber explorado una de las posibles soluciones, eso es $O(n)$.
-
-Sin embargo, la ventaja de implementarlo de esta manera es que si podemos en base a algún criterio o heurística logramos saber con antelación que una posible solución no cumple las renstricciones o no es óptima, podemos evitar explorarla. Dichas estrategias se denominarán  
-podas del problema a partir de ahora. Veremos 2 algoritmos que implementan podas en sus búsquedas.
+La ventaja de un algoritmo de backtracking es que si podemos asegurar con antelación que una familia de soluciones no es viable podemos evitar explorarla. Dichas estrategias se denominarán podas del problema a partir de ahora. Veremos 2 algoritmos que implementan podas en sus búsquedas.
 
 \subsubsection{Argumentos utilizados por los algoritmos}
 
@@ -231,13 +228,12 @@ algoritmo.
 
 \subsubsection{Poda por factibilidad}
 
-El primero que veremos requiere un orden de los ítems previo (por peso de forma
-creciente) a llamarlo, esto nos supone un coste inicial de $O(n \times \log
-n)$. Gracias al orden podemos asegurar que si para un índice $i$ el $i$-ésimo
-ítem no puede agregarse a $s$ entonces todos los ítems con índice mayor tampoco
-pueden. (dado que su peso es superior)
+Nuestra primera poda requiere un orden previo de los items (por peso de forma creciente) esto nos supone un coste inicial de $O(n \times \log
+n)$. Gracias al orden podemos asegurar que si para un índice $i$ el $i$-ésimo ítem no puede agregarse a $s$ entonces todos los ítems con índice mayor tampoco pueden (por estar ordenados).
 
-Es sencillo notar en esta poda que no descartamos soluciones óptimas debido a que solo estamos descartando soluciones cuyos peso total no cumple las renstricciones del problema.
+Es sencillo notar en esta poda que no descartamos soluciones óptimas dado que solo se descartan al exceder el peso (y no hay pesos negativos).
+
+El otro criterio de corte que utilizamos es más simple: Si todo entra en la mochila, todo va en la mochila. Dado que no hay valores negativos agregar a la mochila siempre mejora la solución.
 
 \clearpage
 
