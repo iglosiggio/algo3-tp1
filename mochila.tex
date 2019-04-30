@@ -395,10 +395,10 @@ mejor de todas. Existen multiples formas de hacerlo:
 	los ítems de $p$.
 	
 	\item[] \Call{ordenar}{$p$} Ordenamiendo por comparación con
-	complejidad $O(p\log p)$
+	complejidad $O(\#p\log \#p)$
 	
 	\item[] \Call{descartar}{$p$} Elimina el $p_i$ si $p_{i-1}$ posee un
-	valor mayor a igual o menor peso. Complejidad $O(p)$.
+	valor mayor con menor peso. Complejidad $O(\#p)$.
 
 	\item[] \Call{buscar}{$p, k$} Búsqueda binaria, devuelve la última
 	mochila de peso $k$ o la última con un peso menor.
@@ -412,7 +412,7 @@ mejor de todas. Existen multiples formas de hacerlo:
 \State $Der$ $\is \Call{ordenar}{\text{der}}$
 \Comment Ordeno uno de los 2 subconjuntos
 \State $Der$ $\is \Call{descartar}{\text{der}}$
-\Comment Elimino repetidos o no óptimos
+\Comment Elimino no óptimos
 
 \For{$(a \in Izq)$}
 	\If{$a_{peso} \leq w$}
