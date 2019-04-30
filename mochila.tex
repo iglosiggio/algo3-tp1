@@ -527,7 +527,7 @@ el máximo tiempo de procesamiento por un caso de prueba es 25 minutos).
 
 \item Cada experimentación consta de 250 casos de prueba.
 
-\item los datasets en cada prueba son elegidos uniformemente.
+\item Los parámetros libres en cada prueba poseen distribución uniforme\footnote{Es decir, si en el resumen de parámetros dice $n \in [15; 24]$ entonces $n$ se genera con $\lfloor U(15, 25)\rfloor$. Se utiliza la misma técnica para todos los parámetros libres.}.
 \end{itemize}
 
 \subsubsection{Experimento A}
@@ -614,7 +614,7 @@ solución no requiera explorar mochilas de demasiados elementos.
 \subsubsection{Experimento C}
 
 Cómo el experimento A resultó muy pequeño para mostrar el comportamiento del
-algoritmo de programación dinámica decidimos constuir casos de test mucho más grandes. Dado que la complejidad de teórica de programación dinámica es $O(n \times W)$ se consideró que experimentar con un set donde $n = W$ sería razonable esperar un crecimiento cuadrático.
+algoritmo de programación dinámica decidimos construir casos de test mucho más grandes. Dado que la complejidad teórica es $O(n \times W)$ se consideró que al experimentar con $n = W$ sería razonable esperar un crecimiento cuadrático.
 
 \begin{center}
 $n = W \in [100; 1000]; 0 < p_i < \frac{W}{2}; 1 \leq v_i \leq 5000$
