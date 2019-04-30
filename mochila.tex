@@ -557,8 +557,8 @@ $O(W)$ y $\sum_{i=0}^{n} O(W) = O(n \times W)$.
 La correctitud de este algoritmo depende de dos variables: tener un algoritmo
 de ``backtracking'' correcto y no perder información al memoizar. Lo segundo
 puede notarse dado que la clave con la que memoizamos depende de los únicos
-parámetros que cambian en cada llamada recursiva\footnote{Y nuestro algoritmo
-sólo depende de sus parámetros de entrada, por lo que es correcto memoizarlo}.
+parámetros que cambian en cada llamada recursiva\footnote{Nuestro algoritmo
+sólo depende de sus parámetros de entrada, por lo que es correcto memoizarlo.}.
 Lo primero es más complejo, pero comparando la estructura con la de
 $\Call{Knapsack-Factibilidad}{p, W, s}$ se puede ver que el algoritmo de
 backtracking subyacente es una variación de éste\footnote{Dónde se recorren los
@@ -566,7 +566,7 @@ backtracking subyacente es una variación de éste\footnote{Dónde se recorren l
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=0.8\textwidth]{{fotos/pdf.dinamica}.pdf}
+\includegraphics[width=\textwidth]{{fotos/pdf.dinamica}.pdf}
 \caption{Llamadas recursivas sobre \texttt{casos/pdf.in}. Las líneas punteadas
 indican valores ya calculados.}
 \end{center}
