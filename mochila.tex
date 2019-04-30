@@ -552,6 +552,8 @@ subproblema de otro es el par $(i, w')$.} por lo que por cada $i$ realizaremos
 a lo sumo $W$ cálculos. Entonces para cada $i$ tenemos una complejidad de
 $O(W)$ y $\sum_{i=0}^{n} O(W) = O(n \times W)$.
 
+\clearpage
+
 La correctitud de este algoritmo depende de dos variables: tener un algoritmo
 de ``backtracking'' correcto y no perder información al memoizar. Lo segundo
 puede notarse dado que la clave con la que memoizamos depende de los únicos
@@ -570,8 +572,6 @@ indican valores ya calculados.}
 \end{center}
 \end{figure}
 
-\clearpage
-
 \section{Experimentación}
 
 \begin{itemize}
@@ -587,6 +587,8 @@ uniforme\footnote{Es decir, si en el resumen de parámetros dice $n \in [15;
 24]$ entonces $n$ se genera con $\lfloor U(15, 25)\rfloor$. Se utiliza la misma
 técnica para todos los parámetros libres.}.
 \end{itemize}
+
+\clearpage
 
 \subsubsection{Experimento A}
 
@@ -719,7 +721,7 @@ destacables son los siguientes:
 	excesivamente alto respecto del peso de los ítems.
 \end{enumerate}
 
-\section{Referencias:}
+\section{Referencias}
 \begin{itemize}
 	\item[] \textit{Computing partitions with applications to the knapsack
 	- Ellis Horowitz and Sartaj Sahni.}
