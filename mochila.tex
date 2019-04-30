@@ -214,11 +214,19 @@ de $O(n \times 2^n)$.
 
 \subsection{Backtracking}
 
-Otra estrategia consiste en el uso de un algoritmo exploratorio dónde por cada elemento del problema consideraremos agregarlo o no y buscaremos la mejor mochila en cada caso.
+Otra estrategia consiste en el uso de un algoritmo exploratorio dónde por cada
+elemento del problema consideraremos agregarlo o no y buscaremos la mejor
+mochila en cada caso.
 
-Repetido el proceso por $n$ elementos, la cantidad de ramas del problema crece de forma exponencial, con un total de $2^n$ mochilas. Siempre y cunado la complejidad de evaluar cada mochila esté en $O(1)$ la complejidad final no excederá $O(2^n)$.
+Repetido el proceso por $n$ elementos, la cantidad de ramas del problema crece
+de forma exponencial, con un total de $2^n$ mochilas. Siempre y cunado la
+complejidad de evaluar cada mochila esté en $O(1)$ la complejidad final no
+excederá $O(2^n)$.
 
-La ventaja de un algoritmo de backtracking es que si podemos asegurar con antelación que una familia de soluciones no es viable podemos evitar explorarla. Dichas estrategias se denominarán podas del problema a partir de ahora. Veremos 2 algoritmos que implementan podas en sus búsquedas.
+La ventaja de un algoritmo de backtracking es que si podemos asegurar con
+antelación que una familia de soluciones no es viable podemos evitar
+explorarla. Dichas estrategias se denominarán podas del problema a partir de
+ahora. Veremos 2 algoritmos que implementan podas en sus búsquedas.
 
 \subsubsection{Argumentos utilizados por los algoritmos}
 
@@ -228,14 +236,18 @@ algoritmo.
 
 \subsubsection{Poda por factibilidad}
 
-Nuestra primera poda requiere un orden previo de los items (por peso de forma creciente) esto nos supone un coste inicial de $O(n \times \log
-n)$. Gracias al orden podemos asegurar que si para un índice $i$ el $i$-ésimo ítem no puede agregarse a $s$ entonces todos los ítems con índice mayor tampoco pueden (por estar ordenados).
+Nuestra primera poda requiere un orden previo de los items (por peso de forma
+creciente) esto nos supone un coste inicial de $O(n \times \log n)$. Gracias al
+orden podemos asegurar que si para un índice $i$ el $i$-ésimo ítem no puede
+agregarse a $s$ entonces todos los ítems con índice mayor tampoco pueden (por
+estar ordenados).
 
-Es sencillo notar en esta poda que no descartamos soluciones óptimas dado que solo se descartan al exceder el peso (y no hay pesos negativos).
+Es sencillo notar en esta poda que no descartamos soluciones óptimas dado que
+solo se descartan al exceder el peso (y no hay pesos negativos).
 
-El otro criterio de corte que utilizamos es más simple: Si todo entra en la mochila, todo va en la mochila. Dado que no hay valores negativos agregar a la mochila siempre mejora la solución.
-
-
+El otro criterio de corte que utilizamos es más simple: Si todo entra en la
+mochila, todo va en la mochila. Dado que no hay valores negativos agregar a la
+mochila siempre mejora la solución.
 
 \clearpage
 
@@ -281,18 +293,31 @@ El otro criterio de corte que utilizamos es más simple: Si todo entra en la moc
 \end{description}
 \end{algorithm}
 
-En este algoritmo evaluar si una familia de mochilas se excede de peso depende de una simple comparación (\texttt{6}). Considerar y no considerar los elementos (\texttt{8})(\texttt{9}) se implementa construyendo la nueva solución parcial\footnote{Se aumenta el índice, se actualizan el valor, peso y los pesos restantes según sea necesario.} a través de una cantidad acotada de sumas y restas.
+En este algoritmo evaluar si una familia de mochilas se excede de peso depende
+de una simple comparación (\texttt{6}). Considerar y no considerar los
+elementos (\texttt{8})(\texttt{9}) se implementa construyendo la nueva solución
+parcial\footnote{Se aumenta el índice, se actualizan el valor, peso y los pesos
+restantes según sea necesario.} a través de una cantidad acotada de sumas y
+restas.
 
-El otro criterio de corte (\texttt{5}) no modifica la complejidad dado que cuando se cumple la condición se pueden considerar todos los elementos siguientes. Ésto es más barato que calcular ambas recursiones.
+El otro criterio de corte (\texttt{5}) no modifica la complejidad dado que
+cuando se cumple la condición se pueden considerar todos los elementos
+siguientes. Ésto es más barato que calcular ambas recursiones.
 
-Los casos favorables de esta poda se encuentran cuando $W$ resulta mucho más pequeño o grande que los pesos de todos los ítems, dado que se puede evitar el analisis de mochilas inviables (\texttt{6}) o rellenar a la mochila sin considerar los pesos individuales (\texttt{4}).
+Los casos favorables de esta poda se encuentran cuando $W$ resulta mucho más
+pequeño o grande que los pesos de todos los ítems, dado que se puede evitar el
+analisis de mochilas inviables (\texttt{6}) o rellenar a la mochila sin
+considerar los pesos individuales (\texttt{4}).
 
 \subsubsection{Poda por optimalidad}
 
 La segunda poda que veremos no requiere un ordenamiento previo, en su lugar
-debe calcularse $\sum_{i = 0}^{\#p - 1}p[i]_{valor}$ la suma de los valores y ofrecer un candidato ($m$) el cual debe ser una mochila válida.
+debe calcularse $\sum_{i = 0}^{\#p - 1}p[i]_{valor}$ la suma de los valores y
+ofrecer un candidato ($m$) el cual debe ser una mochila válida.
 
-Dado que podemos con antelación considerar todos los elementos restantes; si el valor de agregarlos no excede al candidato $m$ entonces esa familia de mochilas no será óptima y la podamos.
+Dado que podemos con antelación considerar todos los elementos restantes; si el
+valor de agregarlos no excede al candidato $m$ entonces esa familia de mochilas
+no será óptima y la podamos.
 
 A la hora de considerar cada ítem podemos utilizar la mochila candidato $m$ y
 el valor de nuestros hijos para determinar si somos capaces de
@@ -342,7 +367,9 @@ ordenamos los ítems para conseguir un $m$ grande lo antes posible.
 \end{description}
 \end{algorithm}
 
-Las podas son similares a las anteriores pero en este caso sólo requieren operaciones elementales (sumas y comparaciones). La operación considerar difiere en qué propiedades de la mochila actualiza.
+Las podas son similares a las anteriores pero en este caso sólo requieren
+operaciones elementales (sumas y comparaciones). La operación considerar
+difiere en qué propiedades de la mochila actualiza.
 
 \subsection{Meet in Middle}
 
@@ -351,19 +378,22 @@ dividimos el problema en 2 partes iguales de dimensión $\frac{n}{2}$,
 conseguimos suficiente información para poder resolver nuestro problema y
 finalmente construimos la respuesta.
 
-Si llamamos $A$ y $B$ a las dos mitades de nuestro conjunto de ítems y construimos sus conjuntos de partes
-entonces los conjuntos solución son todos de la forma $a \bigcup b$\footnote{Si
-una solución se encontrase completa en cualquiera de las dos mitades se puede
-unir al conjunto vacío de la otra.}. Una vez construidos podemos buscar la
-mejor pareja de cualquier subconjunto de una mitad dentro de los subconjuntos
-de la otra.
+Si llamamos $A$ y $B$ a las dos mitades de nuestro conjunto de ítems y
+construimos sus conjuntos de partes entonces los conjuntos solución son todos
+de la forma $a \bigcup b$\footnote{Si una solución se encontrase completa en
+cualquiera de las dos mitades se puede unir al conjunto vacío de la otra.}. Una
+vez construidos podemos buscar la mejor pareja de cualquier subconjunto de una
+mitad dentro de los subconjuntos de la otra.
 
 Definiremos entonces que nuestro algoritmo debe realizar los siguientes pasos:
 
 \begin{enumerate}
-\item Separar el conjunto de ítems en 2 subconjuntos $A$, $B$. $A$ teniendo los primeros $\frac{n}{2}$ ítems y $B$ el resto.
+\item Separar el conjunto de ítems en 2 subconjuntos $A$, $B$. $A$ teniendo los
+primeros $\frac{n}{2}$ ítems y $B$ el resto.
 
-\item Construir las mochilas posibles con $A$ y con $B$. Es decir los pares $(peso, valor)$ de cada subconjunto. El precio de armarlas es $O(2^{\frac{n}{2}})$.
+\item Construir las mochilas posibles con $A$ y con $B$. Es decir los pares
+$(peso, valor)$ de cada subconjunto. El precio de armarlas es
+$O(2^{\frac{n}{2}})$.
 
 \item Combinarlas: encontrar las combinaciones $a \bigcup b$ quedándonos con la
 mejor de todas. Existen multiples formas de hacerlo:
@@ -373,8 +403,11 @@ mejor de todas. Existen multiples formas de hacerlo:
 	dado que su complejidad sería $O(2^n)$, no ganaríamos mucho respecto de
 	fuerza bruta).
 
-	\item Ordenar $A$ ó $B$. Descartar conjuntos que no sean óptimos en el ordenado. Recorrer el otro conjunto linealmente buscando para cada elemento su mejor pareja (utilizando una búsqueda binaria en el ordenado). Este método nos ofrece una complejidad final
-	de $O(n \times 2^{\frac{n}{2}})$.
+	\item Ordenar $A$ ó $B$. Descartar conjuntos que no sean óptimos en el
+	ordenado. Recorrer el otro conjunto linealmente buscando para cada
+	elemento su mejor pareja (utilizando una búsqueda binaria en el
+	ordenado). Este método nos ofrece una complejidad final de $O(n \times
+	2^{\frac{n}{2}})$.
 \end{enumerate}
 \end{enumerate}
 
@@ -431,11 +464,22 @@ mejor de todas. Existen multiples formas de hacerlo:
 \end{description}
 \end{algorithm}
 
-Analicemos la complejidad, \Call{Ordenar}{der} es $O(2^\frac{n}{2} \times \log2^\frac{n}{2})$ ya que el conjunto a ordenar es partes de $A$ ó $B$. $O(2^\frac{n}{2} \times \log2^\frac{n}{2})$ es equivalente a $O(n \times 2^{\frac{n}{2}})$.
+Analicemos la complejidad, \Call{Ordenar}{der} es $O(2^\frac{n}{2} \times
+\log2^\frac{n}{2})$ ya que el conjunto a ordenar es partes de $A$ ó $B$.
+$O(2^\frac{n}{2} \times \log2^\frac{n}{2})$ es equivalente a $O(n \times
+2^{\frac{n}{2}})$.
 
-\Call{Descartar}{der} tras ordenar es lineal sobre el tamaño del conjunto $O(2^\frac{n}{2})$. Sólo debemos comparar el conjunto actual contra el anterior para descartarlo\footnote{Un conjunto de peso $x$, se considera no óptimo si tiene peso mayor a $x$ y no lo supera en valor final.}, eliminación que es vital para aplicar búsqueda binaria\footnote{No es necesario eliminar el elemento, basta copiar el valor del elemento anterior.}.
+\Call{Descartar}{der} tras ordenar es lineal sobre el tamaño del conjunto
+$O(2^\frac{n}{2})$. Sólo debemos comparar el conjunto actual contra el anterior
+para descartarlo\footnote{Un conjunto de peso $x$, se considera no óptimo si
+tiene peso mayor a $x$ y no lo supera en valor final.}, eliminación que es
+vital para aplicar búsqueda binaria\footnote{No es necesario eliminar el
+elemento, basta copiar el valor del elemento anterior.}.
 
-Finalmente recorrer el conjunto no ordenado linealmente es $O(2^\frac{n}{2})$ y por cada conjunto se debe encontrar su mejor pareja, dado que el otro conjunto es ordenado ésta complejidad es $O(\log{2^\frac{n}{2}})$ que es equivalente a $O(n)$ dándonos nuevamente la complejidad $O(n \times 2^{\frac{n}{2}})$.
+Finalmente recorrer el conjunto no ordenado linealmente es $O(2^\frac{n}{2})$ y
+por cada conjunto se debe encontrar su mejor pareja, dado que el otro conjunto
+es ordenado ésta complejidad es $O(\log{2^\frac{n}{2}})$ que es equivalente a
+$O(n)$ dándonos nuevamente la complejidad $O(n \times 2^{\frac{n}{2}})$.
 
 \subsection{Programación dinámica}
 
@@ -453,12 +497,16 @@ elemento (dado que no se exceda en peso) o ignorándolo.
 
 Construiremos un algoritmo \emph{top-down} (consideramos el problema completo y
 lo dividimos hasta llegar a problemas triviales) con dos partes, un algoritmo
-recursivo simple y la memoización de sus resultados intermedios. Para esto optaremos como estructura inicializar una matriz, de $n$ filas con $W$ columnas.
+recursivo simple y la memoización de sus resultados intermedios. Para esto
+optaremos como estructura inicializar una matriz, de $n$ filas con $W$
+columnas.
 
-Notar que mientras el algoritmo recursivo simple sea correcto siempre y cuando la memoización no pise información relevante, mantendrá su correctitud.
+Notar que mientras el algoritmo recursivo simple sea correcto siempre y cuando
+la memoización no pise información relevante, mantendrá su correctitud.
 
-Finalmente una vez reducido el problema a la construcción de una mochila de $0$ elementos
-está claro que el mejor valor posible es $0$. Este será nuestro caso base.
+Finalmente una vez reducido el problema a la construcción de una mochila de $0$
+elementos está claro que el mejor valor posible es $0$. Este será nuestro caso
+base.
 
 \begin{algorithm}
 \caption{Knapsack con programación dinámica}
@@ -527,7 +575,10 @@ el máximo tiempo de procesamiento por un caso de prueba es 25 minutos).
 
 \item Cada experimentación consta de 250 casos de prueba.
 
-\item Los parámetros libres en cada prueba poseen distribución uniforme\footnote{Es decir, si en el resumen de parámetros dice $n \in [15; 24]$ entonces $n$ se genera con $\lfloor U(15, 25)\rfloor$. Se utiliza la misma técnica para todos los parámetros libres.}.
+\item Los parámetros libres en cada prueba poseen distribución
+uniforme\footnote{Es decir, si en el resumen de parámetros dice $n \in [15;
+24]$ entonces $n$ se genera con $\lfloor U(15, 25)\rfloor$. Se utiliza la misma
+técnica para todos los parámetros libres.}.
 \end{itemize}
 
 \subsubsection{Experimento A}
@@ -613,8 +664,10 @@ solución no requiera explorar mochilas de demasiados elementos.
 
 \subsubsection{Experimento C}
 
-Cómo el experimento A resultó muy pequeño para mostrar el comportamiento del
-algoritmo de programación dinámica decidimos construir casos de test mucho más grandes. Dado que la complejidad teórica es $O(n \times W)$ se consideró que al experimentar con $n = W$ sería razonable esperar un crecimiento cuadrático.
+Como el experimento A resultó muy pequeño para mostrar el comportamiento del
+algoritmo de programación dinámica decidimos construir casos de test mucho más
+grandes. Dado que la complejidad teórica es $O(n \times W)$ se consideró que al
+experimentar con $n = W$ sería razonable esperar un crecimiento cuadrático.
 
 \begin{center}
 $n = W \in [100; 1000]; 0 < p_i < \frac{W}{2}; 1 \leq v_i \leq 5000$
