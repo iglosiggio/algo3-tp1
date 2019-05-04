@@ -45,7 +45,8 @@ data/%.series:
 	$(MAKE) -C data $*.series
 
 # Gráficos que generamos
-fotos_a=$(foreach algo, $(algos), fotos/exp.a.$(algo).pdf)
+fotos_a=$(foreach algo, $(algos), fotos/exp.a.$(algo).pdf) \
+	fotos/exp.a.algos_todos.pdf
 fotos_b=fotos/exp.b.backtracking_fact.pdf fotos/exp.b.backtracking_opt.pdf \
 	fotos/exp.b.mitm.pdf
 fotos_c=fotos/exp.c.dinamica.pdf
@@ -72,7 +73,7 @@ fotos/exp.a.dinamica.pdf: data/exp.a.dinamica.series scripts/experimento_a.plot
 	scripts/experimento_a.plot data/exp.a.dinamica.series $@ 'k*n*W'
 
 fotos/exp.a.algos_todos.pdf: scripts/experimento_a_algos_todos.plot
-	scripts/experimento_a_algos_todos.plot $@ 
+	scripts/experimento_a_algos_todos.plot $@
 
 fotos/exp.b.%.pdf: data/exp.b.%.series scripts/experimento_b.plot
 	scripts/experimento_b.plot data/exp.b.$*.series $@
