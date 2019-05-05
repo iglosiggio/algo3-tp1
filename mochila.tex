@@ -689,6 +689,16 @@ $n = W \in [100; 1000]; 0 < p_i < \frac{W}{2}; 1 \leq v_i \leq 5000$
 
 \clearpage
 
+\subsubsection{Comparación de los algoritmos}
+Por último se decidió usar el set del experimento A para hacer una comparación entre las velocidades efectivas que a los algoritmos les tomó realizar el experimento.
+
+\begin{figure}[h]
+	\includegraphics{{fotos/exp.a.algos_todos}.pdf}
+	\caption{Velocidad de los algoritmos}
+\end{figure}
+
+los resultados no fueron los esperados en backtracking con poda por optimalidad ya que mostro una velocidad muy superior a la teórica, consideramos que este comportamiento se debió a que los casos del experimento A fueron muy favorables permitiendole construir un buen candidato a mejor mochila rapidamente y podando el resto. Consideraremos este resultado fuera de lo normal, y lo desestimaremos.
+
 \section{Conclusión}
 
 Hemos considerado cómo resolver el problema de la mochila con diferentes
