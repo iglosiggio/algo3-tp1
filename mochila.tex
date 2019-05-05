@@ -691,8 +691,8 @@ $n = W \in [100; 1000]; 0 < p_i < \frac{W}{2}; 1 \leq v_i \leq 5000$
 
 \subsubsection{Comparación de los algoritmos}
 Por último se decidió usar el set del experimento A para hacer una comparación
-entre las velocidades efectivas que a los algoritmos les tomó realizar el
-experimento.
+entre las velocidades efectivas que a los algoritmos les tomó realizar las
+pruebas.
 
 \begin{figure}[h]
 	\includegraphics{{fotos/exp.a.algos_todos}.pdf}
@@ -707,8 +707,8 @@ rapidamente y podando el resto.
 
 \section{Conclusión}
 
-Hemos considerado cómo resolver el problema de la mochila con diferentes
-métodologias, así como hemos buscado identificar la complejidad en tiempo y
+Hemos considerado formas resolver el problema de la mochila con diferentes
+metodologias así como hemos buscado identificar la complejidad en tiempo y
 memoria requerida y aplicado heúristicas que busquen podar y reducir el espacio
 de nuestro problema.
 
@@ -716,16 +716,16 @@ Tras someter a nuestros algoritmos a extensas pruebas. Los resultados mas
 destacables son los siguientes:
 
 \begin{enumerate}
-	\item La poda por optimalidad puede construír una buena mochila con la
-	que podar rápidamente, gracias a esto muestra un rendimiento superior a
-	Meet-in-the-Middle en las condiciones
+	\item La poda por optimalidad puede construir rápidamente una buena
+	mochila con la que podar, gracias a esto muestra un rendimiento
+	superior a Meet-in-the-Middle en las condiciones
 	adecuadas\footnote{Meet-in-the-Middle fracasa rotundamente dado un $n$
 	suficientemente largo pero la poda por optimalidad puede construir una
 	solución en ciertas situaciones.} pese a que éste tenga una complejidad
 	teórica mejor.
 
-	\item El algoritmo de memoria dinámica tuvo un rendimiento
-	extremadamente rápido en comparación con los otros, mantuvo un consumo
+	\item El algoritmo de programación dinámica tuvo un rendimiento
+	extremadamente bueno en comparación con los otros, mantuvo un consumo
 	de memoria menor que Meet-in-the-Middle aunque mayor que los algoritmos
 	de backtracking que realizan\\búsquedas exploratorias y poseen un
 	consumo lineal.
@@ -744,22 +744,22 @@ principio nos propusimos, esta sirve como una pequeña lista de trabajo que
 creemos nos quedó en el tintero:
 \begin{enumerate}
 	\item Los resultados de nuestros experimentos no reflejaron la
-	velocidad teórica de backtracking por optimalidad. Deberíamos somerlo a
-	casos más desfavorables para poder analizar con mayor profundidad cómo
-	se comporta en la práctica y en qué escenarios es preferible a los
-	otros mostrados.
+	velocidad teórica de backtracking por optimalidad. Deberíamos someterlo
+	a casos más desfavorables para poder analizar con mayor profundidad
+	como se comporta en la práctica y en qué escenarios es preferible a los
+	otros algoritmos mostrados.
 
-	\item Programación dinámica fue sometído a pruebas mucho más exigentes
+	\item Programación dinámica fue sometido a pruebas mucho más exigentes
 	que el resto de los algoritmos, sin embargo no se discutió sobre la
 	importancia de tener memoria suficiente para ejecutarlo ni sobre cómo
-	evitar que $W$ excesivamente grandes lo vuelvan más lento que el resto
+	evitar que $W$s excesivamente grandes lo vuelvan más lento que el resto
 	de los algoritmos.
 
 	\item El algoritmo de fuerza bruta podría haber sido mejorado con otras
-	enumeraciones, consideramos una $O(\log n 2^n)$ que no llegamos a
-	implementar.  Explorar estas técnicas en conjunto con implementaciones
-	bottom-up de backtracking podría arrojarnos algoritmos interesantes
-	para los casos favorables de las podas.
+	enumeraciones, consideramos una $O(\log n \times 2^n)$ que no llegamos
+	a implementar.  Explorar estas técnicas en conjunto con
+	implementaciones bottom-up de backtracking podría arrojarnos algoritmos
+	interesantes para los casos favorables de las podas.
 \end{enumerate}
 
 
