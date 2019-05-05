@@ -719,7 +719,7 @@ destacables son los siguientes:
 	\item La poda por optimalidad puede construír una buena mochila con la
 	que podar rápidamente, gracias a esto muestra un rendimiento superior a
 	Meet-in-the-Middle en las condiciones
-	adecuadas\footnote{Meet-in-the-Middle fracasan rotundamente dado un $n$
+	adecuadas\footnote{Meet-in-the-Middle fracasa rotundamente dado un $n$
 	suficientemente largo pero la poda por optimalidad puede construir una
 	solución en ciertas situaciones.} pese a que éste tenga una complejidad
 	teórica mejor.
@@ -739,14 +739,27 @@ destacables son los siguientes:
 
 \subsection{Trabajo futuro}
 
-A continuación se enumerarán una lista de tareas pendientes.
+Dadas las limitaciones del tiempo no hemos podido cubrir todo lo que en un
+principio nos propusimos, esta sirve como una pequeña lista de trabajo que
+creemos nos quedó en el tintero:
 \begin{enumerate}
-\item Los resultados de nuestros experimentos no reflejaron la velocidad teórica de backtracking por optimalidad y deberíamos crear nuevos experimentos que sometan a este algoritmo a un escenario desfavorable para acercarnos más a su cota de complejidad teórica.
+	\item Los resultados de nuestros experimentos no reflejaron la
+	velocidad teórica de backtracking por optimalidad. Deberíamos somerlo a
+	casos más desfavorables para poder analizar con mayor profundidad cómo
+	se comporta en la práctica y en qué escenarios es preferible a los
+	otros mostrados.
 
-\item Programación dinámica fue sometído a pruebas mucho más exigentes que el resto de los algoritmos, sin embargo no se realizarón pruebas sobre sus casos desfavorables, se necesitaría analizar que sucede en casos donde $W$ es excesivamente más grande que $N$. Por ejemplo si $n^2 = W$ esto implicaría que tanto los costos de memoría requerida como complejidad se volvieron $n^3$.
+	\item Programación dinámica fue sometído a pruebas mucho más exigentes
+	que el resto de los algoritmos, sin embargo no se discutió sobre la
+	importancia de tener memoria suficiente para ejecutarlo ni sobre cómo
+	evitar que $W$ excesivamente grandes lo vuelvan más lento que el resto
+	de los algoritmos.
 
-
-
+	\item El algoritmo de fuerza bruta podría haber sido mejorado con otras
+	enumeraciones, consideramos una $O(\log n 2^n)$ que no llegamos a
+	implementar.  Explorar estas técnicas en conjunto con implementaciones
+	bottom-up de backtracking podría arrojarnos algoritmos interesantes
+	para los casos favorables de las podas.
 \end{enumerate}
 
 
